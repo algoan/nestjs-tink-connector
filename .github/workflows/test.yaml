@@ -1,0 +1,33 @@
+
+name: Run Build and tests
+on:
+  - pull_request
+  - push
+env:
+  NODE_ENV: test
+jobs:
+  main_workflow:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository
+      - uses: actions/checkout@v2
+      # Setup the node environment
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      # Cache dependencies
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      # Install dependencies
+      - run: npm ci --prefer-offline
+      # Build application
+      - run: npm run build
+      # Run lint
+      - run: npm run lint
+      # Run unit tests
+      - run: npm run test
+      # Run functional tests with coverage
+      - run: npm run test:cov

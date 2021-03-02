@@ -1,0 +1,27 @@
+{
+  "customers": [
+    {
+      "id": "5f58a224aa55a30021bc7ab8",
+      "customIdentifier": "client_unique_identifier"
+    }
+  ],
+  "service-accounts": [
+    {
+      "id": "5f58a224aa55a30021bc7ab7",
+      "clientId": "service-account-1",
+      "clientSecret": "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxx",
+      "createdAt": "2020-09-09T09:36:36.630+0000",
+      "scope": "*"
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": "5f59e70197a6544923da0874",
+      "status": "ACTIVE",
+      "target": "https://test",
+      "eventName": "aggregator_link_required",
+      "createdAt": "2020-09-10T08:42:41.783+0000",
+      "updatedAt": "2020-09-10T08:42:41.783+0000"
+    }
+  ]
+}
