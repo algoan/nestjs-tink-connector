@@ -82,6 +82,42 @@ server.get('/redirect', async (req, res) => {
   res.redirect(redirectUrl);
 });
 
+/**
+ * Route called at the end of the process
+ */
+server.get('/callback', async (req, res) => {
+  const tempCode = req.query.code;
+  const subscription = db.subscriptions[1];
+  const payload = {
+    customerId: db.customers[0].id,
+    analysisId: db.analyses[0].id,
+    temporaryCode: tempCode,
+  }
+  // Simulate a webhook call
+  await axios.post(
+    `http://localhost:${config.port}/hooks`,
+    {
+      subscription: {
+        eventName: subscription.eventName,
+        id: subscription.id,
+        status: subscription.status,
+        target: subscription.target,
+      },
+      payload,
+      time: Date.now(),
+      id: 'random_id',
+      index: Math.floor(Math.random() * 100),
+    },
+    {
+      headers: {
+        'x-hub-signature': `sha256=${crypto.createHmac('sha256', subscription.secret).update(JSON.stringify(payload)).digest('hex')}`,
+      },
+    },
+  );
+  
+  res.sendFile(path.join(__dirname, '..', 'public/index.html'));
+});
+
 // To handle POST, PUT and PATCH you need to use a body-parser
 // You can use the one used by JSON Server
 server.use(jsonServer.bodyParser);
