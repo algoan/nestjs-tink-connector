@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="http://algoan.com/" target="blank"><img src="./public/tink_algoan.png" width="320" alt="Algoan Logo" /></a>
+  <a href="http://algoan.com/" target="blank"><img src="./public/tink_algoan.png" width="500" alt="Algoan Logo" /></a>
 </p>
 
 ![Run Build and tests](https://github.com/algoan/nestjs-connector-boilerplate/workflows/Run%20Build%20and%20tests/badge.svg?branch=master&event=push)
@@ -59,24 +59,38 @@ If you want to add missing APIs, or correct an issue, you will have to follow th
 
 This project uses [ESLint](https://eslint.org/) to analyze the TypeScript code. Commit are linted too thanks to [commitlint](https://github.com/conventional-changelog/commitlint) and the [conventional commit format](https://conventionalcommits.org/).
 
-## Installation
+## Usage
+
+How to use locally the connector
+
+### Requirements
+
+This connector is a [Node.js](https://nodejs.org/en/) application. Before reading further, you need to [download and install Node.js](https://nodejs.org/en/download/).
+### Installation
+
+Clone the repository:
+
+```bash
+$ git clone https://github.com/algoan/nestjs-tink-connector.git --depth=1
+```
+
+Install all dependencies running:
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+### How to test locally
 
-```bash
-# development
-$ npm run start
+To test locally the Tink Link process, a simple `index.html` file is rendered. To use it:
 
-# watch mode
-$ npm run start:dev
+- Run `npm run start:dev`. It will render an index.html file. Algoan APIs are exposed and mocked by a [json-server](https://github.com/typicode/json-server).
+- Go to your favorite browser and navigate to http://localhost:4000. It should display a web page: 
 
-# production mode
-$ npm run start:prod
-```
+![index_page](public/index-page.png)
+
+- Click on the first button "Redirect to Tink Link". It will call a `GET /redirect` API which simulates a webhook call to your connector and tries to fetch a redirect URL.
+- At the end of the Tink Link process, a `GET /callback?code=...` will be called. It will simulated the `bank_reader_details` webhook event to the connector.
 
 ## Test
 
