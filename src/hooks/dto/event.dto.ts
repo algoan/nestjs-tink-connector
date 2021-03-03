@@ -1,14 +1,9 @@
 import { Type } from 'class-transformer';
 import { Allow, IsInt, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
 
-import { ServiceAccountCreatedDTO } from './service-account-created.dto';
-import { ServiceAccountDeletedDTO } from './service-account-deleted.dto';
+import { PayloadDTO } from './payload.dto';
 import { SubscriptionDTO } from './subscription.dto';
 
-/**
- * Events payload types
- */
-type Events = ServiceAccountCreatedDTO | ServiceAccountDeletedDTO;
 
 /**
  * Event
@@ -18,7 +13,7 @@ export class EventDTO {
   @Type(() => SubscriptionDTO)
   public readonly subscription: SubscriptionDTO;
   @Allow()
-  public readonly payload: Events;
+  public readonly payload: PayloadDTO;
   @IsInt()
   public readonly index: number;
   @IsOptional()
