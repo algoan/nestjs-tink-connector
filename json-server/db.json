@@ -2,7 +2,10 @@
   "customers": [
     {
       "id": "5f58a224aa55a30021bc7ab8",
-      "customIdentifier": "client_unique_identifier"
+      "customIdentifier": "client_unique_identifier",
+      "aggregationDetails": {
+        "callbackUrl": "http://localhost:4000"
+      }
     }
   ],
   "service-accounts": [
@@ -20,6 +23,7 @@
       "status": "ACTIVE",
       "target": "https://test",
       "eventName": "aggregator_link_required",
+      "secret": "password",
       "createdAt": "2020-09-10T08:42:41.783+0000",
       "updatedAt": "2020-09-10T08:42:41.783+0000"
     }

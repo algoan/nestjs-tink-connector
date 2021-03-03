@@ -1,9 +1,15 @@
+const db = require('./db.json');
+const axios = require('axios');
+const crypto = require('crypto');
+const delay = require('delay');
+const config = require('node-config-ts').config;
 const jsonServer = require('json-server');
 const path = require('path');
+
+const defaultDelay = 500;
 const server = jsonServer.create();
 const router = jsonServer.router(path.join(__dirname, 'db.json'));
 const middlewares = jsonServer.defaults();
-
 // Set default middlewares (logger, static, cors and no-cache)
 server.use(middlewares);
 
@@ -19,6 +25,61 @@ server.post('/v2/oauth/token', (req, res) => {
     session_state: 'xxxxx-xxxxx-xxxxx',
     scope: 'profile email',
   });
+});
+
+/**
+ * Redirect the user to Tink Link
+ */
+server.get('/redirect', async (req, res) => {
+  const customerId = db.customers[0].id;
+  const payload = {
+    customerId,
+  };
+  const subscription = db.subscriptions[0];
+  /**
+   * Fake a webhook request from Algoan
+   */
+  await axios.post(
+    `http://localhost:${config.port}/hooks`,
+    {
+      subscription: {
+        eventName: subscription.eventName,
+        id: subscription.id,
+        status: subscription.status,
+        target: subscription.target,
+      },
+      payload,
+      time: Date.now(),
+      id: 'random_id',
+      index: Math.floor(Math.random() * 100),
+    },
+    {
+      headers: {
+        'x-hub-signature': `sha256=${crypto.createHmac('sha256', subscription.secret).update(JSON.stringify(payload)).digest('hex')}`,
+      },
+    },
+  );
+
+  /**
+   * Try to get the redirectUrl property
+   */
+  const retryCount = 10;
+  let count = 0;
+  let redirectUrl;
+
+  do {
+    await delay(defaultDelay);
+    redirectUrl = db.customers[0].aggregationDetails.redirectUrl;
+    count++;
+  } while (redirectUrl === undefined && count < retryCount);
+
+  if (redirectUrl === undefined) {
+    res.status(404).send({
+      message: 'Redirect url not found',
+    });
+  }
+
+  res.redirect(redirectUrl);
 });
 
 // To handle POST, PUT and PATCH you need to use a body-parser

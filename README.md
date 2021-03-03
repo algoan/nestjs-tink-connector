@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="http://algoan.com/" target="blank"><img src="./assets/tink_algoan.png" width="320" alt="Algoan Logo" /></a>
+  <a href="http://algoan.com/" target="blank"><img src="./public/tink_algoan.png" width="320" alt="Algoan Logo" /></a>
 </p>
 
 ![Run Build and tests](https://github.com/algoan/nestjs-connector-boilerplate/workflows/Run%20Build%20and%20tests/badge.svg?branch=master&event=push)

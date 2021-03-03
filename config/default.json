@@ -6,7 +6,8 @@
   },
   "targetUrl": "https://test",
   "eventList": [
-    "service_account_created"
+    "aggregation_link_required"
   ],
-  "restHooksSecret": "a"
+  "restHooksSecret": "password",
+  "port": 3000
 }
