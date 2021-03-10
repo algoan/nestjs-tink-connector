@@ -1,10 +1,12 @@
 {
   "customers": [
     {
-      "id": "5f58a224aa55a30021bc7ab8",
+      "id": "5f58a224aa55a30021bc7a18",
       "customIdentifier": "client_unique_identifier",
       "aggregationDetails": {
-        "callbackUrl": "http://localhost:4000/callback"
+        "callbackUrl": "http://localhost:4000/callback",
+        "redirectUrl": "https://link.tink.com/1.0/account-check/?client_id=c845014bad024d2d87589bd52a105193&redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Fcallback&market=BE&locale=en_US&test=true",
+        "userId": "b248376dbc414362a09b57acd10c6e1d"
       }
     }
   ],
@@ -20,7 +22,12 @@
       "clientId": "service-account-1",
       "clientSecret": "xxxxxxx-xxxx-xxxx-xxxx-xxxxxxx",
       "createdAt": "2020-09-09T09:36:36.630+0000",
-      "scope": "*"
+      "scope": "*",
+      "config": {
+        "pricing": "STANDARD",
+        "market": "BE",
+        "locale": "en_US"
+      }
     }
   ],
   "subscriptions": [
@@ -28,7 +35,7 @@
       "id": "5f59e70197a6544923da0874",
       "status": "ACTIVE",
       "target": "https://localhost:3000/hooks",
-      "eventName": "aggregator_link_required",
+      "eventName": "bankreader_link_required",
       "secret": "password",
       "createdAt": "2020-09-10T08:42:41.783+0000",
       "updatedAt": "2020-09-10T08:42:41.783+0000"
@@ -41,6 +48,11 @@
       "secret": "password",
       "createdAt": "2020-09-10T08:42:41.783+0000",
       "updatedAt": "2020-09-10T08:42:41.783+0000"
+    }
+  ],
+  "events": [
+    {
+      "id": "random_id"
     }
   ]
 }
