@@ -4,6 +4,13 @@
     "clientId": "a",
     "clientSecret": "b"
   },
+  "tink": {
+    "apiBaseUrl": "https://api.tink.com",
+    "linkBaseUrl": "https://link.tink.com",
+    "clientId": "clientId",
+    "clientSecret": "clientSecret",
+    "test": true
+  },
   "targetUrl": "https://test",
   "eventList": [
     "aggregation_link_required",
