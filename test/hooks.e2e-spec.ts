@@ -1,3 +1,4 @@
+/* eslint-disable arrow-body-style */
 import { INestApplication, HttpStatus } from '@nestjs/common';
 import * as nock from 'nock';
 import * as request from 'supertest';
@@ -49,7 +50,7 @@ describe('HooksController (e2e)', () => {
     });
 
     it('HK004 - should be ok', async () => {
-      const fakePatchSubEvent: nock.Scope = fakeAPI({
+      fakeAPI({
         baseUrl: fakeAlgoanBaseUrl,
         method: 'patch',
         result: { status: 'PROCESSED' },
@@ -63,7 +64,7 @@ describe('HooksController (e2e)', () => {
             id: '1',
             target: 'http://',
             status: 'ACTIVE',
-            eventName: 'example',
+            eventName: 'bankreader_link_required',
           },
           id: 'random',
           index: 1,
@@ -77,7 +78,7 @@ describe('HooksController (e2e)', () => {
     });
 
     it('HK005 - should be failed - event not handled', async () => {
-      const fakePatchSubEvent: nock.Scope = fakeAPI({
+      fakeAPI({
         baseUrl: fakeAlgoanBaseUrl,
         method: 'patch',
         result: { status: 'FAILED' },
