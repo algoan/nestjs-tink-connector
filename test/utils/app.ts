@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention, camelcase */
 import * as assert from 'assert';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { TestingModule, Test } from '@nestjs/testing';
@@ -83,11 +84,11 @@ export const buildFakeApp = async (): Promise<INestApplication> => {
 
   await app.init();
 
-  assert.equal(fakeOAuthServer.isDone(), true);
-  assert.equal(fakeServiceAccounts.isDone(), true);
-  assert.equal(fakeGetSubscriptions.isDone(), true);
-  assert.equal(fakePostSubscriptions1.isDone(), true);
-  assert.equal(fakePostSubscriptions2.isDone(), true);
+  assert.strictEqual(fakeOAuthServer.isDone(), true);
+  assert.strictEqual(fakeServiceAccounts.isDone(), true);
+  assert.strictEqual(fakeGetSubscriptions.isDone(), true);
+  assert.strictEqual(fakePostSubscriptions1.isDone(), true);
+  assert.strictEqual(fakePostSubscriptions2.isDone(), true);
 
   return app;
 };
