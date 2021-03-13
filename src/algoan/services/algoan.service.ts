@@ -1,8 +1,10 @@
 import { Algoan, EventName } from '@algoan/rest';
-import { Injectable, OnModuleInit, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, OnModuleInit, InternalServerErrorException, Inject } from '@nestjs/common';
 import { utilities } from 'nest-winston';
-import { config } from 'node-config-ts';
+import { Config } from 'node-config-ts';
 import { format, transports } from 'winston';
+
+import { CONFIG } from '../../config/config.module';
 
 /**
  * Algoan service
@@ -15,6 +17,10 @@ export class AlgoanService implements OnModuleInit {
    */
   public algoanClient!: Algoan;
 
+  constructor(
+    @Inject(CONFIG) private readonly config: Config,
+  ) {}
+
   /**
    * Fetch services and creates subscription
    */
@@ -26,9 +32,9 @@ export class AlgoanService implements OnModuleInit {
      * Retrieve service accounts and get/create subscriptions
      */
     this.algoanClient = new Algoan({
-      baseUrl: config.algoan.baseUrl,
-      clientId: config.algoan.clientId,
-      clientSecret: config.algoan.clientSecret,
+      baseUrl: this.config.algoan.baseUrl,
+      clientId: this.config.algoan.clientId,
+      clientSecret: this.config.algoan.clientSecret,
       version: 2,
       loggerOptions: {
         format:
@@ -45,10 +51,14 @@ export class AlgoanService implements OnModuleInit {
       },
     });
 
-    if (config.eventList?.length <= 0) {
+    if (this.config.eventList?.length <= 0) {
       throw new InternalServerErrorException('No event list given');
     }
 
-    await this.algoanClient.initRestHooks(config.targetUrl, config.eventList as EventName[], config.restHooksSecret);
+    await this.algoanClient.initRestHooks(
+      this.config.targetUrl,
+      this.config.eventList as EventName[],
+      this.config.restHooksSecret,
+    );
   }
 }
