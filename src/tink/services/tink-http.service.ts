@@ -52,10 +52,10 @@ export class TinkHttpService {
   /**
    * Do a GET query
    */
-  public async get<ReturnType>(path: string): Promise<ReturnType> {
+  public async get<ReturnType, ArgsType = unknown>(path: string, args?: ArgsType): Promise<ReturnType> {
     const response: AxiosResponse<ReturnType> = await this.httpService
       .get<ReturnType>(
-        `${this.config.tink.apiBaseUrl}${path}`,
+        `${this.config.tink.apiBaseUrl}${path}${ args !== undefined ? `?${qs.stringify(args)}` : '' }`,
         {
           headers: {
             Authorization: `Bearer ${this.getToken()}`,
