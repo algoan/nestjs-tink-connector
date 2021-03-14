@@ -43,6 +43,11 @@ export const buildFakeApp = async (): Promise<INestApplication> => {
         clientId: 'client1',
         clientSecret: 'secret',
         id: 'id1',
+        config: {
+          pricing: 'STANDARD',
+          market: 'BE',
+          locale: 'en_US'
+        }
       },
     ],
     path: '/v1/service-accounts',

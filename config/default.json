@@ -13,8 +13,7 @@
   },
   "targetUrl": "https://test",
   "eventList": [
-    "aggregation_link_required",
-    "bank_details_required"
+    "bankreader_link_required"
   ],
   "restHooksSecret": "password",
   "port": 3000

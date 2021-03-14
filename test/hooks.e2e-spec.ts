@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention,camelcase */
 /* eslint-disable arrow-body-style */
 import { INestApplication, HttpStatus } from '@nestjs/common';
 import * as nock from 'nock';
@@ -57,6 +58,45 @@ describe('HooksController (e2e)', () => {
         path: '/v1/subscriptions/1/events/random',
       });
 
+      fakeAPI({
+        baseUrl: fakeAlgoanBaseUrl,
+        method: 'post',
+        result: {
+          access_token: 'token',
+          refresh_token: 'refresh_token',
+          expires_in: 3000,
+          refresh_expires_in: 10000,
+        },
+        path: '/v2/oauth/token',
+      });
+
+      fakeAPI({
+        baseUrl: fakeAlgoanBaseUrl,
+        method: 'get',
+        result: {
+          id: 'customerId',
+          customIdentifier: 'client_unique_identifier',
+          aggregationDetails: {
+            callbackUrl: `${fakeAlgoanBaseUrl}/callback`
+          }
+        },
+        path: '/v2/customers/customerId',
+      });
+
+      fakeAPI({
+        baseUrl: fakeAlgoanBaseUrl,
+        method: 'patch',
+        result: {
+          id: 'customerId',
+          customIdentifier: 'client_unique_identifier',
+          aggregationDetails: {
+            callbackUrl: `${fakeAlgoanBaseUrl}/callback`,
+            redirectUrl: 'https://link.tink.com/1.0/account-check/...',
+          }
+        },
+        path: '/v2/customers/customerId',
+      });
+
       await request(app.getHttpServer())
         .post('/hooks')
         .send({
@@ -70,8 +110,7 @@ describe('HooksController (e2e)', () => {
           index: 1,
           time: Date.now(),
           payload: {
-            banksUserId: 'banks_user_id',
-            applicationId: 'app_id',
+            customerId: 'customerId',
           },
         })
         .expect(HttpStatus.NO_CONTENT);
