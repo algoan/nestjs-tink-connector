@@ -54,10 +54,17 @@ export const buildFakeApp = async (): Promise<INestApplication> => {
       eventName: { $in: config.eventList },
     })}`,
   });
-  const fakePostSubscriptions: nock.Scope = fakeAPI({
+  const fakePostSubscriptions1: nock.Scope = fakeAPI({
     baseUrl: fakeAlgoanBaseUrl,
     method: 'post',
-    result: { id: '1', eventName: 'bankreader_link_required', target: 'http://...' },
+    result: { id: '1', eventName: 'aggregator_link_required', target: 'http://...' },
+    path: '/v1/subscriptions',
+  });
+
+  const fakePostSubscriptions2: nock.Scope = fakeAPI({
+    baseUrl: fakeAlgoanBaseUrl,
+    method: 'post',
+    result: { id: '1', eventName: 'bank_details_required', target: 'http://...' },
     path: '/v1/subscriptions',
   });
 
@@ -79,7 +86,8 @@ export const buildFakeApp = async (): Promise<INestApplication> => {
   assert.equal(fakeOAuthServer.isDone(), true);
   assert.equal(fakeServiceAccounts.isDone(), true);
   assert.equal(fakeGetSubscriptions.isDone(), true);
-  assert.equal(fakePostSubscriptions.isDone(), true);
+  assert.equal(fakePostSubscriptions1.isDone(), true);
+  assert.equal(fakePostSubscriptions2.isDone(), true);
 
   return app;
 };

@@ -4,7 +4,6 @@ import { Allow, IsInt, IsNotEmpty, IsOptional, ValidateNested } from 'class-vali
 import { PayloadDTO } from './payload.dto';
 import { SubscriptionDTO } from './subscription.dto';
 
-
 /**
  * Event
  */
