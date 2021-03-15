@@ -24,7 +24,9 @@
       "createdAt": "2020-09-09T09:36:36.630+0000",
       "scope": "*",
       "config": {
-        "pricing": "STANDARD",
+        "clientId": "clientId",
+        "clientSecret": "clientSecret",
+        "pricing": "PREMIUM",
         "market": "BE",
         "locale": "en_US"
       }

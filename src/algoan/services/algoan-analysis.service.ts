@@ -17,8 +17,8 @@ export class AlgoanAnalysisService {
   /**
    * Update the given analysis
    */
-  public async updateAnalysis(id: string, input: AnalysisUpdateInput): Promise<Analysis> {
-    const path: string = `/${this.apiVersion}/analysis/${id}`;
+  public async updateAnalysis(customerId: string, analysisId: string, input: AnalysisUpdateInput): Promise<Analysis> {
+    const path: string = `/${this.apiVersion}/customers/${customerId}/analyses/${analysisId}`;
 
     return this.algoanHttpService.patch<Analysis, AnalysisUpdateInput>(path, input);
   }

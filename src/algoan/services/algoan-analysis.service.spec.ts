@@ -7,6 +7,7 @@ import { Analysis } from '../dto/analysis.objects';
 import { analysisMock } from '../dto/analysis.objects.mock';
 
 import { CONFIG } from '../../config/config.module';
+import { customerMock } from '../dto/customer.objects.mock';
 import { AlgoanAnalysisService } from './algoan-analysis.service';
 import { AlgoanHttpService } from './algoan-http.service';
 
@@ -49,9 +50,9 @@ describe('AlgoanAnalysisService', () => {
       const input: AnalysisUpdateInput = {
         accounts: []
       };
-      const analysis: Analysis = await algoanAnalysisService.updateAnalysis(analysisMock.id, input);
+      const analysis: Analysis = await algoanAnalysisService.updateAnalysis(customerMock.id, analysisMock.id, input);
 
-      expect(spy).toHaveBeenCalledWith(`/v2/analysis/${analysisMock.id}`, input);
+      expect(spy).toHaveBeenCalledWith(`/v2/customers/${customerMock.id}/analyses/${analysisMock.id}`, input);
       expect(analysis).toBe(analysisMock);
     });
   });
