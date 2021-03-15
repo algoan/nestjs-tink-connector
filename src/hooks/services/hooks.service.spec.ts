@@ -18,9 +18,9 @@ import { TinkHttpService } from '../../tink/services/tink-http.service';
 import { TinkLinkService } from '../../tink/services/tink-link.service';
 import { TinkUserService } from '../../tink/services/tink-user.service';
 import { AlgoanService } from '../../algoan/services/algoan.service';
-
 import { payloadMock } from '../dto/payload.dto.mock';
 import { subscriptionMock } from '../dto/subscription.dto.mock';
+import { TINK_LINK_ACTOR_CLIENT_ID } from '../../tink/contstants/tink.constants';
 
 import { HooksService } from './hooks.service';
 
@@ -201,7 +201,7 @@ describe('TinkAccountService', () => {
         user_id: createUserObject.user_id,
         scope: 'credentials:read,credentials:refresh,credentials:write,providers:read,user:read,authorization:read',
         id_hint: customerMock.customIdentifier,
-        actor_client_id: serviceAccountConfigMock.clientId,
+        actor_client_id: TINK_LINK_ACTOR_CLIENT_ID,
       });
       expect(getLinkSpy).toHaveBeenCalledWith({
         client_id: serviceAccountConfigMock.clientId,
@@ -254,7 +254,7 @@ describe('TinkAccountService', () => {
         user_id: createUserObject.user_id,
         scope: 'credentials:read,credentials:refresh,credentials:write,providers:read,user:read,authorization:read',
         id_hint: customerMock.customIdentifier,
-        actor_client_id: serviceAccountConfigMock.clientId,
+        actor_client_id: TINK_LINK_ACTOR_CLIENT_ID,
       });
       expect(getLinkSpy).toHaveBeenCalledWith({
         client_id: serviceAccountConfigMock.clientId,

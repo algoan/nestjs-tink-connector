@@ -3,6 +3,7 @@ import { EventName, EventStatus, ServiceAccount, Subscription, SubscriptionEvent
 import { UnauthorizedException, Injectable, Inject } from '@nestjs/common';
 import { Config } from 'node-config-ts';
 
+import { TINK_LINK_ACTOR_CLIENT_ID } from '../../tink/contstants/tink.constants';
 import { Customer } from '../../algoan/dto/customer.objects';
 import { AlgoanCustomerService } from '../../algoan/services/algoan-customer.service';
 import { ClientPricing } from '../../algoan/dto/service-account.enums';
@@ -145,7 +146,7 @@ export class HooksService {
         user_id: tinkUserId,
         scope: 'credentials:read,credentials:refresh,credentials:write,providers:read,user:read,authorization:read',
         id_hint: customer.customIdentifier,
-        actor_client_id: clientConfig.clientId,
+        actor_client_id: TINK_LINK_ACTOR_CLIENT_ID,
       });
 
       // Generate the link with the authorization code

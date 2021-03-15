@@ -1,7 +1,7 @@
 {
   "customers": [
     {
-      "id": "5f58a224aa55a30021bc7a18",
+      "id": "5f58a224aa55a30021bc7b01",
       "customIdentifier": "client_unique_identifier",
       "aggregationDetails": {
         "callbackUrl": "http://localhost:4000/callback"
