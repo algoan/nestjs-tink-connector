@@ -34,6 +34,8 @@ The Tink user needs to be redirected to an external page.
 * The client should have this configuration data in the service account:
 ```
   {
+    "clientId": string;
+    "clientSecret": string;
     "pricing": "STANDARD" | "PREMIUM";
     "market": string; // Example: "FR"
     "locale": string; // Example: "fr_FR"

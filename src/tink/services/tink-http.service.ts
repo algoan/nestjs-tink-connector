@@ -25,34 +25,28 @@ export class TinkHttpService {
   /**
    * Authenticate the service to tink
    */
-  public async authenticate(code?: string): Promise<void> {
-    const input: AccessTokenInput =
-      code !== undefined
-        ? {
-            client_id: this.config.tink.clientId,
-            grant_type: GrantType.AUTHORIZATION_CODE,
-            code,
-          }
-        : {
-            client_id: this.config.tink.clientId,
-            client_secret: this.config.tink.clientSecret,
-            grant_type: GrantType.CLIENT_CREDENTIALS,
-            scope: 'authorization:grant,user:read,user:create',
-          };
+  public async authenticateAsClientWithCredentials(clientId: string, clientSecret: string): Promise<void> {
+    const input: AccessTokenInput = {
+      client_id: clientId,
+      client_secret: clientSecret,
+      grant_type: GrantType.CLIENT_CREDENTIALS,
+      scope: 'authorization:grant,user:read,user:create',
+    };
 
-    const authResponse: AxiosResponse<AccessTokenObject> = await this.httpService
-      .post<AccessTokenObject>(
-        `${this.config.tink.apiBaseUrl}/api/v1/oauth/token`,
-        qs.stringify(input),
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          }
-        }
-      )
-      .toPromise();
+    return this.authenticate(input);
+  }
 
-    this.tokenInfo = authResponse.data;
+  /**
+   * Authenticate the service to tink
+   */
+  public async authenticateAsUserWithCode(clientId: string, code: string): Promise<void> {
+    const input: AccessTokenInput = {
+      client_id: clientId,
+      grant_type: GrantType.AUTHORIZATION_CODE,
+      code,
+    }
+
+    return this.authenticate(input);
   }
 
   /**
@@ -122,5 +116,24 @@ export class TinkHttpService {
     }
 
     return this.tokenInfo.access_token;
+  }
+
+  /**
+   * Authenticate the service to tink
+   */
+  private async authenticate(input: AccessTokenInput): Promise<void> {
+    const authResponse: AxiosResponse<AccessTokenObject> = await this.httpService
+      .post<AccessTokenObject>(
+        `${this.config.tink.apiBaseUrl}/api/v1/oauth/token`,
+        qs.stringify(input),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          }
+        }
+      )
+      .toPromise();
+
+    this.tokenInfo = authResponse.data;
   }
 }

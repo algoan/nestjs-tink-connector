@@ -126,7 +126,7 @@ export class HooksService {
       tinkUserId = customer.aggregationDetails.userId;
 
       // Authenticate to tink
-      await this.tinkHttpService.authenticate();
+      await this.tinkHttpService.authenticateAsClientWithCredentials(clientConfig.clientId, clientConfig.clientSecret)
 
       // If no tink user already created
       if (tinkUserId === undefined) {
@@ -145,12 +145,12 @@ export class HooksService {
         user_id: tinkUserId,
         scope: 'credentials:read,credentials:refresh,credentials:write,providers:read,user:read,authorization:read',
         id_hint: customer.customIdentifier,
-        actor_client_id: this.config.tink.clientId,
+        actor_client_id: clientConfig.clientId,
       });
 
       // Generate the link with the authorization code
       redirectUrl = this.tinkLinkService.getLink({
-        client_id: this.config.tink.clientId,
+        client_id: clientConfig.clientId,
         redirect_uri: callbackUrl,
         market: clientConfig.market,
         locale: clientConfig.locale,
@@ -161,7 +161,7 @@ export class HooksService {
     } else {
       // Generate a simple link
       redirectUrl = this.tinkLinkService.getLink({
-        client_id: this.config.tink.clientId,
+        client_id: clientConfig.clientId,
         redirect_uri: callbackUrl,
         market: clientConfig.market,
         locale: clientConfig.locale,

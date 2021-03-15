@@ -7,8 +7,6 @@
   "tink": {
     "apiBaseUrl": "https://api.tink.com",
     "linkBaseUrl": "https://link.tink.com",
-    "clientId": "clientId",
-    "clientSecret": "clientSecret",
     "test": true
   },
   "targetUrl": "https://test",

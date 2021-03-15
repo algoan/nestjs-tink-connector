@@ -5,8 +5,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AxiosResponse } from 'axios';
 import { config } from 'node-config-ts';
 import { of } from 'rxjs';
-
 import { ContextIdFactory } from '@nestjs/core';
+
+import { serviceAccountConfigMock } from '../../algoan/dto/service-account.objects.mock';
 import { CONFIG } from '../../config/config.module';
 
 import { AccessTokenInput } from '../dto/access-token.input';
@@ -51,7 +52,7 @@ describe('TinkHttpService', () => {
   /**
    * @link https://docs.tink.com/api#oauth-get-access-token
    */
-  describe('authenticate', () => {
+  describe('authenticateWithCode', () => {
     let spy
 
     beforeEach(async () => {
@@ -60,11 +61,11 @@ describe('TinkHttpService', () => {
         .mockReturnValue(of({ data: accessTokenObjectMock } as AxiosResponse<AccessTokenObject>));
     });
 
-    it('should request a token WITH a code', async () => {
+    it('should request a token with a code', async () => {
       const url: string = `${config.tink.apiBaseUrl}/api/v1/oauth/token`;
       const code: string = `CODE-${process.pid}`;
       const input: AccessTokenInput = {
-        client_id: config.tink.clientId,
+        client_id: serviceAccountConfigMock.clientId,
         grant_type: GrantType.AUTHORIZATION_CODE,
         code,
       }
@@ -72,7 +73,7 @@ describe('TinkHttpService', () => {
         'Content-Type': 'application/x-www-form-urlencoded',
       }
 
-      await tinkHttpService.authenticate(code);
+      await tinkHttpService.authenticateAsUserWithCode(serviceAccountConfigMock.clientId, code);
 
       expect(spy).toHaveBeenCalledWith(
         url,
@@ -80,12 +81,24 @@ describe('TinkHttpService', () => {
         { headers }
       );
     });
+  });
 
-    it('should request a token WITHOUT a code', async () => {
+  /**
+   * @link https://docs.tink.com/api#oauth-get-access-token
+   */
+   describe('authenticateWithCredentials', () => {
+    let spy
+
+    beforeEach(async () => {
+      spy = jest
+        .spyOn(httpService, 'post')
+        .mockReturnValue(of({ data: accessTokenObjectMock } as AxiosResponse<AccessTokenObject>));
+    });
+    it('should request a token with credentials', async () => {
       const url: string = `${config.tink.apiBaseUrl}/api/v1/oauth/token`;
       const input: AccessTokenInput = {
-        client_id: config.tink.clientId,
-        client_secret: config.tink.clientSecret,
+        client_id: serviceAccountConfigMock.clientId,
+        client_secret: serviceAccountConfigMock.clientSecret,
         grant_type: GrantType.CLIENT_CREDENTIALS,
         scope: 'authorization:grant,user:read,user:create',
       }
@@ -93,7 +106,10 @@ describe('TinkHttpService', () => {
         'Content-Type': 'application/x-www-form-urlencoded',
       }
 
-      await tinkHttpService.authenticate();
+      await tinkHttpService.authenticateAsClientWithCredentials(
+        serviceAccountConfigMock.clientId,
+        serviceAccountConfigMock.clientSecret,
+      );
 
       expect(spy).toHaveBeenCalledWith(
         url,
@@ -111,7 +127,10 @@ describe('TinkHttpService', () => {
         .mockReturnValue(of({ data: accessTokenObjectMock } as AxiosResponse<AccessTokenObject>));
 
       // authenticate
-      await tinkHttpService.authenticate();
+      await tinkHttpService.authenticateAsClientWithCredentials(
+        serviceAccountConfigMock.clientId,
+        serviceAccountConfigMock.clientSecret,
+      );
 
       // mock get
       const spy = jest
@@ -141,7 +160,10 @@ describe('TinkHttpService', () => {
         .mockReturnValue(of({ data: accessTokenObjectMock } as AxiosResponse<AccessTokenObject>));
 
       // authenticate
-      await tinkHttpService.authenticate();
+      await tinkHttpService.authenticateAsClientWithCredentials(
+        serviceAccountConfigMock.clientId,
+        serviceAccountConfigMock.clientSecret,
+      );
 
       // mock post
       const spy = jest
@@ -167,7 +189,10 @@ describe('TinkHttpService', () => {
         .mockReturnValue(of({ data: accessTokenObjectMock } as AxiosResponse<AccessTokenObject>));
 
       // authenticate
-      await tinkHttpService.authenticate();
+      await tinkHttpService.authenticateAsClientWithCredentials(
+        serviceAccountConfigMock.clientId,
+        serviceAccountConfigMock.clientSecret,
+      );
 
       // mock post
       const spy = jest
@@ -205,7 +230,10 @@ describe('TinkHttpService', () => {
         .mockReturnValue(of({ data: accessTokenObjectMock } as AxiosResponse<AccessTokenObject>));
 
       // authenticate
-      await tinkHttpService.authenticate();
+      await tinkHttpService.authenticateAsClientWithCredentials(
+        serviceAccountConfigMock.clientId,
+        serviceAccountConfigMock.clientSecret,
+      );
 
       const spy = jest
         .spyOn(httpService, 'patch')
@@ -231,7 +259,10 @@ describe('TinkHttpService', () => {
         .mockReturnValue(of({ data: accessTokenObjectMock } as AxiosResponse<AccessTokenObject>));
 
       // authenticate
-      await tinkHttpService.authenticate();
+      await tinkHttpService.authenticateAsClientWithCredentials(
+        serviceAccountConfigMock.clientId,
+        serviceAccountConfigMock.clientSecret,
+      );
 
       // mock patch
       const spy = jest

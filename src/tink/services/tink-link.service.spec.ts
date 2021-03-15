@@ -3,6 +3,7 @@ import * as qs from 'qs';
 import { Test, TestingModule } from '@nestjs/testing';
 import { config } from 'node-config-ts';
 
+import { serviceAccountConfigMock } from '../../algoan/dto/service-account.objects.mock';
 import { CONFIG } from '../../config/config.module';
 
 import { AccountCheckArgs } from '../dto/account-check.args';
@@ -39,7 +40,7 @@ describe('TinkLinkService', () => {
       const authorizationCode: string = `authorizationCode-${process.pid}`;
 
       const args: AccountCheckArgs = {
-        client_id: config.tink.clientId,
+        client_id: serviceAccountConfigMock.clientId,
         redirect_uri: redirectUri,
         market,
         locale,
@@ -60,7 +61,7 @@ describe('TinkLinkService', () => {
       const scope: string = `scope-${process.pid}`;
 
       const args: AccountCheckArgs = {
-        client_id: config.tink.clientId,
+        client_id: serviceAccountConfigMock.clientId,
         redirect_uri: redirectUri,
         market,
         locale,

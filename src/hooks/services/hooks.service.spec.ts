@@ -2,14 +2,14 @@
 import { Algoan, IServiceAccount, ISubscriptionEvent, RequestBuilder, ServiceAccount, Subscription, SubscriptionEvent } from '@algoan/rest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { config } from 'node-config-ts';
-
 import { ContextIdFactory } from '@nestjs/core';
+
+import { serviceAccountConfigMock } from '../../algoan/dto/service-account.objects.mock';
 import { createAuthorizationObjectMock } from '../../tink/dto/create-authorization.object.mock';
 import { AlgoanModule } from '../../algoan/algoan.module';
 import { TinkModule } from '../../tink/tink.module';
 import { customerMock } from '../../algoan/dto/customer.objects.mock';
 import { ClientPricing } from '../../algoan/dto/service-account.enums';
-import { ClientConfig } from '../../algoan/dto/service-account.objects';
 import { AlgoanCustomerService } from '../../algoan/services/algoan-customer.service';
 import { AlgoanHttpService } from '../../algoan/services/algoan-http.service';
 import { CONFIG } from '../../config/config.module';
@@ -32,7 +32,6 @@ describe('TinkAccountService', () => {
   let tinkLinkService: TinkLinkService;
   let tinkUserService: TinkUserService;
   let tinkHttpService: TinkHttpService;
-  let serviceAccountConfigMock: ClientConfig;
   let serviceAccountMock: ServiceAccount;
 
   beforeEach(async () => {
@@ -73,12 +72,6 @@ describe('TinkAccountService', () => {
       .mockResolvedValue(({} as unknown) as ISubscriptionEvent & { id: string });
     jest.spyOn(algoanService.algoanClient, 'getServiceAccountBySubscriptionId').mockReturnValue(serviceAccountMock);
 
-    serviceAccountConfigMock = {
-      pricing: ClientPricing.STANDARD,
-      market: 'FR',
-      locale: 'fr_FR',
-    };
-
     serviceAccountMock = new ServiceAccount(
       'mockBaseURL',
       {
@@ -104,7 +97,8 @@ describe('TinkAccountService', () => {
 
   describe('handleBankreaderLinkRequiredEvent', () => {
     let algoanAuthenticateSpy
-    let tinkAuthenticateSpy
+    let tinkAuthenticateAsClientWithCredentialsSpy
+    let tinkAuthenticateAsUserWithCodesSpy
     let updateCustomerSpy
     let getLinkSpy
     let getCustomerByIdSpy
@@ -113,7 +107,12 @@ describe('TinkAccountService', () => {
 
     beforeEach(async () => {
       algoanAuthenticateSpy = jest.spyOn(algoanHttpService, 'authenticate').mockReturnValue();
-      tinkAuthenticateSpy = jest.spyOn(tinkHttpService, 'authenticate').mockResolvedValue();
+      tinkAuthenticateAsClientWithCredentialsSpy = jest
+        .spyOn(tinkHttpService, 'authenticateAsClientWithCredentials')
+        .mockResolvedValue();
+      tinkAuthenticateAsUserWithCodesSpy = jest
+        .spyOn(tinkHttpService, 'authenticateAsUserWithCode')
+        .mockResolvedValue();
       updateCustomerSpy = jest.spyOn(algoanCustomerService, 'updateCustomer').mockResolvedValue(customerMock);
       getLinkSpy = jest.spyOn(tinkLinkService, 'getLink').mockReturnValue('MY_LINK_URL');
       getCustomerByIdSpy = jest.spyOn(algoanCustomerService, 'getCustomerById').mockResolvedValue(customerMock);
@@ -156,13 +155,13 @@ describe('TinkAccountService', () => {
       expect(getCustomerByIdSpy).toHaveBeenCalledWith(payloadMock.customerId);
 
       // premium
-      expect(tinkAuthenticateSpy).not.toHaveBeenCalled();
+      expect(tinkAuthenticateAsClientWithCredentialsSpy).not.toHaveBeenCalled();
       expect(createNewUserSpy).not.toHaveBeenCalled();
       expect(delegateAuthorizationToUserSpy).not.toHaveBeenCalled();
 
       // standard
       expect(getLinkSpy).toHaveBeenCalledWith({
-        client_id: config.tink.clientId,
+        client_id: serviceAccountConfigMock.clientId,
         redirect_uri: customerMock.aggregationDetails.callbackUrl,
         market: serviceAccountConfigMock.market,
         locale: serviceAccountConfigMock.locale,
@@ -189,7 +188,10 @@ describe('TinkAccountService', () => {
       expect(getCustomerByIdSpy).toHaveBeenCalledWith(payloadMock.customerId);
 
       // premium
-      expect(tinkAuthenticateSpy).toHaveBeenCalled();
+      expect(tinkAuthenticateAsClientWithCredentialsSpy).toHaveBeenCalledWith(
+        serviceAccountConfigMock.clientId,
+        serviceAccountConfigMock.clientSecret,
+      )
       expect(createNewUserSpy).toHaveBeenCalledWith({
         external_user_id: payloadMock.customerId,
         locale: serviceAccountConfigMock.locale,
@@ -199,10 +201,10 @@ describe('TinkAccountService', () => {
         user_id: createUserObject.user_id,
         scope: 'credentials:read,credentials:refresh,credentials:write,providers:read,user:read,authorization:read',
         id_hint: customerMock.customIdentifier,
-        actor_client_id: config.tink.clientId,
+        actor_client_id: serviceAccountConfigMock.clientId,
       });
       expect(getLinkSpy).toHaveBeenCalledWith({
-        client_id: config.tink.clientId,
+        client_id: serviceAccountConfigMock.clientId,
         redirect_uri: customerMock.aggregationDetails.callbackUrl,
         market: serviceAccountConfigMock.market,
         locale: serviceAccountConfigMock.locale,
@@ -242,7 +244,7 @@ describe('TinkAccountService', () => {
       expect(getCustomerByIdSpy).toHaveBeenCalledWith(payloadMock.customerId);
 
       // premium
-      expect(tinkAuthenticateSpy).toHaveBeenCalled();
+      expect(tinkAuthenticateAsClientWithCredentialsSpy).toHaveBeenCalled();
       expect(createNewUserSpy).not.toHaveBeenCalledWith({
         external_user_id: payloadMock.customerId,
         locale: serviceAccountConfigMock.locale,
@@ -252,10 +254,10 @@ describe('TinkAccountService', () => {
         user_id: createUserObject.user_id,
         scope: 'credentials:read,credentials:refresh,credentials:write,providers:read,user:read,authorization:read',
         id_hint: customerMock.customIdentifier,
-        actor_client_id: config.tink.clientId,
+        actor_client_id: serviceAccountConfigMock.clientId,
       });
       expect(getLinkSpy).toHaveBeenCalledWith({
-        client_id: config.tink.clientId,
+        client_id: serviceAccountConfigMock.clientId,
         redirect_uri: customerMock.aggregationDetails.callbackUrl,
         market: serviceAccountConfigMock.market,
         locale: serviceAccountConfigMock.locale,
