@@ -64,7 +64,7 @@ export class TinkHttpService {
         `${this.config.tink.apiBaseUrl}${path}`,
         {
           headers: {
-            Authorization: `Beared ${this.getToken()}`,
+            Authorization: `Bearer ${this.getToken()}`,
           }
         },
       )

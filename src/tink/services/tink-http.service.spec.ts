@@ -123,7 +123,7 @@ describe('TinkHttpService', () => {
 
       expect(spy).toHaveBeenCalledWith(
         `${config.tink.apiBaseUrl}/my/path`,
-        {headers: {Authorization: 'Beared user_id'}},
+        {headers: {Authorization: 'Bearer user_id'}},
       );
       expect(result).toBe('test');
     });
