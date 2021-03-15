@@ -81,8 +81,8 @@ export class HooksService {
 
     try {
       switch (event.subscription.eventName) {
-        case EventName.BANKREADER_LINK_REQUIRED:
-          await this.handleBankreaderLinkRequiredEvent(serviceAccount, event.payload);
+        case EventName.AGGREGATOR_LINK_REQUIRED:
+          await this.handleAggregatorLinkRequiredEvent(serviceAccount, event.payload);
           break;
 
         // The default case should never be reached, as the eventName is already checked in the DTO
@@ -101,9 +101,9 @@ export class HooksService {
   };
 
   /**
-   * Handle BankRead Link event
+   * Handle Aggregator Link event
    */
-  public async handleBankreaderLinkRequiredEvent(serviceAccount: ServiceAccount, payload: PayloadDTO): Promise<void> {
+  public async handleAggregatorLinkRequiredEvent(serviceAccount: ServiceAccount, payload: PayloadDTO): Promise<void> {
     // Authenticate to algoan
     this.algoanHttpService.authenticate(serviceAccount.clientId, serviceAccount.clientSecret);
 

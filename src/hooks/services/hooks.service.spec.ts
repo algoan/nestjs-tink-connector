@@ -135,21 +135,21 @@ describe('TinkAccountService', () => {
           }
         });
 
-      await expect(hookService.handleBankreaderLinkRequiredEvent(serviceAccountMock, payloadMock))
+      await expect(hookService.handleAggregatorLinkRequiredEvent(serviceAccountMock, payloadMock))
         .rejects
         .toThrowError(`Missing information: callbackUrl: undefined, clientConfig: ${JSON.stringify(serviceAccountConfigMock)}`);
     });
 
     it('should throw error if client config missing', async () => {
       serviceAccountMock.config = undefined;
-      await expect(hookService.handleBankreaderLinkRequiredEvent(serviceAccountMock, payloadMock))
+      await expect(hookService.handleAggregatorLinkRequiredEvent(serviceAccountMock, payloadMock))
         .rejects
         .toThrowError(`Missing information: callbackUrl: ${customerMock.aggregationDetails.callbackUrl}, clientConfig: undefined`);
     });
 
     it('should do these steps if pricing STANDARD', async () => {
       serviceAccountConfigMock.pricing = ClientPricing.STANDARD;
-      await hookService.handleBankreaderLinkRequiredEvent(serviceAccountMock, payloadMock);
+      await hookService.handleAggregatorLinkRequiredEvent(serviceAccountMock, payloadMock);
 
       // get algoan customer
       expect(algoanAuthenticateSpy).toHaveBeenCalled();
@@ -182,7 +182,7 @@ describe('TinkAccountService', () => {
 
     it('should do these steps if pricing PREMIUM WITHOUT an existing tink user', async () => {
       serviceAccountConfigMock.pricing = ClientPricing.PREMIUM;
-      await hookService.handleBankreaderLinkRequiredEvent(serviceAccountMock, payloadMock);
+      await hookService.handleAggregatorLinkRequiredEvent(serviceAccountMock, payloadMock);
 
       // get algoan customer
       expect(algoanAuthenticateSpy).toHaveBeenCalled();
@@ -235,7 +235,7 @@ describe('TinkAccountService', () => {
         });
 
       serviceAccountConfigMock.pricing = ClientPricing.PREMIUM;
-      await hookService.handleBankreaderLinkRequiredEvent(serviceAccountMock, payloadMock);
+      await hookService.handleAggregatorLinkRequiredEvent(serviceAccountMock, payloadMock);
 
       // get algoan customer
       expect(algoanAuthenticateSpy).toHaveBeenCalled();

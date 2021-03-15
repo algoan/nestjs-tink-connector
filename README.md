@@ -49,9 +49,9 @@ The Tink user needs to be redirected to an external page.
 
 The diagram below describes interactions:
 
-![bankreader_link_required](public/bankreader_link_required.png)
+![aggregator_link_required](public/aggregator_link_required.png)
 
-Refers to the [`bankreader_link_required`](https://developers.algoan.com/public/docs/algoan_documentation/resthooks_and_events/event_list.html#bankreader_link_required) event.
+Refers to the [`aggregator_link_required`](https://developers.algoan.com/public/docs/algoan_documentation/resthooks_and_events/event_list.html#aggregator_link_required) event.
 ### Bank Details Required
 
 <!-- To complete -->
