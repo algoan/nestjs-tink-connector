@@ -3,12 +3,12 @@ const axios = require('axios');
 const crypto = require('crypto');
 const delay = require('delay');
 const config = require('node-config-ts').config;
-const jsonServer = require('json-server');
 const path = require('path');
+const jsonServer = require('json-server');
 
 const defaultDelay = 500;
 const server = jsonServer.create();
-const router = jsonServer.router(path.join(__dirname, 'db.json'));
+const router = jsonServer.router(db);
 const middlewares = jsonServer.defaults();
 // Set default middlewares (logger, static, cors and no-cache)
 server.use(middlewares);
@@ -114,7 +114,7 @@ server.get('/callback', async (req, res) => {
       },
     },
   );
-  
+
   res.sendFile(path.join(__dirname, '..', 'public/index.html'));
 });
 
@@ -128,6 +128,7 @@ server.use(
     '/v1/*': '/$1',
     '/v2/*': '/$1',
     '/customers/:customerId/:resource/*': '/:resource/$3',
+    '/subscriptions/:subscriptionId/:resource/*': '/:resource/$3',
   }),
 );
 

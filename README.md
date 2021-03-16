@@ -29,15 +29,40 @@ This section describes the process required for each subscription for an aggrega
 
 ### Aggregator Link Required
 
-<!-- To complete -->
+The Tink user needs to be redirected to an external page. 
 
+* The client should have this configuration data in the service account:
+```
+  {
+    "clientId": string;
+    "clientSecret": string;
+    "pricing": "STANDARD" | "PREMIUM";
+    "market": string; // Example: "FR"
+    "locale": string; // Example: "fr_FR"
+  }
+```
+
+* And the event should contains the customerId:
+```
+  {
+    customerId: string;
+  }
+```
+
+The diagram below describes interactions:
+
+![aggregator_link_required](public/aggregator_link_required.png)
+
+Refers to the [`aggregator_link_required`](https://developers.algoan.com/public/docs/algoan_documentation/resthooks_and_events/event_list.html#aggregator_link_required) event.
 ### Bank Details Required
 
 <!-- To complete -->
 ## Application Structure
 
 - `config/`: stores all configurations for the application. It uses [node-config-ts](https://github.com/tusharmath/node-config-ts) to generate a type definition of the `default.json` file.
+- `src/config/`: Simple NestJs module to inject configuration in services
 - `src/algoan/`: Algoan module getting your service accounts. It uses the [@algoan/rest](https://github.com/algoan/rest-nodejs) library.
+- `src/tink/`: Tink module to manage Tink API.
 - `src/hooks/`: Entry point for your [RestHook](https://developers.algoan.com/public/docs/algoan_documentation/resthooks_and_events/resthooks.html) called by Algoan. It handles [events](https://developers.algoan.com/public/docs/algoan_documentation/resthooks_and_events/event_list.html) you've subscribed to.
 - `test/`: contains e2e tests.
 
@@ -84,6 +109,11 @@ $ npm install
 
 To test locally the Tink Link process, a simple `index.html` file is rendered. To use it:
 
+Before testing
+- You will have to change the `customers.id` in `./json-server/default.json' between each test, to simulate new users.
+- The client config: `locale`, `market`, `pricing` should be update in `service-accounts.config` in  `./json-server/default.json'.
+
+Run Test
 - Run `npm run start:dev`. It will render an index.html file. Algoan APIs are exposed and mocked by a [json-server](https://github.com/typicode/json-server).
 - Go to your favorite browser and navigate to http://localhost:4000. It should display a web page: 
 

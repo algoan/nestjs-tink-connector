@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { buildFakeApp } from './utils/app';
 
@@ -9,5 +9,5 @@ describe('AppController (e2e)', () => {
     app = await buildFakeApp();
   });
 
-  it('/ (GET)', () => request(app.getHttpServer()).get('/ping').expect(204).expect({}));
+  it('/ (GET)', async () => request(app.getHttpServer()).get('/ping').expect(HttpStatus.NO_CONTENT).expect({}));
 });
