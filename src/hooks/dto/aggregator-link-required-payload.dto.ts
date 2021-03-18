@@ -1,8 +1,9 @@
 import { IsNotEmpty, IsString } from 'class-validator';
+
 /**
- * Payload property
+ * Payload for event `aggregator_link_required`
  */
-export class PayloadDTO {
+export class AggregatorLinkRequiredDTO {
   /**
    * Customer identifier
    */

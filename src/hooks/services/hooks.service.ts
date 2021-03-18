@@ -3,6 +3,13 @@ import { EventName, EventStatus, ServiceAccount, Subscription, SubscriptionEvent
 import { UnauthorizedException, Injectable, Inject } from '@nestjs/common';
 import { Config } from 'node-config-ts';
 
+import { TinkAccountObject } from '../../tink/dto/account.objects';
+import { TinkAccountService } from '../../tink/services/tink-account.service';
+import { TinkProviderService } from '../../tink/services/tink-provider.service';
+import { TinkTransactionService } from '../../tink/services/tink-transaction.service';
+import { TinkProviderObject } from '../../tink/dto/provider.objects';
+import { TinkTransactionResponseObject } from '../../tink/dto/search.objects';
+import { AnalysisUpdateInput } from '../../algoan/dto/analysis.inputs';
 import { TINK_LINK_ACTOR_CLIENT_ID } from '../../tink/contstants/tink.constants';
 import { Customer } from '../../algoan/dto/customer.objects';
 import { AlgoanCustomerService } from '../../algoan/services/algoan-customer.service';
@@ -13,11 +20,13 @@ import { TinkUserService } from '../../tink/services/tink-user.service';
 import { TinkHttpService } from '../../tink/services/tink-http.service';
 import { CreateUserObject } from '../../tink/dto/create-user.object';
 import { CONFIG } from '../../config/config.module';
-
 import { AlgoanService } from '../../algoan/services/algoan.service';
+import { AlgoanAnalysisService } from '../../algoan/services/algoan-analysis.service';
 import { AlgoanHttpService } from '../../algoan/services/algoan-http.service';
 import { EventDTO } from '../dto/event.dto';
-import { PayloadDTO } from '../dto/payload.dto';
+import { AggregatorLinkRequiredDTO } from '../dto/aggregator-link-required-payload.dto';
+import { BankDetailsRequiredDTO } from '../dto/bank-details-required-payload.dto';
+import { mapTinkDataToAlgoanAnalysis } from '../mappers/analysis.mapper';
 
 /**
  * Hook service
@@ -26,12 +35,16 @@ import { PayloadDTO } from '../dto/payload.dto';
 export class HooksService {
   constructor(
     @Inject(CONFIG) private readonly config: Config,
-    private readonly algoanService: AlgoanService,
     private readonly algoanHttpService: AlgoanHttpService,
+    private readonly algoanService: AlgoanService,
     private readonly algoanCustomerService: AlgoanCustomerService,
+    private readonly algoanAnalysisService: AlgoanAnalysisService,
+    private readonly tinkHttpService: TinkHttpService,
     private readonly tinkLinkService: TinkLinkService,
     private readonly tinkUserService: TinkUserService,
-    private readonly tinkHttpService: TinkHttpService,
+    private readonly tinkAccountService: TinkAccountService,
+    private readonly tinkProviderService: TinkProviderService,
+    private readonly tinkTransactionService: TinkTransactionService,
   ) {}
 
   /**
@@ -83,7 +96,13 @@ export class HooksService {
     try {
       switch (event.subscription.eventName) {
         case EventName.AGGREGATOR_LINK_REQUIRED:
+          // TODO: Add Assert validation
           await this.handleAggregatorLinkRequiredEvent(serviceAccount, event.payload);
+          break;
+
+        case EventName.BANK_DETAILS_REQUIRED:
+          // TODO: Add Assert validation
+          await this.handleBankDetailsRequiredEvent(serviceAccount, event.payload as BankDetailsRequiredDTO);
           break;
 
         // The default case should never be reached, as the eventName is already checked in the DTO
@@ -104,21 +123,25 @@ export class HooksService {
   /**
    * Handle Aggregator Link event
    */
-  public async handleAggregatorLinkRequiredEvent(serviceAccount: ServiceAccount, payload: PayloadDTO): Promise<void> {
+  public async handleAggregatorLinkRequiredEvent(
+    serviceAccount: ServiceAccount,
+    payload: AggregatorLinkRequiredDTO
+  ): Promise<void> {
     // Authenticate to algoan
     this.algoanHttpService.authenticate(serviceAccount.clientId, serviceAccount.clientSecret);
 
-    // Get user information
+    // Get user information and client config
     const customer: Customer = await this.algoanCustomerService.getCustomerById(payload.customerId);
     const callbackUrl: string | undefined = customer.aggregationDetails.callbackUrl;
     const clientConfig: ClientConfig | undefined = (serviceAccount.config as ClientConfig | undefined);
 
+    // Validate config
     if (callbackUrl === undefined || clientConfig === undefined) {
       throw new Error(`Missing information: callbackUrl: ${callbackUrl}, clientConfig: ${JSON.stringify(clientConfig)}`);
     }
 
-    let redirectUrl: string;
     let tinkUserId: string | undefined;
+    let authorizationCode: string | undefined;
 
     // if premium pricing
     if (clientConfig.pricing === ClientPricing.PREMIUM) {
@@ -142,45 +165,93 @@ export class HooksService {
       }
 
       // Get an authorization code
-      const authorizationCode: string = await this.tinkUserService.delegateAuthorizationToUser({
+      authorizationCode = await this.tinkUserService.delegateAuthorizationToUser({
         user_id: tinkUserId,
-        scope: 'credentials:read,credentials:refresh,credentials:write,providers:read,user:read,authorization:read',
+        scope: [
+          'user:read', // Read the user
+          'authorization:read', // Auth
+          'authorization:grant', // Auth
+          'credentials:read', // Auth
+          'credentials:write', // Auth
+          'providers:read', // List providers in tink link
+        ].join(','),
         id_hint: customer.customIdentifier,
         actor_client_id: TINK_LINK_ACTOR_CLIENT_ID,
       });
-
-      // Generate the link with the authorization code
-      redirectUrl = this.tinkLinkService.getAuthorizeLink({
-        client_id: clientConfig.clientId,
-        redirect_uri: callbackUrl,
-        market: clientConfig.market,
-        locale: clientConfig.locale,
-        test: this.config.tink.test ?? false,
-        scope: 'accounts:read,transactions:read,identity:read',
-        authorization_code: authorizationCode,
-      });
-    } else {
-      // Generate a simple link
-      redirectUrl = this.tinkLinkService.getAuthorizeLink({
-        client_id: clientConfig.clientId,
-        redirect_uri: callbackUrl,
-        market: clientConfig.market,
-        locale: clientConfig.locale,
-        scope: 'accounts:read,transactions:read',
-        test: this.config.tink.test ?? false,
-      });
     }
+
+    // Generate the link
+    const redirectUrl: string = this.tinkLinkService.getAuthorizeLink({
+      client_id: clientConfig.clientId,
+      redirect_uri: callbackUrl,
+      market: clientConfig.market,
+      locale: clientConfig.locale,
+      test: this.config.tink.test ?? false,
+      scope: [
+        'accounts:read', // To list account: https://docs.tink.com/api#account-list-accounts-required-scopes-
+        'transactions:read', // To list transactions: https://docs.tink.com/api#search-query-transactions-required-scopes-
+        'credentials:read', // To list providers: https://docs.tink.com/api#provider-list-providers-required-scopes-
+      ].join(','),
+      authorization_code: authorizationCode,
+    });
 
     // Update user with redirect link information and userId if provided
     await this.algoanCustomerService.updateCustomer(
       payload.customerId,
       {
         aggregationDetails: {
+          callbackUrl,
           redirectUrl,
           userId: tinkUserId,
         }
       }
-    )
+    );
+
+    return;
+  }
+
+  /**
+   * Handle Aggregator Link event
+   */
+  public async handleBankDetailsRequiredEvent(
+    serviceAccount: ServiceAccount,
+    payload: BankDetailsRequiredDTO,
+  ): Promise<void> {
+    // Get client config
+    const clientConfig: ClientConfig | undefined = (serviceAccount.config as ClientConfig | undefined);
+
+    // Validate config
+    if (clientConfig === undefined) {
+      throw new Error(`Missing information: clientConfig: undefined`);
+    }
+
+    // Authenticate to tink as a user
+    await this.tinkHttpService.authenticateAsUserWithCode(
+      clientConfig.clientId,
+      clientConfig.clientSecret,
+      payload.temporaryCode,
+    );
+
+    // Get bank information
+    const accounts: TinkAccountObject[] = await this.tinkAccountService.getAccounts();
+    const transactions: TinkTransactionResponseObject[] = await this.tinkTransactionService
+      .getTransactions({
+        accounts: accounts.map((a: TinkAccountObject) => a.id),
+      });
+    const providers: TinkProviderObject[] = await this.tinkProviderService.getProviders();
+
+    // Generate an Algoan analysis from data information
+    const analysis: AnalysisUpdateInput = mapTinkDataToAlgoanAnalysis(accounts, transactions, providers);
+
+    // Authenticate to algoan
+    this.algoanHttpService.authenticate(serviceAccount.clientId, serviceAccount.clientSecret);
+
+    // Update the user analysis
+    await this.algoanAnalysisService.updateAnalysis(
+      payload.customerId,
+      payload.analysisId,
+      analysis
+    );
 
     return;
   }
