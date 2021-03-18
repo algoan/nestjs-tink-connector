@@ -25,7 +25,7 @@ export interface Account {
   coming?: number;
   details?: AccountDetails;
   aggregator?: AccountAggregator;
-  transactions?: AccountTransactions[];
+  transactions?: AccountTransaction[];
 }
 
 /**
@@ -88,7 +88,7 @@ export interface AccountOwner {
 /**
  * Account Transactions
  */
- export interface AccountTransactions {
+ export interface AccountTransaction {
   dates: AccountTransactionDates;
   description: string;
   amount: number;

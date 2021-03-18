@@ -17,7 +17,7 @@ export enum AnalysisStatus {
   CHECKING = 'CHECKING',
   SAVINGS = 'SAVINGS',
   LOAN = 'LOAN',
-  CREDITCARD = 'CREDIT_CARD',
+  CREDIT_CARD = 'CREDIT_CARD',
   UNKNOWN = 'UNKNOWN',
 }
 
