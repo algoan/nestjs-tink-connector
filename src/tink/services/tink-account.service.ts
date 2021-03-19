@@ -1,5 +1,9 @@
 import { Injectable } from "@nestjs/common";
+
+import { convertNullToUndefined } from "../../shared/utils/common.utils";
+
 import { TinkAccountListResponseObject, TinkAccountObject } from "../dto/account.objects";
+
 import { TinkHttpService } from "./tink-http.service";
 
 /**
@@ -15,9 +19,9 @@ export class TinkAccountService {
    * Get all accounts of the connected user
    */
   public async getAccounts(): Promise<TinkAccountObject[]> {
-    const response: TinkAccountListResponseObject = await this.tinkHttpService
-      .get<TinkAccountListResponseObject>('/api/v1/accounts/list');
+    const response: TinkAccountListResponseObject<null> = await this.tinkHttpService
+      .get<TinkAccountListResponseObject<null>>('/api/v1/accounts/list');
 
-    return response.accounts
+    return convertNullToUndefined(response.accounts)
   }
 }

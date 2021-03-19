@@ -1,5 +1,7 @@
 import { Injectable } from "@nestjs/common";
 
+import { convertNullToUndefined } from "../../shared/utils/common.utils";
+
 import { TinkSearchQueryInput } from "../dto/search.input";
 import { TinkSearchResponseObject, TinkSearchResultObject, TinkTransactionResponseObject } from "../dto/search.objects";
 
@@ -21,14 +23,14 @@ export class TinkTransactionService {
   public async getTransactions(
     input?: Omit<TinkSearchQueryInput, 'offset' | 'limit'>
   ): Promise<TinkTransactionResponseObject[]> {
-    const transactions: TinkTransactionResponseObject[] = [];
+    const transactions: TinkTransactionResponseObject<null>[] = [];
     const nbElementByPage: number = 1000;
     let offset: number = 0;
-    let response: TinkSearchResponseObject;
+    let response: TinkSearchResponseObject<null>;
 
     do {
       response = await this.tinkHttpService
-        .post<TinkSearchResponseObject, TinkSearchQueryInput>(
+        .post<TinkSearchResponseObject<null>, TinkSearchQueryInput>(
           '/api/v1/search',
           {
             ...input,
@@ -38,12 +40,12 @@ export class TinkTransactionService {
         );
 
       transactions.push(
-        ...response.results.map((r: TinkSearchResultObject) => r.transaction),
+        ...response.results.map((r: TinkSearchResultObject<null>) => r.transaction),
       );
 
       offset += nbElementByPage;
     } while(response.count === nbElementByPage)
 
-    return transactions;
+    return convertNullToUndefined(transactions);
   }
 }

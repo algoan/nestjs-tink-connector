@@ -92,7 +92,7 @@ describe('TinkProviderService', () => {
       const accounts: TinkProviderObject[] = await tinkProviderService.getProviders();
 
       expect(spy).toHaveBeenCalledWith(`/api/v1/providers`, args);
-      expect(accounts).toBe(tinkProviderListResponseObjectMock.providers);
+      expect(accounts).toStrictEqual(tinkProviderListResponseObjectMock.providers);
     });
   });
 
@@ -141,7 +141,7 @@ describe('TinkProviderService', () => {
       const accounts: TinkProviderObject[] = await tinkProviderService.getProviders();
 
       expect(spy).toHaveBeenCalledWith(`/api/v1/providers`, args);
-      expect(accounts).toBe(tinkProviderListResponseObjectMock.providers);
+      expect(accounts).toStrictEqual(tinkProviderListResponseObjectMock.providers);
     });
   });
 });

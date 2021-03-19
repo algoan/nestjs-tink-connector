@@ -53,7 +53,7 @@ describe('TinkAccountService', () => {
       const accounts: TinkAccountObject[] = await tinkAccountService.getAccounts();
 
       expect(spy).toHaveBeenCalledWith(`/api/v1/accounts/list`);
-      expect(accounts).toBe(tinkAccountListResponseObjectMock.accounts);
+      expect(accounts).toStrictEqual(tinkAccountListResponseObjectMock.accounts);
     });
   });
 });

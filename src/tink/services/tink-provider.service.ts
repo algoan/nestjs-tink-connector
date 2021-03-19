@@ -1,10 +1,12 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Config } from "node-config-ts";
 
+import { convertNullToUndefined } from "../../shared/utils/common.utils";
+import { CONFIG } from "../../config/config.module";
+
 import { TinkProviderListResponseObject, TinkProviderObject } from "../dto/provider.objects";
 import { TinkProviderListArgs } from "../dto/provider.args";
 
-import { CONFIG } from "../../config/config.module";
 import { TinkHttpService } from "./tink-http.service";
 
 /**
@@ -26,9 +28,9 @@ export class TinkProviderService {
       excludeNonTestProviders: this.config.tink.test,
     };
 
-    const response: TinkProviderListResponseObject = await this.tinkHttpService
-      .get<TinkProviderListResponseObject, TinkProviderListArgs>('/api/v1/providers', args);
+    const response: TinkProviderListResponseObject<null> = await this.tinkHttpService
+      .get<TinkProviderListResponseObject<null>, TinkProviderListArgs>('/api/v1/providers', args);
 
-    return response.providers;
+    return convertNullToUndefined(response.providers);
   }
 }
