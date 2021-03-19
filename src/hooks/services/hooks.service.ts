@@ -150,7 +150,7 @@ export class HooksService {
       });
 
       // Generate the link with the authorization code
-      redirectUrl = this.tinkLinkService.getLink({
+      redirectUrl = this.tinkLinkService.getAuthorizeLink({
         client_id: clientConfig.clientId,
         redirect_uri: callbackUrl,
         market: clientConfig.market,
@@ -161,7 +161,7 @@ export class HooksService {
       });
     } else {
       // Generate a simple link
-      redirectUrl = this.tinkLinkService.getLink({
+      redirectUrl = this.tinkLinkService.getAuthorizeLink({
         client_id: clientConfig.clientId,
         redirect_uri: callbackUrl,
         market: clientConfig.market,

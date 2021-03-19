@@ -17,10 +17,10 @@ export class TinkLinkService {
   ) {}
 
   /**
-   * Get a link for a standard pricing
+   * Get a link to get a code authorization, to be able to access to all data
    */
   // eslint-disable-next-line class-methods-use-this
-  public getLink(args: AccountCheckArgs): string {
-    return `${this.config.tink.linkBaseUrl}/1.0/account-check/?${qs.stringify(args)}`;
+  public getAuthorizeLink(args: AccountCheckArgs): string {
+    return `${this.config.tink.linkBaseUrl}/1.0/authorize/?${qs.stringify(args)}`;
   }
 }

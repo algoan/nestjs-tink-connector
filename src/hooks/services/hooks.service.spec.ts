@@ -24,7 +24,7 @@ import { TINK_LINK_ACTOR_CLIENT_ID } from '../../tink/contstants/tink.constants'
 
 import { HooksService } from './hooks.service';
 
-describe('TinkAccountService', () => {
+describe('HookService', () => {
   let hookService: HooksService;
   let algoanService: AlgoanService;
   let algoanHttpService: AlgoanHttpService;
@@ -114,7 +114,7 @@ describe('TinkAccountService', () => {
         .spyOn(tinkHttpService, 'authenticateAsUserWithCode')
         .mockResolvedValue();
       updateCustomerSpy = jest.spyOn(algoanCustomerService, 'updateCustomer').mockResolvedValue(customerMock);
-      getLinkSpy = jest.spyOn(tinkLinkService, 'getLink').mockReturnValue('MY_LINK_URL');
+      getLinkSpy = jest.spyOn(tinkLinkService, 'getAuthorizeLink').mockReturnValue('MY_LINK_URL');
       getCustomerByIdSpy = jest.spyOn(algoanCustomerService, 'getCustomerById').mockResolvedValue(customerMock);
       createNewUserSpy = jest.spyOn(tinkUserService, 'createNewUser').mockResolvedValue(createUserObject);
       delegateAuthorizationToUserSpy = jest
