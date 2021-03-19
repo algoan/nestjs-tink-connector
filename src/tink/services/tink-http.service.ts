@@ -39,9 +39,10 @@ export class TinkHttpService {
   /**
    * Authenticate the service to tink
    */
-  public async authenticateAsUserWithCode(clientId: string, code: string): Promise<void> {
+  public async authenticateAsUserWithCode(clientId: string, clientSecret: string, code: string): Promise<void> {
     const input: AccessTokenInput = {
       client_id: clientId,
+      client_secret: clientSecret,
       grant_type: GrantType.AUTHORIZATION_CODE,
       code,
     }

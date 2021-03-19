@@ -66,6 +66,7 @@ describe('TinkHttpService', () => {
       const code: string = `CODE-${process.pid}`;
       const input: AccessTokenInput = {
         client_id: serviceAccountConfigMock.clientId,
+        client_secret: serviceAccountConfigMock.clientSecret,
         grant_type: GrantType.AUTHORIZATION_CODE,
         code,
       }
@@ -73,7 +74,11 @@ describe('TinkHttpService', () => {
         'Content-Type': 'application/x-www-form-urlencoded',
       }
 
-      await tinkHttpService.authenticateAsUserWithCode(serviceAccountConfigMock.clientId, code);
+      await tinkHttpService.authenticateAsUserWithCode(
+        serviceAccountConfigMock.clientId,
+        serviceAccountConfigMock.clientSecret,
+        code
+      );
 
       expect(spy).toHaveBeenCalledWith(
         url,
