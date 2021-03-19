@@ -7,9 +7,9 @@ import { TinkTransactionCategoryType, TinkTransactionType } from "./transaction.
  *
  * @link https://docs.tink.com/api#search-query-transactions-response-searchresponse
  */
-export interface TinkSearchResponseObject {
+export interface TinkSearchResponseObject<NullOrUndefined = undefined> {
   count: number;
-  results: TinkSearchResultObject[];
+  results: TinkSearchResultObject<NullOrUndefined>[];
 }
 
 
@@ -20,8 +20,8 @@ export interface TinkSearchResponseObject {
  *
  * @link https://docs.tink.com/api#search-query-transactions-response-searchresponse-searchresult
  */
- export interface TinkSearchResultObject {
-  transaction: TinkTransactionResponseObject,
+ export interface TinkSearchResultObject<NullOrUndefined = undefined> {
+  transaction: TinkTransactionResponseObject<NullOrUndefined>,
 }
 
 /**
@@ -31,16 +31,16 @@ export interface TinkSearchResponseObject {
  *
  * @link https://docs.tink.com/api#search-query-transactions-response-searchresponse-transactionresponse
  */
- export interface TinkTransactionResponseObject {
+ export interface TinkTransactionResponseObject<NullOrUndefined = undefined> {
   id: string;
   accountId: string;
   amount: number;
   categoryType: TinkTransactionCategoryType;
-  currencyDenominatedOriginalAmount?: TinkCurrencyDenominatedAmountObject;
+  currencyDenominatedOriginalAmount: TinkCurrencyDenominatedAmountObject | NullOrUndefined;
   originalDate: number; // timestamp
   originalDescription: string;
   type: TinkTransactionType;
-  upcoming?: boolean,
+  upcoming: boolean | NullOrUndefined,
 }
 
 

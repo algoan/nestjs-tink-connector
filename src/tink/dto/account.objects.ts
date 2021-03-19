@@ -5,8 +5,8 @@ import { TinkAccountType } from './account.enums';
  *
  * @link https://docs.tink.com/api#account-list-accounts-response-accountlistresponse
  */
- export interface TinkAccountListResponseObject {
-  accounts: TinkAccountObject[],
+ export interface TinkAccountListResponseObject<NullOrUndefined = undefined> {
+  accounts: TinkAccountObject<NullOrUndefined>[],
 }
 
 /**
@@ -16,13 +16,13 @@ import { TinkAccountType } from './account.enums';
  *
  * @link https://docs.tink.com/api#account-the-account-model
  */
-export interface TinkAccountObject {
+export interface TinkAccountObject<NullOrUndefined = undefined> {
   balance: number;
   credentialsId: string;
-  currencyDenominatedBalance: TinkAccountCurrencyDenominatedBalanceObject | undefined;
-  financialInstitutionId: string | undefined; // To linnk with TinkProvider.financialInstitutionId
-  flags: string | undefined; // Array String. Example: '[\"MANDATE\"]';
-  holderName: string | undefined;
+  currencyDenominatedBalance: TinkAccountCurrencyDenominatedBalanceObject | NullOrUndefined;
+  financialInstitutionId: string | NullOrUndefined; // To linnk with TinkProvider.financialInstitutionId
+  flags: string | NullOrUndefined; // Array String. Example: '[\"MANDATE\"]';
+  holderName: string | NullOrUndefined;
   identifiers: string; // Array String. Example: "[\"se://9999111111111111\"]"
   id: string;
   name: string;

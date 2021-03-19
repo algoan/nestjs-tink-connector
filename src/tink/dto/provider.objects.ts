@@ -4,8 +4,8 @@
  *
  * @link https://docs.tink.com/api#provider-list-providers-response-providerlistresponse
  */
-export interface TinkProviderListResponseObject {
-  providers: TinkProviderObject[];
+export interface TinkProviderListResponseObject<NullOrUndefined = undefined> {
+  providers: TinkProviderObject<NullOrUndefined>[];
 }
 
 /**
@@ -15,10 +15,10 @@ export interface TinkProviderListResponseObject {
  *
  * @link https://docs.tink.com/api#provider-the-provider-model
  */
-export interface TinkProviderObject {
+export interface TinkProviderObject<NullOrUndefined = undefined> {
   displayName: string;
   financialInstitutionId: string;
-  images?: TinkProviderImageObject;
+  images: TinkProviderImageObject | NullOrUndefined;
   market: string;
 }
 
@@ -29,7 +29,7 @@ export interface TinkProviderObject {
  *
  * @link https://docs.tink.com/api#provider-the-provider-model-imageurls
  */
-export interface TinkProviderImageObject {
-  icon?: string;
+export interface TinkProviderImageObject<NullOrUndefined = undefined> {
+  icon: string | NullOrUndefined;
 }
 
