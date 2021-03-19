@@ -1,7 +1,7 @@
 /* eslint-disable no-null/no-null,no-magic-numbers */
 // tslint:disable: no-null-keyword
 import { IsString } from 'class-validator';
-import { assertTypeValidation, convertNullToUndefined } from './common.utils';
+import { assertsTypeValidation, convertNullToUndefined } from './common.utils';
 
 describe('convertNullToUndefined', () => {
   it(`Should convert null to undefined on simple values`, () => {
@@ -160,5 +160,31 @@ describe('convertNullToUndefined', () => {
         ],
       },
     });
+  });
+});
+
+describe('assertsTypeValidation', () => {
+  /**
+   * Test Validation Class
+   */
+  class TestValidationClass  {
+    @IsString()
+    public testField: string;
+  }
+
+  it(`should NOT throw an error if data is correct`, () => {
+    expect(() => assertsTypeValidation(TestValidationClass, {testField: 'toto'})).not.toThrowError();
+  });
+
+  it(`should throw an error if data is NOT correct`, () => {
+    expect(() => assertsTypeValidation(TestValidationClass, {testField: 5})).toThrowError();
+  });
+
+  it(`should compile without error`, () => {
+    const testValidation = (testData: { toto: number } | TestValidationClass): number => {
+      assertsTypeValidation(TestValidationClass, testData);
+
+      return testData.testField.length
+    };
   });
 });

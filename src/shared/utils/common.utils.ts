@@ -1,7 +1,10 @@
+/* eslint-disable prefer-arrow/prefer-arrow-functions */
+
+import { ClassType, transformAndValidateSync } from "class-transformer-validator";
+
 /**
  * Convert null values in the given value to undefined
  */
-// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function convertNullToUndefined<InputType, ReturnType>(value: InputType): ReturnType {
 
   const innerConvert = (innerValue: unknown): unknown => {
@@ -31,4 +34,12 @@ export function convertNullToUndefined<InputType, ReturnType>(value: InputType):
   }
 
   return innerConvert(value) as ReturnType;
+}
+
+/**
+ * assertsTypeValidation
+ */
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function assertsTypeValidation<ValueType extends object>(classValidation: ClassType<ValueType>, value: object): asserts value is ValueType{
+  transformAndValidateSync(classValidation, value);
 }
