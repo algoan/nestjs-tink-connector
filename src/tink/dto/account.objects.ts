@@ -21,7 +21,6 @@ export interface TinkAccountObject<NullOrUndefined = undefined> {
   credentialsId: string;
   currencyDenominatedBalance: TinkAccountCurrencyDenominatedBalanceObject | NullOrUndefined;
   financialInstitutionId: string | NullOrUndefined; // To linnk with TinkProvider.financialInstitutionId
-  flags: string | NullOrUndefined; // Array String. Example: '[\"MANDATE\"]';
   holderName: string | NullOrUndefined;
   identifiers: string; // Array String. Example: "[\"se://9999111111111111\"]"
   id: string;

@@ -24,7 +24,6 @@ export const tinkAccountObjectMock: TinkAccountObject = {
   credentialsId: '6e68cc6287704273984567b3300c5822',
   currencyDenominatedBalance: tinkAccountCurrencyDenominatedBalanceObjectMock,
   financialInstitutionId: tinkProviderObjectMock.financialInstitutionId,
-  flags: '[\"MANDATE\"]',
   identifiers: '["iban://BOUSFRPPXXX/FR7640618802800004063675660"]',
   holderName: 'Thomas Alan Waits',
   name: 'My account',

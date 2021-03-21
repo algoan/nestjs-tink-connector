@@ -69,7 +69,7 @@ export function mapToAlgoanAccount(
     balanceDate: new Date().toISOString(),
     currency: tinkAccount.currencyDenominatedBalance?.currencyCode ?? defaultCurrency,
     type: mapToAlgoanAccountType(tinkAccount.type),
-    usage: mapToAlgoanAccountUsage(tinkAccount.flags),
+    usage: AccountUsage.PERSONAL,
     owners: tinkAccount.holderName !== undefined
       ? [
           { name: tinkAccount.holderName},
@@ -107,25 +107,6 @@ export function mapToAlgoanAccountType(tinkType: TinkAccountObject['type']): Acc
     default:
       return AccountType.UNKNOWN;
   }
- }
-
-/**
- * Map To Algoan Account usage
- */
-export function mapToAlgoanAccountUsage(tinkFlags: TinkAccountObject['flags']): Account['usage'] {
-  if (tinkFlags === undefined) {
-    return AccountUsage.UNKNOWN;
-  }
-
-  if (tinkFlags.search(TinkAccountFlag.BUSINESS) > 0) {
-    return AccountUsage.PROFESSIONAL;
-  }
-
-  if (tinkFlags.search(TinkAccountFlag.MANDATE) > 0) {
-    return AccountUsage.PERSONAL;
-  }
-
-  return AccountUsage.UNKNOWN;
  }
 
 /**

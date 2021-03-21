@@ -15,7 +15,6 @@ import {
   mapToAlgaonTransaction,
   mapToAlgoanAccount,
   mapToAlgoanAccountType,
-  mapToAlgoanAccountUsage,
   mapToIbanAndBic
 } from "./analysis.mapper";
 
@@ -149,24 +148,6 @@ describe('AnalysisMapper', () => {
     });
   });
 
-  describe('mapToAlgoanAccountUsage', () => {
-    it('should return UNKNOWN if undefined', async () => {
-      expect(mapToAlgoanAccountUsage(undefined)).toBe(AccountUsage.UNKNOWN)
-    });
-
-    it('should return PROFESSIONAL if flag containes BUSINESS', async () => {
-      expect(mapToAlgoanAccountUsage('["BUSINESS"]')).toBe(AccountUsage.PROFESSIONAL)
-    });
-
-    it('should return PERSONAL if flag containes MANDATE', async () => {
-      expect(mapToAlgoanAccountUsage('["MANDATE"]')).toBe(AccountUsage.PERSONAL)
-    });
-
-    it('should return UNKNOWN if flag contains unknown values', async () => {
-      expect(mapToAlgoanAccountUsage('["XXXX"]')).toBe(AccountUsage.UNKNOWN)
-    });
-  });
-
   describe('mapToAlgoanAccountType', () => {
     it(`should return ${AccountType.CHECKING} if ${TinkAccountType.CHECKING}`, async () => {
       expect(mapToAlgoanAccountType(TinkAccountType.CHECKING)).toBe(AccountType.CHECKING)
@@ -216,7 +197,7 @@ describe('AnalysisMapper', () => {
         balanceDate: new Date().toISOString(),
         currency: tinkAccountObjectMock.currencyDenominatedBalance?.currencyCode ?? defaultCurrency,
         type: mapToAlgoanAccountType(tinkAccountObjectMock.type),
-        usage: mapToAlgoanAccountUsage(tinkAccountObjectMock.flags),
+        usage: AccountUsage.PERSONAL,
         owners: [{ name: tinkAccountObjectMock.holderName }],
         name: tinkAccountObjectMock.name,
         bank: {
@@ -259,7 +240,7 @@ describe('AnalysisMapper', () => {
         balanceDate: new Date().toISOString(),
         currency: tinkAccountObjectMock.currencyDenominatedBalance?.currencyCode ?? defaultCurrency,
         type: mapToAlgoanAccountType(tinkAccountObjectMock.type),
-        usage: mapToAlgoanAccountUsage(tinkAccountObjectMock.flags),
+        usage: AccountUsage.PERSONAL,
         owners: [{ name: tinkAccountObjectMock.holderName }],
         name: tinkAccountObjectMock.name,
         bank: {
