@@ -3,6 +3,7 @@ import { EventName, EventStatus, ServiceAccount, Subscription, SubscriptionEvent
 import { UnauthorizedException, Injectable, Inject } from '@nestjs/common';
 import { Config } from 'node-config-ts';
 
+import { assertsTypeValidation } from '../../shared/utils/common.utils';
 import { TinkAccountObject } from '../../tink/dto/account.objects';
 import { TinkAccountService } from '../../tink/services/tink-account.service';
 import { TinkProviderService } from '../../tink/services/tink-provider.service';
@@ -96,13 +97,13 @@ export class HooksService {
     try {
       switch (event.subscription.eventName) {
         case EventName.AGGREGATOR_LINK_REQUIRED:
-          // TODO: Add Assert validation
+          assertsTypeValidation(AggregatorLinkRequiredDTO, event.payload);
           await this.handleAggregatorLinkRequiredEvent(serviceAccount, event.payload);
           break;
 
         case EventName.BANK_DETAILS_REQUIRED:
-          // TODO: Add Assert validation
-          await this.handleBankDetailsRequiredEvent(serviceAccount, event.payload as BankDetailsRequiredDTO);
+          assertsTypeValidation(BankDetailsRequiredDTO, event.payload);
+          await this.handleBankDetailsRequiredEvent(serviceAccount, event.payload);
           break;
 
         // The default case should never be reached, as the eventName is already checked in the DTO
@@ -139,6 +140,7 @@ export class HooksService {
     if (callbackUrl === undefined || clientConfig === undefined) {
       throw new Error(`Missing information: callbackUrl: ${callbackUrl}, clientConfig: ${JSON.stringify(clientConfig)}`);
     }
+    assertsTypeValidation(ClientConfig, clientConfig);
 
     let tinkUserId: string | undefined;
     let authorizationCode: string | undefined;
@@ -224,6 +226,7 @@ export class HooksService {
     if (clientConfig === undefined) {
       throw new Error(`Missing information: clientConfig: undefined`);
     }
+    assertsTypeValidation(ClientConfig, clientConfig);
 
     // Authenticate to tink as a user
     await this.tinkHttpService.authenticateAsUserWithCode(
