@@ -53,6 +53,51 @@
           Redirect to Tink Link
         </a>
       </div>
+      <div class="row row-cols-2">
+        <div clas="col">
+          <h4>Customer</h4>
+          <pre id="customer"></pre>
+        </div>
+        <div class="col">
+          <h4>Analysis</h4>
+          <pre id="analysis"></pre>
+        </div>
+      </div>
     </div>
   </body>
+  <script>
+    // Query and display first customer
+    function updateCustomer() {
+      var req = new XMLHttpRequest();
+      req.onreadystatechange = (customers) => {
+        if (req.readyState == 4 && req.status == 200) {
+          document.getElementById("customer").innerText = JSON.stringify(JSON.parse(req.responseText)[0], undefined, 4);
+        }
+      };
+      req.open("GET", "/v2/customers");
+      req.send();
+    }
+
+    // Query and display first analysis
+    function updateAnalysis() {
+      var req = new XMLHttpRequest();
+      req.onreadystatechange = () => {
+        if (req.readyState == 4 && req.status == 200) {
+          document.getElementById("analysis").innerText = JSON.stringify(JSON.parse(req.responseText)[0], undefined, 4);
+        }
+      };
+      req.open("GET", "/analyses");
+      req.send();
+    }
+
+    // First update
+    updateCustomer();
+    updateAnalysis();
+
+    // Then update every 500ms
+    setInterval(() => updateCustomer(), 500);
+    setInterval(() => updateAnalysis(), 500);
+
+    </script>
 </html>
+

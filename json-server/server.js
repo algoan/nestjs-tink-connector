@@ -38,11 +38,18 @@ server.post('/v2/oauth/token', (req, res) => {
  * Redirect the user to Tink Link
  */
 server.get('/redirect', async (req, res) => {
+  // Reset Data
+  // Set a new customer id at each test to avoid duplicate user error on tink
+  db.customers[0].id = `random-${Date.now()}`;
+  db.analyses[0].accounts = undefined;
+
+  // Prepare payload
   const customerId = db.customers[0].id;
   const payload = {
     customerId,
   };
   const subscription = db.subscriptions[0];
+
   /**
    * Fake a webhook request from Algoan
    */

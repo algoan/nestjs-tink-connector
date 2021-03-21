@@ -197,6 +197,7 @@ describe('HookService', () => {
         aggregatorLinkRequiredMock.customerId,
         {
           aggregationDetails: {
+            ...customerMock.aggregationDetails,
             redirectUrl: 'MY_LINK_URL',
           }
         });
@@ -241,6 +242,7 @@ describe('HookService', () => {
         aggregatorLinkRequiredMock.customerId,
         {
           aggregationDetails: {
+            ...customerMock.aggregationDetails,
             redirectUrl: 'MY_LINK_URL',
             userId: createUserObject.user_id,
           }
@@ -294,6 +296,7 @@ describe('HookService', () => {
         aggregatorLinkRequiredMock.customerId,
         {
           aggregationDetails: {
+            ...customerMock.aggregationDetails,
             redirectUrl: 'MY_LINK_URL',
             userId: createUserObject.user_id,
           }
