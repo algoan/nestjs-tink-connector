@@ -54,9 +54,26 @@ The diagram below describes interactions:
 ![aggregator_link_required](public/aggregator_link_required.png)
 
 Refers to the [`aggregator_link_required`](https://developers.algoan.com/public/docs/algoan_documentation/resthooks_and_events/event_list.html#aggregator_link_required) event.
+
 ### Bank Details Required
 
-<!-- To complete -->
+When the user has finished the aggregation process, the connector has to retrieve user's banks accounts and transactions.
+
+* The event should contains those informations:
+```
+  {
+    customerId: string;
+    analysisId: string; // The ananlysis id to update with account and transaction data
+    temporaryCode: string; // The authorization code returned by Tink, in the callback url param named `code`
+  }
+```
+
+The diagram below describes interactions:
+
+![bank_details_required](public/bank_details_required.png)
+
+Refers to the [`bank_details_required`](https://developers.algoan.com/public/docs/algoan_documentation/resthooks_and_events/event_list.html#bank_details_required) event.
+
 ## Application Structure
 
 - `config/`: stores all configurations for the application. It uses [node-config-ts](https://github.com/tusharmath/node-config-ts) to generate a type definition of the `default.json` file.
@@ -110,8 +127,8 @@ $ npm install
 To test locally the Tink Link process, a simple `index.html` file is rendered. To use it:
 
 Before testing
-- You will have to change the `customers.id` in `./json-server/default.json' between each test, to simulate new users.
 - The client config: `locale`, `market`, `pricing` should be update in `service-accounts.config` in  `./json-server/default.json'.
+- You can enable http log `config/default.json` with `enableHttpRequestLog`, `enableHttpResponseLog`, `enableHttpErrorLog`
 
 Run Test
 - Run `npm run start:dev`. It will render an index.html file. Algoan APIs are exposed and mocked by a [json-server](https://github.com/typicode/json-server).
