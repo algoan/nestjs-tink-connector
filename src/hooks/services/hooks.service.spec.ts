@@ -197,7 +197,6 @@ describe('HookService', () => {
         aggregatorLinkRequiredMock.customerId,
         {
           aggregationDetails: {
-            ...customerMock.aggregationDetails,
             redirectUrl: 'MY_LINK_URL',
           }
         });
@@ -242,7 +241,6 @@ describe('HookService', () => {
         aggregatorLinkRequiredMock.customerId,
         {
           aggregationDetails: {
-            ...customerMock.aggregationDetails,
             redirectUrl: 'MY_LINK_URL',
             userId: createUserObject.user_id,
           }
@@ -270,11 +268,7 @@ describe('HookService', () => {
 
       // premium
       expect(tinkAuthenticateAsClientWithCredentialsSpy).toHaveBeenCalled();
-      expect(createNewUserSpy).not.toHaveBeenCalledWith({
-        external_user_id: aggregatorLinkRequiredMock.customerId,
-        locale: serviceAccountConfigMock.locale,
-        market: serviceAccountConfigMock.market,
-      });
+      expect(createNewUserSpy).not.toHaveBeenCalled();
       expect(delegateAuthorizationToUserSpy).toHaveBeenCalledWith({
         user_id: createUserObject.user_id,
         scope: 'user:read,authorization:read,authorization:grant,credentials:read,credentials:write,providers:read',
@@ -296,7 +290,6 @@ describe('HookService', () => {
         aggregatorLinkRequiredMock.customerId,
         {
           aggregationDetails: {
-            ...customerMock.aggregationDetails,
             redirectUrl: 'MY_LINK_URL',
             userId: createUserObject.user_id,
           }
@@ -333,9 +326,9 @@ describe('HookService', () => {
       getTransactionsSpy = jest
         .spyOn(tinkTransactionService, 'getTransactions')
         .mockResolvedValue([tinkSearchResponseObjectMock.results[0].transaction]);
-        getProvidersSpy = jest
-          .spyOn(tinkProviderService, 'getProviders')
-          .mockResolvedValue([tinkProviderObjectMock]);
+      getProvidersSpy = jest
+        .spyOn(tinkProviderService, 'getProviders')
+        .mockResolvedValue([tinkProviderObjectMock]);
     });
 
     it('should do these steps', async () => {

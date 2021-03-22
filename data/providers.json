@@ -1,0 +1,1548 @@
+{
+  "providers": [
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "CHECKING_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "THIRD_PARTY_APP",
+          "currency": "EUR",
+          "displayName": "AION",
+          "fields": [],
+          "financialInstitutionId": "f2c0e0ecfe4a4790be0d380da24d12b1",
+          "financialInstitutionName": "AION",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-aion.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-aion-ob",
+          "passwordHelpText": "In order to use this bank, please authenticate yourself.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OTHER",
+          "authenticationUserType": "PERSONAL",
+          "capabilities": [
+              "SAVINGS_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "PASSWORD",
+          "currency": "EUR",
+          "displayName": "AXA",
+          "fields": [
+              {
+                  "defaultValue": null,
+                  "description": "Card number (19 characters)",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": null,
+                  "immutable": true,
+                  "masked": false,
+                  "maxLength": 19,
+                  "minLength": 19,
+                  "name": "username",
+                  "numeric": false,
+                  "optional": false,
+                  "options": null,
+                  "pattern": "^6703[0-9]{13}N[0-9]$",
+                  "patternError": null,
+                  "type": null,
+                  "value": null,
+                  "sensitive": true,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              }
+          ],
+          "financialInstitutionId": "0f0a1f6794ce4de7ae12972b89813fa2",
+          "financialInstitutionName": "AXA",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-axa-bank.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-axa-cardreader",
+          "passwordHelpText": "Please authenticate yourself using the same card number you normally use in your bank's mobile banking app, including the letter N and the digit following it. You will also need your AXA card reader to finish the authentication.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "CHECKING_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "PASSWORD",
+          "currency": "EUR",
+          "displayName": "AXA",
+          "fields": [],
+          "financialInstitutionId": "0f0a1f6794ce4de7ae12972b89813fa2",
+          "financialInstitutionName": "AXA",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-axa-bank.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": false,
+          "name": "be-axa-ob",
+          "passwordHelpText": "In order to use this bank, please authenticate yourself.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OTHER",
+          "authenticationUserType": "PERSONAL",
+          "capabilities": [
+              "CREDIT_CARDS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "PASSWORD",
+          "currency": "EUR",
+          "displayName": "American Express",
+          "fields": [
+              {
+                  "defaultValue": null,
+                  "description": "Username",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": null,
+                  "immutable": true,
+                  "masked": false,
+                  "maxLength": null,
+                  "minLength": null,
+                  "name": "username",
+                  "numeric": false,
+                  "optional": false,
+                  "options": null,
+                  "pattern": null,
+                  "patternError": null,
+                  "type": null,
+                  "value": null,
+                  "sensitive": false,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              },
+              {
+                  "defaultValue": null,
+                  "description": "Password",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": null,
+                  "immutable": false,
+                  "masked": true,
+                  "maxLength": null,
+                  "minLength": null,
+                  "name": "password",
+                  "numeric": false,
+                  "optional": false,
+                  "options": null,
+                  "pattern": null,
+                  "patternError": null,
+                  "type": null,
+                  "value": null,
+                  "sensitive": true,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              }
+          ],
+          "financialInstitutionId": "1a34ed1d2b644b84b72eaf2159ec8717",
+          "financialInstitutionName": "American Express",
+          "groupDisplayName": "American Express",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-americanexpress.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": false,
+          "name": "be-americanexpress-password",
+          "passwordHelpText": "You use the same password as when you log in to the American Express website. You can order a new username and password from [American Express](https://global.americanexpress.com/myca/fuidfyp/emea/action?request_type=RecoverPasswordStep1&Face=fr_BE).",
+          "popular": false,
+          "status": "TEMPORARY_DISABLED",
+          "transactional": true,
+          "type": "CREDIT_CARD",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OTHER",
+          "authenticationUserType": "PERSONAL",
+          "capabilities": [
+              "SAVINGS_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "PASSWORD",
+          "currency": "EUR",
+          "displayName": "Argenta",
+          "fields": [
+              {
+                  "defaultValue": null,
+                  "description": "Number of your bank card",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": null,
+                  "immutable": true,
+                  "masked": false,
+                  "maxLength": null,
+                  "minLength": null,
+                  "name": "username",
+                  "numeric": true,
+                  "optional": false,
+                  "options": null,
+                  "pattern": "^[0-9]{17}$",
+                  "patternError": "Please enter your 17 digit card number, including the control number.",
+                  "type": null,
+                  "value": null,
+                  "sensitive": true,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              }
+          ],
+          "financialInstitutionId": "5461a539f104486a8326869078f670bf",
+          "financialInstitutionName": "Argenta",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-argenta-spaarbank.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-argenta-cardreader",
+          "passwordHelpText": "Please authenticate yourself using the same credentials you normally use in your bank's mobile banking app. You will also need your Argenta Digipass to finish the authentication.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "CHECKING_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "PASSWORD",
+          "currency": "EUR",
+          "displayName": "Argenta",
+          "fields": [
+              {
+                  "defaultValue": null,
+                  "description": "Iban",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": null,
+                  "immutable": true,
+                  "masked": false,
+                  "maxLength": null,
+                  "minLength": null,
+                  "name": "iban",
+                  "numeric": false,
+                  "optional": false,
+                  "options": null,
+                  "pattern": "^BE[0-9]{14}$",
+                  "patternError": "Please enter a correct IBAN. It must start with ‘BE’ in capital letters.",
+                  "type": null,
+                  "value": null,
+                  "sensitive": false,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              }
+          ],
+          "financialInstitutionId": "5461a539f104486a8326869078f670bf",
+          "financialInstitutionName": "Argenta",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-argenta-spaarbank.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": false,
+          "name": "be-argenta-ob",
+          "passwordHelpText": "Please authenticate to use this bank.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "CHECKING_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "THIRD_PARTY_APP",
+          "currency": "EUR",
+          "displayName": "BNP Paribas Fortis",
+          "fields": [],
+          "financialInstitutionId": "e63aa8bdecc84e61b2165453fd3780fc",
+          "financialInstitutionName": "BNP Paribas Fortis",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-bnp-paribas-fortis-bank.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-bnpparibasfortis-ob",
+          "passwordHelpText": "",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OTHER",
+          "authenticationUserType": "PERSONAL",
+          "capabilities": [
+              "SAVINGS_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "PASSWORD",
+          "currency": "EUR",
+          "displayName": "BNP Paribas Fortis",
+          "fields": [
+              {
+                  "defaultValue": null,
+                  "description": "Number of your bank card",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": null,
+                  "immutable": true,
+                  "masked": false,
+                  "maxLength": null,
+                  "minLength": null,
+                  "name": "username",
+                  "numeric": true,
+                  "optional": false,
+                  "options": null,
+                  "pattern": "^[0-9]{17}$",
+                  "patternError": "Please enter your 17 digit card number, including the control number.",
+                  "type": null,
+                  "value": null,
+                  "sensitive": true,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              },
+              {
+                  "defaultValue": null,
+                  "description": "Client number",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": "10 digits.",
+                  "immutable": false,
+                  "masked": true,
+                  "maxLength": null,
+                  "minLength": null,
+                  "name": "clientnumber",
+                  "numeric": false,
+                  "optional": false,
+                  "options": null,
+                  "pattern": "^[0-9]{10}$",
+                  "patternError": "Please enter your 10 digit client number.",
+                  "type": null,
+                  "value": null,
+                  "sensitive": true,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              }
+          ],
+          "financialInstitutionId": "e63aa8bdecc84e61b2165453fd3780fc",
+          "financialInstitutionName": "BNP Paribas Fortis",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-bnp-paribas-fortis-bank.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-fortis-cardreader",
+          "passwordHelpText": "Please authenticate yourself using the same credentials you normally use in your bank's mobile banking app. You will also need your BNP Paribas Fortis card reader to finish the authentication.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "CHECKING_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "THIRD_PARTY_APP",
+          "currency": "EUR",
+          "displayName": "Bank J.Van Breda & C°",
+          "fields": [],
+          "financialInstitutionId": "33851027e631414daa302a28a321b157",
+          "financialInstitutionName": "Bank J.Van Breda & C",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-vanbreda.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-vanbreda-ob",
+          "passwordHelpText": "In order to use this bank, please authenticate yourself.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OTHER",
+          "authenticationUserType": "PERSONAL",
+          "capabilities": [
+              "SAVINGS_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "PASSWORD",
+          "currency": "EUR",
+          "displayName": "Belfius",
+          "fields": [
+              {
+                  "defaultValue": null,
+                  "description": "Number of your bank card",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": null,
+                  "immutable": true,
+                  "masked": false,
+                  "maxLength": null,
+                  "minLength": null,
+                  "name": "username",
+                  "numeric": true,
+                  "optional": false,
+                  "options": null,
+                  "pattern": "^[0-9]{17}$",
+                  "patternError": "Please enter your 17 digit card number, including the control number.",
+                  "type": null,
+                  "value": null,
+                  "sensitive": true,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              },
+              {
+                  "defaultValue": null,
+                  "description": "Password",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": null,
+                  "immutable": false,
+                  "masked": true,
+                  "maxLength": null,
+                  "minLength": 1,
+                  "name": "password",
+                  "numeric": false,
+                  "optional": false,
+                  "options": null,
+                  "pattern": null,
+                  "patternError": null,
+                  "type": null,
+                  "value": null,
+                  "sensitive": true,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              }
+          ],
+          "financialInstitutionId": "60cdc3bd42aa43a9ab2e6eeef116bebd",
+          "financialInstitutionName": "Belfius",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-belfius-bank.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-belfius-cardreader",
+          "passwordHelpText": "Please authenticate yourself using the same credentials you normally use in your bank's mobile banking app. You will also need your Belfius card reader to finish the authentication.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "CHECKING_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "PASSWORD",
+          "currency": "EUR",
+          "displayName": "Belfius",
+          "fields": [
+              {
+                  "defaultValue": null,
+                  "description": "IBAN",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": null,
+                  "immutable": true,
+                  "masked": false,
+                  "maxLength": null,
+                  "minLength": null,
+                  "name": "iban",
+                  "numeric": false,
+                  "optional": false,
+                  "options": null,
+                  "pattern": "^BE[0-9]{14}$",
+                  "patternError": "Please enter a correct IBAN. It must start with ‘BE’ in capital letters.",
+                  "type": null,
+                  "value": null,
+                  "sensitive": false,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              }
+          ],
+          "financialInstitutionId": "60cdc3bd42aa43a9ab2e6eeef116bebd",
+          "financialInstitutionName": "Belfius",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-belfius-bank.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-belfius-ob",
+          "passwordHelpText": "Please authenticate yourself using the IBAN number that is stated on your card.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "CHECKING_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "PASSWORD",
+          "currency": "EUR",
+          "displayName": "Beobank",
+          "fields": [],
+          "financialInstitutionId": "09b05f6c7d0c489cbc0c2d442800ff50",
+          "financialInstitutionName": "Beobank",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-beobank.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": false,
+          "name": "be-beobank-ob",
+          "passwordHelpText": "",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "CHECKING_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "PASSWORD",
+          "currency": "EUR",
+          "displayName": "Bpost Bank",
+          "fields": [],
+          "financialInstitutionId": "8df3004b32cf4131a85a41d6f907ebc8",
+          "financialInstitutionName": "Bpost",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-bpost-bank.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": false,
+          "name": "be-bpost-ob",
+          "passwordHelpText": "In order to use this bank, please authenticate yourself.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "CHECKING_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "THIRD_PARTY_APP",
+          "currency": "EUR",
+          "displayName": "CPH",
+          "fields": [],
+          "financialInstitutionId": "ab48176ba79746b08b87a314b9a31a47",
+          "financialInstitutionName": "CPH",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-cph.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-cph-ob",
+          "passwordHelpText": "In order to use this bank, please authenticate yourself.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "CHECKING_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "THIRD_PARTY_APP",
+          "currency": "EUR",
+          "displayName": "Crelan",
+          "fields": [],
+          "financialInstitutionId": "4b3ad5ead57f45baa3554b0514333fb9",
+          "financialInstitutionName": "Crelan",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-crelan.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-crelan-ob",
+          "passwordHelpText": "In order to use this bank, please authenticate yourself.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "CHECKING_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "THIRD_PARTY_APP",
+          "currency": "EUR",
+          "displayName": "Delen",
+          "fields": [],
+          "financialInstitutionId": "8868027129964e8a8e7b19c84a490aee",
+          "financialInstitutionName": "Delen",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-delen.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-delen-ob",
+          "passwordHelpText": "In order to use this bank, please authenticate yourself.",
+          "popular": true,
+          "status": "TEMPORARY_DISABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "TRANSFERS",
+              "MORTGAGE_AGGREGATION",
+              "CREDIT_CARDS",
+              "CHECKING_ACCOUNTS",
+              "IDENTITY_DATA",
+              "LOANS",
+              "SAVINGS_ACCOUNTS",
+              "INVESTMENTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "THIRD_PARTY_APP",
+          "currency": "EUR",
+          "displayName": "Demo Open Banking Redirect",
+          "displayDescription": "Redirect",
+          "fields": [],
+          "financialInstitutionId": "f58e31ebaf625c15a9601aa4deac83d0",
+          "financialInstitutionName": "Demo Open Banking Redirect",
+          "groupDisplayName": "Demo providers",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/tink.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-test-open-banking-redirect",
+          "passwordHelpText": "To connect your bank, you need to identify yourself using a third party app.",
+          "popular": false,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "TEST",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL",
+                  "shortName": "Personal Banking"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "DECOUPLED",
+          "capabilities": [
+              "CHECKING_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "PASSWORD",
+          "currency": "EUR",
+          "displayName": "Deutsche Bank",
+          "fields": [
+              {
+                  "defaultValue": null,
+                  "description": "Username",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": null,
+                  "immutable": true,
+                  "masked": false,
+                  "maxLength": null,
+                  "minLength": null,
+                  "name": "username",
+                  "numeric": false,
+                  "optional": false,
+                  "options": null,
+                  "pattern": null,
+                  "patternError": null,
+                  "type": null,
+                  "value": null,
+                  "sensitive": false,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              }
+          ],
+          "financialInstitutionId": "4034753888008b17d14c49ea50e64e92",
+          "financialInstitutionName": "Deutsche Bank",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-deutsche-bank.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-deutschebank-ob",
+          "passwordHelpText": "In order to use this bank, please authenticate yourself.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "CHECKING_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "THIRD_PARTY_APP",
+          "currency": "EUR",
+          "displayName": "Europabank",
+          "fields": [],
+          "financialInstitutionId": "eecf2e00a82f4171b86b40cafd268261",
+          "financialInstitutionName": "Europabank",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-europabank.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-europabank-ob",
+          "passwordHelpText": "In order to use this bank, please authenticate yourself.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [],
+          "pisCapabilities": [],
+          "credentialsType": "THIRD_PARTY_APP",
+          "currency": "EUR",
+          "displayName": "Hello Bank",
+          "fields": [],
+          "financialInstitutionId": "bc19bb84118f44d0b472e31561fa1e98",
+          "financialInstitutionName": "BNP Paribas Fortis",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-hello-bank.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-hellobank-ob",
+          "passwordHelpText": "",
+          "popular": true,
+          "status": "TEMPORARY_DISABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OTHER",
+          "authenticationUserType": "PERSONAL",
+          "capabilities": [
+              "SAVINGS_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "PASSWORD",
+          "currency": "EUR",
+          "displayName": "Hello bank!",
+          "fields": [
+              {
+                  "defaultValue": null,
+                  "description": "Number of your bank card",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": null,
+                  "immutable": true,
+                  "masked": false,
+                  "maxLength": null,
+                  "minLength": null,
+                  "name": "username",
+                  "numeric": true,
+                  "optional": false,
+                  "options": null,
+                  "pattern": "^[0-9]{17}$",
+                  "patternError": "Please enter your 17 digit card number, including the control number.",
+                  "type": null,
+                  "value": null,
+                  "sensitive": true,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              },
+              {
+                  "defaultValue": null,
+                  "description": "Client number",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": "10 digits.",
+                  "immutable": false,
+                  "masked": true,
+                  "maxLength": 10,
+                  "minLength": 10,
+                  "name": "clientnumber",
+                  "numeric": false,
+                  "optional": false,
+                  "options": null,
+                  "pattern": "^[0-9]{10}$",
+                  "patternError": "Please enter your 10 digit client number.",
+                  "type": null,
+                  "value": null,
+                  "sensitive": true,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              }
+          ],
+          "financialInstitutionId": "077605ad72b5420ba367319854ce3492",
+          "financialInstitutionName": "Hello bank!",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-hello-bank.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-hellobank-cardreader",
+          "passwordHelpText": "Please authenticate yourself using the same credentials you normally use in your bank's mobile banking app. You will also need your Hello bank! card reader to finish the authentication.",
+          "popular": false,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OTHER",
+          "authenticationUserType": "PERSONAL",
+          "capabilities": [
+              "SAVINGS_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "PASSWORD",
+          "currency": "EUR",
+          "displayName": "ING",
+          "fields": [
+              {
+                  "defaultValue": null,
+                  "description": "ING ID",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": "10 digits.",
+                  "immutable": true,
+                  "masked": false,
+                  "maxLength": null,
+                  "minLength": null,
+                  "name": "username",
+                  "numeric": true,
+                  "optional": false,
+                  "options": null,
+                  "pattern": "^[0-9]{10}$",
+                  "patternError": "Incorrect ID format. The ID should be 10 digits.",
+                  "type": null,
+                  "value": null,
+                  "sensitive": false,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              },
+              {
+                  "defaultValue": null,
+                  "description": "Card ID",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": null,
+                  "immutable": true,
+                  "masked": false,
+                  "maxLength": null,
+                  "minLength": null,
+                  "name": "cardId",
+                  "numeric": true,
+                  "optional": false,
+                  "options": null,
+                  "pattern": "^[0-9]{17}$",
+                  "patternError": "Please enter your 17 digit card number, including the control number.",
+                  "type": null,
+                  "value": null,
+                  "sensitive": true,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              }
+          ],
+          "financialInstitutionId": "0df5af8e4bf84df686a9b4a07fc205bf",
+          "financialInstitutionName": "ING",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-ing-belgie.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-ing-cardreader",
+          "passwordHelpText": "In order to authenticate yourself you will need your ING card reader.\nBy connecting to this bank, you confirm that you have accepted the bank’s [terms and conditions](https://www.ing.be/static/legacy/SiteCollectionDocuments/GeneralRegulationsNewEN.pdf).",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "CHECKING_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "THIRD_PARTY_APP",
+          "currency": "EUR",
+          "displayName": "ING",
+          "fields": [],
+          "financialInstitutionId": "0df5af8e4bf84df686a9b4a07fc205bf",
+          "financialInstitutionName": "ING",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-ing-belgie.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": false,
+          "name": "be-ing-ob",
+          "passwordHelpText": "In order to use this bank, please authenticate yourself.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OTHER",
+          "authenticationUserType": "PERSONAL",
+          "capabilities": [
+              "SAVINGS_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "PASSWORD",
+          "currency": "EUR",
+          "displayName": "KBC/CBC",
+          "fields": [
+              {
+                  "defaultValue": null,
+                  "description": "Card number",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": null,
+                  "immutable": true,
+                  "masked": false,
+                  "maxLength": null,
+                  "minLength": null,
+                  "name": "username",
+                  "numeric": true,
+                  "optional": false,
+                  "options": null,
+                  "pattern": "^[0-9]{17}$",
+                  "patternError": "Please enter your 17 digit card number, including the control number.",
+                  "type": null,
+                  "value": null,
+                  "sensitive": true,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              }
+          ],
+          "financialInstitutionId": "7802078d8a7049398f9668e5478934ea",
+          "financialInstitutionName": "KBC",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-kbc-bank.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-kbc-cardreader",
+          "passwordHelpText": "In order to authenticate yourself you will need your KBC card reader.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "CHECKING_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "PASSWORD",
+          "currency": "EUR",
+          "displayName": "KBC/CBC",
+          "fields": [
+              {
+                  "defaultValue": null,
+                  "description": "Iban",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": null,
+                  "immutable": true,
+                  "masked": false,
+                  "maxLength": null,
+                  "minLength": null,
+                  "name": "iban",
+                  "numeric": false,
+                  "optional": false,
+                  "options": null,
+                  "pattern": "^BE[0-9]{14}$",
+                  "patternError": "Please enter a correct IBAN. It must start with ‘BE’ in capital letters.",
+                  "type": null,
+                  "value": null,
+                  "sensitive": false,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              }
+          ],
+          "financialInstitutionId": "7802078d8a7049398f9668e5478934ea",
+          "financialInstitutionName": "KBC",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-kbc-bank.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": false,
+          "name": "be-kbc-ob",
+          "passwordHelpText": "In order to use this bank, please authenticate yourself.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "CHECKING_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "THIRD_PARTY_APP",
+          "currency": "EUR",
+          "displayName": "Keytrade Bank",
+          "fields": [],
+          "financialInstitutionId": "0fbe30039db748ca95cc7a995475f5fd",
+          "financialInstitutionName": "Keytrade bank",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-keytradebank.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-keytradebank-ob",
+          "passwordHelpText": "In order to use this bank, please authenticate yourself.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OTHER",
+          "authenticationUserType": "PERSONAL",
+          "capabilities": [
+              "CHECKING_ACCOUNTS",
+              "IDENTITY_DATA",
+              "SAVINGS_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "PASSWORD",
+          "currency": "EUR",
+          "displayName": "N26",
+          "fields": [
+              {
+                  "defaultValue": null,
+                  "description": "Username",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": null,
+                  "immutable": true,
+                  "masked": false,
+                  "maxLength": null,
+                  "minLength": null,
+                  "name": "username",
+                  "numeric": false,
+                  "optional": false,
+                  "options": null,
+                  "pattern": null,
+                  "patternError": null,
+                  "type": null,
+                  "value": null,
+                  "sensitive": false,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              },
+              {
+                  "defaultValue": null,
+                  "description": "Password",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": null,
+                  "immutable": false,
+                  "masked": true,
+                  "maxLength": null,
+                  "minLength": null,
+                  "name": "password",
+                  "numeric": false,
+                  "optional": false,
+                  "options": null,
+                  "pattern": null,
+                  "patternError": null,
+                  "type": null,
+                  "value": null,
+                  "sensitive": true,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              }
+          ],
+          "financialInstitutionId": "cb817998aff84ce285d71f240ef6e21d",
+          "financialInstitutionName": "N26",
+          "groupDisplayName": "N26",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-n26.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": false,
+          "name": "be-n26-password",
+          "passwordHelpText": "Use the same password as you would in your bank's mobile app.",
+          "popular": false,
+          "status": "TEMPORARY_DISABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "CHECKING_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "THIRD_PARTY_APP",
+          "currency": "EUR",
+          "displayName": "Nagelmackers",
+          "fields": [],
+          "financialInstitutionId": "a6f775f3649944bb82d15e214eafde51",
+          "financialInstitutionName": "Nagelmackers",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-nagelmackers.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-nagelmackers-ob",
+          "passwordHelpText": "In order to use this bank, please authenticate yourself.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "TRANSFERS",
+              "CHECKING_ACCOUNTS",
+              "LIST_BENEFICIARIES",
+              "SAVINGS_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "PASSWORD",
+          "currency": "EUR",
+          "displayName": "Revolut",
+          "fields": [],
+          "financialInstitutionId": "04622ab86e9d4ae298545bd8c33b031d",
+          "financialInstitutionName": "Revolut",
+          "groupDisplayName": "",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-revolut.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": false,
+          "name": "be-revolut-ob",
+          "passwordHelpText": "Authentication is done on external page",
+          "popular": false,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OTHER",
+          "authenticationUserType": "PERSONAL",
+          "capabilities": [
+              "CHECKING_ACCOUNTS",
+              "IDENTITY_DATA",
+              "SAVINGS_ACCOUNTS",
+              "INVESTMENTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "PASSWORD",
+          "currency": "EUR",
+          "displayName": "Revolut",
+          "fields": [
+              {
+                  "defaultValue": null,
+                  "description": "Phone number",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": null,
+                  "immutable": false,
+                  "masked": false,
+                  "maxLength": 16,
+                  "minLength": 5,
+                  "name": "username",
+                  "numeric": false,
+                  "optional": false,
+                  "options": null,
+                  "pattern": "\\+[1-9][0-9]+",
+                  "patternError": "Please enter your full phone number in international format, starting with '+' and including country code. Example: +32 NNNN NN NN NN",
+                  "type": null,
+                  "value": null,
+                  "sensitive": false,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              },
+              {
+                  "defaultValue": null,
+                  "description": "Passcode",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": null,
+                  "immutable": false,
+                  "masked": true,
+                  "maxLength": null,
+                  "minLength": null,
+                  "name": "password",
+                  "numeric": false,
+                  "optional": false,
+                  "options": null,
+                  "pattern": "^[0-9]{4}$",
+                  "patternError": "Please enter your four digit passcode.",
+                  "type": null,
+                  "value": null,
+                  "sensitive": true,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              }
+          ],
+          "financialInstitutionId": "04622ab86e9d4ae298545bd8c33b031d",
+          "financialInstitutionName": "Revolut",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-revolut.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-revolut-password",
+          "passwordHelpText": "Enter your full phone number in international format starting with '+', and the four digit passcode you set up in your Revolut app.",
+          "popular": false,
+          "status": "TEMPORARY_DISABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      },
+      {
+          "accessType": "OPEN_BANKING",
+          "authenticationUserType": "PERSONAL",
+          "authenticationFlow": "REDIRECT",
+          "capabilities": [
+              "CHECKING_ACCOUNTS"
+          ],
+          "pisCapabilities": [],
+          "credentialsType": "THIRD_PARTY_APP",
+          "currency": "EUR",
+          "displayName": "VDK",
+          "fields": [
+              {
+                  "defaultValue": null,
+                  "description": "Iban",
+                  "exposed": true,
+                  "children": null,
+                  "helpText": null,
+                  "hint": "It must start with ‘BE’ in capital letters followed by 14 numbers",
+                  "immutable": true,
+                  "masked": false,
+                  "maxLength": null,
+                  "minLength": null,
+                  "name": "iban",
+                  "numeric": false,
+                  "optional": false,
+                  "options": null,
+                  "pattern": "^BE[0-9]{14}$",
+                  "patternError": "Please enter a correct IBAN. It must start with ‘BE’ in capital letters.",
+                  "type": null,
+                  "value": null,
+                  "sensitive": false,
+                  "checkbox": false,
+                  "additionalInfo": null,
+                  "selectOptions": null
+              }
+          ],
+          "financialInstitutionId": "92b7b4f7d60949f780d327b16caf6b3b",
+          "financialInstitutionName": "VDK",
+          "images": {
+              "icon": "https://cdn.tink.se/provider-images/be/be-vdk.png",
+              "banner": null
+          },
+          "market": "BE",
+          "multiFactor": true,
+          "name": "be-vdk-ob",
+          "passwordHelpText": "In order to use this bank, please authenticate yourself.",
+          "popular": true,
+          "status": "ENABLED",
+          "transactional": true,
+          "type": "BANK",
+          "financialServices": [
+              {
+                  "segment": "PERSONAL"
+              }
+          ]
+      }
+  ]
+}

@@ -202,7 +202,6 @@ export class HooksService {
       payload.customerId,
       {
         aggregationDetails: {
-          ...customer.aggregationDetails,
           redirectUrl,
           userId: tinkUserId,
         }
