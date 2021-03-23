@@ -13,7 +13,7 @@ import { TinkLinkService } from './tink-link.service';
 describe('TinkLinkService', () => {
   let tinkLinkService: TinkLinkService;
 
-  describe('getLink', () => {
+  describe('getAuthorizeLink', () => {
     beforeEach(async () => {
       const moduleRef: TestingModule = await Test.createTestingModule({
         providers: [
@@ -49,9 +49,9 @@ describe('TinkLinkService', () => {
         authorization_code: authorizationCode,
       };
 
-      const link: string = `${config.tink.linkBaseUrl}/1.0/account-check/?${qs.stringify(args)}`;
+      const link: string = `${config.tink.linkBaseUrl}/1.0/authorize/?${qs.stringify(args)}`;
 
-      expect(tinkLinkService.getLink(args)).toEqual(link);
+      expect(tinkLinkService.getAuthorizeLink(args)).toEqual(link);
     });
 
     it('should return a link WITHOUT authorizationCode', async () => {
@@ -69,9 +69,9 @@ describe('TinkLinkService', () => {
         test: true,
       };
 
-      const link: string = `${config.tink.linkBaseUrl}/1.0/account-check/?${qs.stringify(args)}`;
+      const link: string = `${config.tink.linkBaseUrl}/1.0/authorize/?${qs.stringify(args)}`;
 
-      expect(tinkLinkService.getLink(args)).toEqual(link);
+      expect(tinkLinkService.getAuthorizeLink(args)).toEqual(link);
     });
   });
 });

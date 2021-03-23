@@ -39,9 +39,10 @@ export class TinkHttpService {
   /**
    * Authenticate the service to tink
    */
-  public async authenticateAsUserWithCode(clientId: string, code: string): Promise<void> {
+  public async authenticateAsUserWithCode(clientId: string, clientSecret: string, code: string): Promise<void> {
     const input: AccessTokenInput = {
       client_id: clientId,
+      client_secret: clientSecret,
       grant_type: GrantType.AUTHORIZATION_CODE,
       code,
     }
@@ -52,10 +53,10 @@ export class TinkHttpService {
   /**
    * Do a GET query
    */
-  public async get<ReturnType>(path: string): Promise<ReturnType> {
+  public async get<ReturnType, ArgsType = unknown>(path: string, args?: ArgsType): Promise<ReturnType> {
     const response: AxiosResponse<ReturnType> = await this.httpService
       .get<ReturnType>(
-        `${this.config.tink.apiBaseUrl}${path}`,
+        `${this.config.tink.apiBaseUrl}${path}${ args !== undefined ? `?${qs.stringify(args)}` : '' }`,
         {
           headers: {
             Authorization: `Bearer ${this.getToken()}`,

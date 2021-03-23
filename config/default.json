@@ -15,5 +15,8 @@
     "bank_details_required"
   ],
   "restHooksSecret": "password",
+  "enableHttpRequestLog": true,
+  "enableHttpResponseLog": false,
+  "enableHttpErrorLog": true,
   "port": 3000
 }

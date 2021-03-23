@@ -52,7 +52,7 @@ describe('TinkHttpService', () => {
   /**
    * @link https://docs.tink.com/api#oauth-get-access-token
    */
-  describe('authenticateWithCode', () => {
+  describe('authenticateAsUserWithCode', () => {
     let spy
 
     beforeEach(async () => {
@@ -66,6 +66,7 @@ describe('TinkHttpService', () => {
       const code: string = `CODE-${process.pid}`;
       const input: AccessTokenInput = {
         client_id: serviceAccountConfigMock.clientId,
+        client_secret: serviceAccountConfigMock.clientSecret,
         grant_type: GrantType.AUTHORIZATION_CODE,
         code,
       }
@@ -73,7 +74,11 @@ describe('TinkHttpService', () => {
         'Content-Type': 'application/x-www-form-urlencoded',
       }
 
-      await tinkHttpService.authenticateAsUserWithCode(serviceAccountConfigMock.clientId, code);
+      await tinkHttpService.authenticateAsUserWithCode(
+        serviceAccountConfigMock.clientId,
+        serviceAccountConfigMock.clientSecret,
+        code
+      );
 
       expect(spy).toHaveBeenCalledWith(
         url,
@@ -86,7 +91,7 @@ describe('TinkHttpService', () => {
   /**
    * @link https://docs.tink.com/api#oauth-get-access-token
    */
-   describe('authenticateWithCredentials', () => {
+   describe('authenticateAsClientWithCredentials', () => {
     let spy
 
     beforeEach(async () => {
@@ -142,6 +147,37 @@ describe('TinkHttpService', () => {
 
       expect(spy).toHaveBeenCalledWith(
         `${config.tink.apiBaseUrl}/my/path`,
+        {headers: {Authorization: 'Bearer user_id'}},
+      );
+      expect(result).toBe('test');
+    });
+
+    it('should send a get request with args', async () => {
+      // mock authentication
+      jest
+        .spyOn(httpService, 'post')
+        .mockReturnValue(of({ data: accessTokenObjectMock } as AxiosResponse<AccessTokenObject>));
+
+      // authenticate
+      await tinkHttpService.authenticateAsClientWithCredentials(
+        serviceAccountConfigMock.clientId,
+        serviceAccountConfigMock.clientSecret,
+      );
+
+      // mock get
+      const spy = jest
+        .spyOn(httpService, 'get')
+        .mockReturnValue(of({ data: 'test' } as AxiosResponse<string>));
+
+      const args = {
+        param: `param-${process.pid}`,
+      };
+
+      // get result with args
+      const result: string = await tinkHttpService.get('/my/path', args);
+
+      expect(spy).toHaveBeenCalledWith(
+        `${config.tink.apiBaseUrl}/my/path?${qs.stringify(args)}`,
         {headers: {Authorization: 'Bearer user_id'}},
       );
       expect(result).toBe('test');

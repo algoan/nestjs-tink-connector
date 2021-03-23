@@ -44,6 +44,8 @@ export const buildFakeApp = async (): Promise<INestApplication> => {
         clientSecret: 'secret',
         id: 'id1',
         config: {
+          clientId: 'tinkclientId',
+          clientSecret: 'tinkClientSecret',
           pricing: 'STANDARD',
           market: 'BE',
           locale: 'en_US'
