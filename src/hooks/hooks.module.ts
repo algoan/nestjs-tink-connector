@@ -3,8 +3,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '../config/config.module';
 import { TinkModule } from '../tink/tink.module';
 import { AlgoanModule } from '../algoan/algoan.module';
+
 import { HooksController } from './controllers/hooks.controller';
 import { HooksService } from './services/hooks.service';
+import { serviceAccoutProviders } from './service-account.providers';
 
 /**
  * Hooks module
@@ -19,6 +21,7 @@ import { HooksService } from './services/hooks.service';
     HooksController,
   ],
   providers: [
+    ...serviceAccoutProviders,
     HooksService,
   ],
 })

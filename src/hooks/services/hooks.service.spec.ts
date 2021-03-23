@@ -55,7 +55,7 @@ describe('HookService', () => {
   let tinkTransactionService: TinkTransactionService;
   let tinkProviderService: TinkProviderService;
   let tinkHttpService: TinkHttpService;
-  let serviceAccountMock: ServiceAccount;
+  let serviceAccount: ServiceAccount;
 
   beforeEach(async () => {
     // To mock scoped DI
@@ -63,6 +63,17 @@ describe('HookService', () => {
     jest
       .spyOn(ContextIdFactory, 'getByRequest')
       .mockImplementation(() => contextId);
+
+    const serviceAccountValue: ServiceAccount = new ServiceAccount(
+      'mockBaseURL',
+      {
+        id: 'mockServiceAccountId',
+        clientId: 'mockClientId',
+        clientSecret: 'mockClientSecret',
+        createdAt: 'mockCreatedAt',
+        config: serviceAccountConfigMock,
+      } as IServiceAccount,
+    );
 
     const moduleRef: TestingModule = await Test.createTestingModule({
       imports: [
@@ -75,6 +86,10 @@ describe('HookService', () => {
           provide: CONFIG,
           useValue: config,
         },
+        {
+          provide: ServiceAccount,
+          useValue: serviceAccountValue,
+        }
       ],
     }).compile();
 
@@ -89,6 +104,7 @@ describe('HookService', () => {
     tinkTransactionService = await moduleRef.resolve<TinkTransactionService>(TinkTransactionService, contextId);
     tinkProviderService = await moduleRef.resolve<TinkProviderService>(TinkProviderService, contextId);
     tinkHttpService = await moduleRef.resolve<TinkHttpService>(TinkHttpService, contextId);
+    serviceAccount = await moduleRef.resolve<ServiceAccount>(ServiceAccount, contextId);
 
     jest.spyOn(Algoan.prototype, 'initRestHooks').mockResolvedValue();
 
@@ -97,20 +113,9 @@ describe('HookService', () => {
     jest
       .spyOn(SubscriptionEvent.prototype, 'update')
       .mockResolvedValue(({} as unknown) as ISubscriptionEvent & { id: string });
-    jest.spyOn(algoanService.algoanClient, 'getServiceAccountBySubscriptionId').mockReturnValue(serviceAccountMock);
+    jest.spyOn(algoanService.algoanClient, 'getServiceAccountBySubscriptionId').mockReturnValue(serviceAccount);
 
-    serviceAccountMock = new ServiceAccount(
-      'mockBaseURL',
-      {
-        id: 'mockServiceAccountId',
-        clientId: 'mockClientId',
-        clientSecret: 'mockClientSecret',
-        createdAt: 'mockCreatedAt',
-        config: serviceAccountConfigMock,
-      } as IServiceAccount,
-    );
-
-    serviceAccountMock.subscriptions = [
+    serviceAccount.subscriptions = [
       new Subscription(
         subscriptionMock,
         new RequestBuilder('mockBaseURL', { clientId: 'mockClientId' }),
@@ -157,21 +162,21 @@ describe('HookService', () => {
           }
         });
 
-      await expect(hookService.handleAggregatorLinkRequiredEvent(serviceAccountMock, aggregatorLinkRequiredMock))
+      await expect(hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock))
         .rejects
         .toThrowError(`Missing information: callbackUrl: undefined, clientConfig: ${JSON.stringify(serviceAccountConfigMock)}`);
     });
 
     it('should throw error if client config missing', async () => {
-      serviceAccountMock.config = undefined;
-      await expect(hookService.handleAggregatorLinkRequiredEvent(serviceAccountMock, aggregatorLinkRequiredMock))
+      serviceAccount.config = undefined;
+      await expect(hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock))
         .rejects
         .toThrowError(`Missing information: callbackUrl: ${customerMock.aggregationDetails.callbackUrl}, clientConfig: undefined`);
     });
 
     it('should do these steps if pricing STANDARD', async () => {
       serviceAccountConfigMock.pricing = ClientPricing.STANDARD;
-      await hookService.handleAggregatorLinkRequiredEvent(serviceAccountMock, aggregatorLinkRequiredMock);
+      await hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock);
 
       // get algoan customer
       expect(algoanAuthenticateSpy).toHaveBeenCalled();
@@ -204,7 +209,7 @@ describe('HookService', () => {
 
     it('should do these steps if pricing PREMIUM WITHOUT an existing tink user', async () => {
       serviceAccountConfigMock.pricing = ClientPricing.PREMIUM;
-      await hookService.handleAggregatorLinkRequiredEvent(serviceAccountMock, aggregatorLinkRequiredMock);
+      await hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock);
 
       // get algoan customer
       expect(algoanAuthenticateSpy).toHaveBeenCalled();
@@ -260,7 +265,7 @@ describe('HookService', () => {
         });
 
       serviceAccountConfigMock.pricing = ClientPricing.PREMIUM;
-      await hookService.handleAggregatorLinkRequiredEvent(serviceAccountMock, aggregatorLinkRequiredMock);
+      await hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock);
 
       // get algoan customer
       expect(algoanAuthenticateSpy).toHaveBeenCalled();
@@ -332,7 +337,7 @@ describe('HookService', () => {
     });
 
     it('should do these steps', async () => {
-      await hookService.handleBankDetailsRequiredEvent(serviceAccountMock, bankDetailsRequiredMock);
+      await hookService.handleBankDetailsRequiredEvent(bankDetailsRequiredMock);
 
       // Authenticate as user
       expect(tinkAuthenticateAsUserWithCodesSpy).toHaveBeenCalledWith(
@@ -364,8 +369,8 @@ describe('HookService', () => {
     });
 
     it('should throw error if client config missing', async () => {
-      serviceAccountMock.config = undefined;
-      await expect(hookService.handleBankDetailsRequiredEvent(serviceAccountMock, bankDetailsRequiredMock))
+      serviceAccount.config = undefined;
+      await expect(hookService.handleBankDetailsRequiredEvent(bankDetailsRequiredMock))
         .rejects
         .toThrowError(`Missing information: clientConfig: undefined`);
     });
