@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention, camelcase */
-import { EventName, EventStatus, ServiceAccount, Subscription, SubscriptionEvent } from '@algoan/rest';
-import { UnauthorizedException, Injectable, Inject } from '@nestjs/common';
+import { ServiceAccount } from '@algoan/rest';
+import { Injectable, Inject } from '@nestjs/common';
 import { Config } from 'node-config-ts';
 
 import { assertsTypeValidation } from '../../shared/utils/common.utils';
@@ -21,10 +21,9 @@ import { TinkUserService } from '../../tink/services/tink-user.service';
 import { TinkHttpService } from '../../tink/services/tink-http.service';
 import { CreateUserObject } from '../../tink/dto/create-user.object';
 import { CONFIG } from '../../config/config.module';
-import { AlgoanService } from '../../algoan/services/algoan.service';
 import { AlgoanAnalysisService } from '../../algoan/services/algoan-analysis.service';
 import { AlgoanHttpService } from '../../algoan/services/algoan-http.service';
-import { EventDTO } from '../dto/event.dto';
+
 import { AggregatorLinkRequiredDTO } from '../dto/aggregator-link-required-payload.dto';
 import { BankDetailsRequiredDTO } from '../dto/bank-details-required-payload.dto';
 import { mapTinkDataToAlgoanAnalysis } from '../mappers/analysis.mapper';
@@ -37,7 +36,6 @@ export class HooksService {
   constructor(
     @Inject(CONFIG) private readonly config: Config,
     private readonly algoanHttpService: AlgoanHttpService,
-    private readonly algoanService: AlgoanService,
     private readonly algoanCustomerService: AlgoanCustomerService,
     private readonly algoanAnalysisService: AlgoanAnalysisService,
     private readonly tinkHttpService: TinkHttpService,
@@ -46,95 +44,20 @@ export class HooksService {
     private readonly tinkAccountService: TinkAccountService,
     private readonly tinkProviderService: TinkProviderService,
     private readonly tinkTransactionService: TinkTransactionService,
+    private readonly serviceAccount: ServiceAccount,
   ) {}
-
-  /**
-   * Handle Algoan webhooks
-   * @param event Event listened to
-   * @param signature Signature headers, to check if the call is from Algoan
-   */
-  public async handleWebhook(event: EventDTO, signature: string): Promise<void> {
-    const subScriptionId: string | undefined = event.subscription.id;
-
-    const serviceAccount: ServiceAccount | undefined = this.algoanService.algoanClient
-      .getServiceAccountBySubscriptionId(subScriptionId);
-
-    if (serviceAccount === undefined) {
-      throw new UnauthorizedException(`No service account found for subscription ${subScriptionId}`);
-    }
-
-    const subscription: Subscription | undefined = serviceAccount.subscriptions.find(
-      (sub: Subscription) => sub.id === event.subscription.id,
-    );
-
-    if (subscription === undefined) {
-      return;
-    }
-
-    if (!subscription.validateSignature(signature, (event.payload as unknown) as { [key: string]: string })) {
-      throw new UnauthorizedException('Invalid X-Hub-Signature: you cannot call this API');
-    }
-
-    // Handle the event asynchronously
-    void this.dispatchAndHandleWebhook(serviceAccount, event, subscription);
-
-    return;
-  }
-
-  /**
-   * Dispatch to the right webhook handler and handle
-   *
-   * Allow to asynchronously handle (with `void`) the webhook and firstly respond 204 to the server
-   */
-  private async dispatchAndHandleWebhook(
-    serviceAccount: ServiceAccount,
-    event: EventDTO,
-    subscription: Subscription,
-  ): Promise<void> {
-    // Acknowledge the subscription event
-    const se: SubscriptionEvent = subscription.event(event.id);
-
-    try {
-      switch (event.subscription.eventName) {
-        case EventName.AGGREGATOR_LINK_REQUIRED:
-          assertsTypeValidation(AggregatorLinkRequiredDTO, event.payload);
-          await this.handleAggregatorLinkRequiredEvent(serviceAccount, event.payload);
-          break;
-
-        case EventName.BANK_DETAILS_REQUIRED:
-          assertsTypeValidation(BankDetailsRequiredDTO, event.payload);
-          await this.handleBankDetailsRequiredEvent(serviceAccount, event.payload);
-          break;
-
-        // The default case should never be reached, as the eventName is already checked in the DTO
-        default:
-          void se.update({ status: EventStatus.FAILED });
-
-          return;
-      }
-    } catch (err) {
-      void se.update({ status: EventStatus.ERROR });
-
-      throw err;
-    }
-
-    void se.update({ status: EventStatus.PROCESSED });
-  };
 
   /**
    * Handle Aggregator Link event
    */
-  public async handleAggregatorLinkRequiredEvent(
-    serviceAccount: ServiceAccount,
-    payload: AggregatorLinkRequiredDTO
-  ): Promise<void> {
+  public async handleAggregatorLinkRequiredEvent(payload: AggregatorLinkRequiredDTO): Promise<void> {
     // Authenticate to algoan
-    this.algoanHttpService.authenticate(serviceAccount.clientId, serviceAccount.clientSecret);
+    this.algoanHttpService.authenticate(this.serviceAccount.clientId, this.serviceAccount.clientSecret);
 
     // Get user information and client config
     const customer: Customer = await this.algoanCustomerService.getCustomerById(payload.customerId);
     const callbackUrl: string | undefined = customer.aggregationDetails.callbackUrl;
-    const clientConfig: ClientConfig | undefined = (serviceAccount.config as ClientConfig | undefined);
+    const clientConfig: ClientConfig | undefined = (this.serviceAccount.config as ClientConfig | undefined);
 
     // Validate config
     if (callbackUrl === undefined || clientConfig === undefined) {
@@ -214,12 +137,9 @@ export class HooksService {
   /**
    * Handle Aggregator Link event
    */
-  public async handleBankDetailsRequiredEvent(
-    serviceAccount: ServiceAccount,
-    payload: BankDetailsRequiredDTO,
-  ): Promise<void> {
+  public async handleBankDetailsRequiredEvent(payload: BankDetailsRequiredDTO): Promise<void> {
     // Get client config
-    const clientConfig: ClientConfig | undefined = (serviceAccount.config as ClientConfig | undefined);
+    const clientConfig: ClientConfig | undefined = (this.serviceAccount.config as ClientConfig | undefined);
 
     // Validate config
     if (clientConfig === undefined) {
@@ -246,7 +166,7 @@ export class HooksService {
     const analysis: AnalysisUpdateInput = mapTinkDataToAlgoanAnalysis(accounts, transactions, providers);
 
     // Authenticate to algoan
-    this.algoanHttpService.authenticate(serviceAccount.clientId, serviceAccount.clientSecret);
+    this.algoanHttpService.authenticate(this.serviceAccount.clientId, this.serviceAccount.clientSecret);
 
     // Update the user analysis
     await this.algoanAnalysisService.updateAnalysis(
