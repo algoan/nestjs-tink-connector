@@ -1,7 +1,7 @@
 # ---------------
 # Pull node image as Builder. we will transpile Ts files to Js here
 # ---------------
-FROM node:lts-alpine as builder
+FROM node:fermium-alpine as builder
 
 # Create app directory
 WORKDIR /usr/src/app
