@@ -36,6 +36,7 @@ export function convertNullToUndefined<InputType, ReturnType>(value: InputType):
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function assertsTypeValidation<ValueType extends object>(
   classValidation: ClassType<ValueType>,
+  // eslint-disable-next-line @typescript-eslint/ban-types
   value: object,
 ): asserts value is ValueType {
   transformAndValidateSync(classValidation, value);
