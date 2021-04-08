@@ -1,22 +1,22 @@
 /* eslint-disable @typescript-eslint/naming-convention,camelcase */
 
-import { TinkAccountObject } from "../../tink/dto/account.objects";
-import { tinkAccountObjectMock } from "../../tink/dto/account.objects.mock";
-import { tinkProviderObjectMock } from "../../tink/dto/provider.objects.mock";
-import { TinkAccountType } from "../../tink/dto/account.enums";
-import { AccountType, AccountUsage } from "../../algoan/dto/analysis.enum";
-import { Account, AccountTransaction, AnalysisUpdateInput } from "../../algoan/dto/analysis.inputs";
-import { TinkTransactionResponseObject } from "../../tink/dto/search.objects";
-import { tinkSearchResponseObjectMock } from "../../tink/dto/search.objects.mock";
-import { TinkProviderObject } from "../../tink/dto/provider.objects";
+import { TinkAccountObject } from '../../tink/dto/account.objects';
+import { tinkAccountObjectMock } from '../../tink/dto/account.objects.mock';
+import { tinkProviderObjectMock } from '../../tink/dto/provider.objects.mock';
+import { TinkAccountType } from '../../tink/dto/account.enums';
+import { AccountType, AccountUsage } from '../../algoan/dto/analysis.enum';
+import { Account, AccountTransaction, AnalysisUpdateInput } from '../../algoan/dto/analysis.inputs';
+import { TinkTransactionResponseObject } from '../../tink/dto/search.objects';
+import { tinkSearchResponseObjectMock } from '../../tink/dto/search.objects.mock';
+import { TinkProviderObject } from '../../tink/dto/provider.objects';
 import {
   defaultCurrency,
   mapTinkDataToAlgoanAnalysis,
   mapToAlgaonTransaction,
   mapToAlgoanAccount,
   mapToAlgoanAccountType,
-  mapToIbanAndBic
-} from "./analysis.mapper";
+  mapToIbanAndBic,
+} from './analysis.mapper';
 
 describe('AnalysisMapper', () => {
   describe('mapToAlgaonTransaction', () => {
@@ -40,8 +40,8 @@ describe('AnalysisMapper', () => {
           id: tinkTransaction.id,
           category: tinkTransaction.categoryType,
           type: tinkTransaction.type,
-        }
-      })
+        },
+      });
     });
 
     it('should return an algoan transaction with a default currency', async () => {
@@ -52,7 +52,7 @@ describe('AnalysisMapper', () => {
       };
 
       // transaction currency is undefined
-      expect(tinkTransaction.currencyDenominatedOriginalAmount?.currencyCode).toBeUndefined()
+      expect(tinkTransaction.currencyDenominatedOriginalAmount?.currencyCode).toBeUndefined();
 
       // We map it
       const accountTransaction: AccountTransaction = mapToAlgaonTransaction(tinkTransaction);
@@ -99,10 +99,10 @@ describe('AnalysisMapper', () => {
       const ibanAndBic: Pick<Account, 'iban' | 'bic'> = mapToIbanAndBic(identifiers);
 
       // We should not have a bic
-      expect(ibanAndBic.bic).toBeUndefined()
+      expect(ibanAndBic.bic).toBeUndefined();
 
       // We should not have an iban
-      expect(ibanAndBic.iban).toBeUndefined()
+      expect(ibanAndBic.iban).toBeUndefined();
     });
 
     it('should NOT return iban and bic field if not right values', async () => {
@@ -113,10 +113,10 @@ describe('AnalysisMapper', () => {
       const ibanAndBic: Pick<Account, 'iban' | 'bic'> = mapToIbanAndBic(identifiers);
 
       // We should not have a bic
-      expect(ibanAndBic.bic).toBeUndefined()
+      expect(ibanAndBic.bic).toBeUndefined();
 
       // We should not have an iban
-      expect(ibanAndBic.iban).toBeUndefined()
+      expect(ibanAndBic.iban).toBeUndefined();
     });
 
     it('should NOT return iban and bic field if empty array', async () => {
@@ -127,10 +127,10 @@ describe('AnalysisMapper', () => {
       const ibanAndBic: Pick<Account, 'iban' | 'bic'> = mapToIbanAndBic(identifiers);
 
       // We should not have a bic
-      expect(ibanAndBic.bic).toBeUndefined()
+      expect(ibanAndBic.bic).toBeUndefined();
 
       // We should not have an iban
-      expect(ibanAndBic.iban).toBeUndefined()
+      expect(ibanAndBic.iban).toBeUndefined();
     });
 
     it('should NOT return iban and bic field if empty string', async () => {
@@ -141,32 +141,32 @@ describe('AnalysisMapper', () => {
       const ibanAndBic: Pick<Account, 'iban' | 'bic'> = mapToIbanAndBic(identifiers);
 
       // We should not have a bic
-      expect(ibanAndBic.bic).toBeUndefined()
+      expect(ibanAndBic.bic).toBeUndefined();
 
       // We should not have an iban
-      expect(ibanAndBic.iban).toBeUndefined()
+      expect(ibanAndBic.iban).toBeUndefined();
     });
   });
 
   describe('mapToAlgoanAccountType', () => {
     it(`should return ${AccountType.CHECKING} if ${TinkAccountType.CHECKING}`, async () => {
-      expect(mapToAlgoanAccountType(TinkAccountType.CHECKING)).toBe(AccountType.CHECKING)
+      expect(mapToAlgoanAccountType(TinkAccountType.CHECKING)).toBe(AccountType.CHECKING);
     });
 
     it(`should return ${AccountType.SAVINGS} if ${TinkAccountType.SAVINGS}`, async () => {
-      expect(mapToAlgoanAccountType(TinkAccountType.SAVINGS)).toBe(AccountType.SAVINGS)
+      expect(mapToAlgoanAccountType(TinkAccountType.SAVINGS)).toBe(AccountType.SAVINGS);
     });
 
     it(`should return ${AccountType.LOAN} if ${TinkAccountType.LOAN}`, async () => {
-      expect(mapToAlgoanAccountType(TinkAccountType.LOAN)).toBe(AccountType.LOAN)
+      expect(mapToAlgoanAccountType(TinkAccountType.LOAN)).toBe(AccountType.LOAN);
     });
 
     it(`should return ${AccountType.CREDIT_CARD} if ${TinkAccountType.CREDIT_CARD}`, async () => {
-      expect(mapToAlgoanAccountType(TinkAccountType.CREDIT_CARD)).toBe(AccountType.CREDIT_CARD)
+      expect(mapToAlgoanAccountType(TinkAccountType.CREDIT_CARD)).toBe(AccountType.CREDIT_CARD);
     });
 
     it(`should return ${AccountType.UNKNOWN} if a not available type`, async () => {
-      expect(mapToAlgoanAccountType(TinkAccountType.EXTERN)).toBe(AccountType.UNKNOWN)
+      expect(mapToAlgoanAccountType(TinkAccountType.EXTERN)).toBe(AccountType.UNKNOWN);
     });
   });
 
@@ -182,14 +182,12 @@ describe('AnalysisMapper', () => {
 
     it('should return an algoan account', async () => {
       // transactions mock
-      const tinkTransactionsMock: TinkTransactionResponseObject[] = [tinkSearchResponseObjectMock.results[0].transaction];
+      const tinkTransactionsMock: TinkTransactionResponseObject[] = [
+        tinkSearchResponseObjectMock.results[0].transaction,
+      ];
 
       // We map it
-      const account: Account = mapToAlgoanAccount(
-        tinkAccountObjectMock,
-        tinkTransactionsMock,
-        tinkProviderObjectMock,
-      );
+      const account: Account = mapToAlgoanAccount(tinkAccountObjectMock, tinkTransactionsMock, tinkProviderObjectMock);
 
       // We get an algoan transaction
       expect(account).toEqual({
@@ -226,13 +224,12 @@ describe('AnalysisMapper', () => {
 
     it('should return an algoan account without provider information', async () => {
       // transactions mock
-      const tinkTransactionsMock: TinkTransactionResponseObject[] = [tinkSearchResponseObjectMock.results[0].transaction];
+      const tinkTransactionsMock: TinkTransactionResponseObject[] = [
+        tinkSearchResponseObjectMock.results[0].transaction,
+      ];
 
       // We map it
-      const account: Account = mapToAlgoanAccount(
-        tinkAccountObjectMock,
-        tinkTransactionsMock,
-      );
+      const account: Account = mapToAlgoanAccount(tinkAccountObjectMock, tinkTransactionsMock);
 
       // We get an algoan transaction
       expect(account).toEqual({
@@ -255,12 +252,14 @@ describe('AnalysisMapper', () => {
         },
         transactions: tinkTransactionsMock.map(mapToAlgaonTransaction),
         ...mapToIbanAndBic(tinkAccountObjectMock.identifiers),
-      })
+      });
     });
 
     it('should return an algoan account with a default currency', async () => {
       // transactions mock
-      const tinkTransactionsMock: TinkTransactionResponseObject[] = [tinkSearchResponseObjectMock.results[0].transaction];
+      const tinkTransactionsMock: TinkTransactionResponseObject[] = [
+        tinkSearchResponseObjectMock.results[0].transaction,
+      ];
 
       // Account without currency information
       const tinkAccountWithoutCurrency: TinkAccountObject = {
@@ -269,13 +268,10 @@ describe('AnalysisMapper', () => {
       };
 
       // Tink account currency is undefined
-      expect(tinkAccountWithoutCurrency.currencyDenominatedBalance?.currencyCode).toBeUndefined()
+      expect(tinkAccountWithoutCurrency.currencyDenominatedBalance?.currencyCode).toBeUndefined();
 
       // We map it
-      const account: Account = mapToAlgoanAccount(
-        tinkAccountObjectMock,
-        tinkTransactionsMock,
-      );
+      const account: Account = mapToAlgoanAccount(tinkAccountObjectMock, tinkTransactionsMock);
 
       // New transaction has the default currency
       expect(account.currency).toEqual(defaultCurrency);
@@ -327,16 +323,15 @@ describe('AnalysisMapper', () => {
           ...tinkProviderObjectMock,
           financialInstitutionId: `financial-${process.pid}`,
           displayName: `${tinkProviderObjectMock.displayName}-${process.pid}`,
-
         },
       ];
 
-     // We map it
-     const analysisUpdate: AnalysisUpdateInput = mapTinkDataToAlgoanAnalysis(
-      tinkAccountObjectsMock,
-      tinkTransactionsMock,
-      tinkProviderObjectsMock,
-    );
+      // We map it
+      const analysisUpdate: AnalysisUpdateInput = mapTinkDataToAlgoanAnalysis(
+        tinkAccountObjectsMock,
+        tinkTransactionsMock,
+        tinkProviderObjectsMock,
+      );
 
       // We get an algoan transaction input
       expect(analysisUpdate).toEqual({
@@ -424,7 +419,7 @@ describe('AnalysisMapper', () => {
             usage: 'PERSONAL',
           },
         ],
-      })
+      });
     });
 
     afterEach(async () => {

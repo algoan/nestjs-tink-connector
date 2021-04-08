@@ -5,7 +5,7 @@
  *
  * @link https://docs.tink.com/api#oauth-create-delegated-authorization-form-parameters
  */
- export interface CreateDelegatedAuthorizationInput {
+export interface CreateDelegatedAuthorizationInput {
   user_id: string;
   // external_user_id?: string; // We will only use the tink user_id
   id_hint: string;

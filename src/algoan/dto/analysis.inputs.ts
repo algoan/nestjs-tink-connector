@@ -1,9 +1,9 @@
-import { AccountType, AccountUsage, AccountSavingType, AccountLoanType } from "./analysis.enum";
+import { AccountType, AccountUsage, AccountSavingType, AccountLoanType } from './analysis.enum';
 
 /**
  * Analysis Update Input
  */
- export interface AnalysisUpdateInput {
+export interface AnalysisUpdateInput {
   accounts: Account[];
 }
 
@@ -35,11 +35,10 @@ export interface AccountOwner {
   name?: string;
 }
 
-
 /**
  * Accoun tBank
  */
- export interface AccountBank {
+export interface AccountBank {
   id?: string;
   logoUrl?: string;
   name?: string;
@@ -49,7 +48,7 @@ export interface AccountOwner {
 /**
  * Account Details
  */
- export interface AccountDetails {
+export interface AccountDetails {
   savings?: AccountDetailsSavings;
   loans?: AccountDetailsLoans;
 }
@@ -57,7 +56,7 @@ export interface AccountOwner {
 /**
  * Account Details Savings
  */
- export interface AccountDetailsSavings {
+export interface AccountDetailsSavings {
   type?: AccountSavingType;
   openedAt?: string; // IsoDateString
   maximumAmount?: number;
@@ -66,7 +65,7 @@ export interface AccountOwner {
 /**
  * Account Details Loans
  */
- export interface AccountDetailsLoans {
+export interface AccountDetailsLoans {
   type?: AccountLoanType;
   amount?: number;
   startDate?: string; // IsoDateString
@@ -81,14 +80,14 @@ export interface AccountOwner {
 /**
  * Account Aggregator
  */
- export interface AccountAggregator {
+export interface AccountAggregator {
   id: string;
 }
 
 /**
  * Account Transactions
  */
- export interface AccountTransaction {
+export interface AccountTransaction {
   dates: AccountTransactionDates;
   description: string;
   amount: number;
@@ -100,7 +99,7 @@ export interface AccountOwner {
 /**
  * Account Transaction Dates
  */
- export interface AccountTransactionDates {
+export interface AccountTransactionDates {
   debitedAt?: string; // IsoDateString
   bookedAt?: string; // IsoDateString
 }
@@ -108,9 +107,8 @@ export interface AccountOwner {
 /**
  * Account Transaction Aggregator
  */
- export interface AccountTransactionAggregator {
+export interface AccountTransactionAggregator {
   id?: string;
   category?: string;
   type?: string;
 }
-

@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers */
-import { tinkAccountObjectMock } from "./account.objects.mock"
-import { TinkSearchResponseObject } from "./search.objects"
-import { TinkTransactionCategoryType, TinkTransactionType } from "./transaction.enums"
+import { tinkAccountObjectMock } from './account.objects.mock';
+import { TinkSearchResponseObject } from './search.objects';
+import { TinkTransactionCategoryType, TinkTransactionType } from './transaction.enums';
 
 /**
  * Search response
@@ -23,6 +23,6 @@ export const tinkSearchResponseObjectMock: TinkSearchResponseObject = {
         type: TinkTransactionType.CREDIT_CARD,
         upcoming: false,
       },
-    }
-  ]
-}
+    },
+  ],
+};

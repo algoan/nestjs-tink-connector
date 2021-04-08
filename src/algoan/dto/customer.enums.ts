@@ -9,6 +9,6 @@ export enum AggregationDetailsMode {
 /**
  * AggregationDetailsAggregatorName
  */
- export enum AggregationDetailsAggregatorName {
+export enum AggregationDetailsAggregatorName {
   tink = 'TINK',
 }

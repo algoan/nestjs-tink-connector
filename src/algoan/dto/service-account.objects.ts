@@ -1,5 +1,5 @@
-import { IsEnum, IsString } from "class-validator";
-import { ClientPricing } from "./service-account.enums";
+import { IsEnum, IsString } from 'class-validator';
+import { ClientPricing } from './service-account.enums';
 
 /**
  * Client Config

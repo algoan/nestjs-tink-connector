@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention, camelcase */
 
-import { GrantType } from "./grant-type.enum";
+import { GrantType } from './grant-type.enum';
 
 /**
  * Input to send to get a new access token

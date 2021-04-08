@@ -48,8 +48,8 @@ export const buildFakeApp = async (): Promise<INestApplication> => {
           clientSecret: 'tinkClientSecret',
           pricing: 'STANDARD',
           market: 'BE',
-          locale: 'en_US'
-        }
+          locale: 'en_US',
+        },
       },
     ],
     path: '/v1/service-accounts',

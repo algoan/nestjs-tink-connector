@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention, camelcase */
 
-import { AccessTokenObject } from "./access-token.object";
+import { AccessTokenObject } from './access-token.object';
 
 /**
  * Mock of a new token
@@ -12,4 +12,4 @@ export const accessTokenObjectMock: AccessTokenObject = {
   refresh_token: 'refresh_token',
   scope: 'scope',
   token_type: 'token_type',
-}
+};

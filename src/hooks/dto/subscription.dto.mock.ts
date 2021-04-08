@@ -9,4 +9,4 @@ export const subscriptionMock: SubscriptionDTO = {
   target: 'https://target.url',
   eventName: EventName.BANKREADER_REQUIRED,
   status: 'ACTIVE',
-}
+};

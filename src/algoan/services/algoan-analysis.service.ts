@@ -1,7 +1,7 @@
-import { Injectable } from "@nestjs/common";
-import { AnalysisUpdateInput } from "../dto/analysis.inputs";
-import { Analysis } from "../dto/analysis.objects";
-import { AlgoanHttpService } from "./algoan-http.service";
+import { Injectable } from '@nestjs/common';
+import { AnalysisUpdateInput } from '../dto/analysis.inputs';
+import { Analysis } from '../dto/analysis.objects';
+import { AlgoanHttpService } from './algoan-http.service';
 
 /**
  * Service to manage analysis
@@ -10,9 +10,7 @@ import { AlgoanHttpService } from "./algoan-http.service";
 export class AlgoanAnalysisService {
   private readonly apiVersion: string = 'v2';
 
-  constructor(
-    private readonly algoanHttpService: AlgoanHttpService,
-  ) {}
+  constructor(private readonly algoanHttpService: AlgoanHttpService) {}
 
   /**
    * Update the given analysis

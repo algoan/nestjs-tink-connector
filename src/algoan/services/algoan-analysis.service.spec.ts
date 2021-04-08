@@ -11,7 +11,6 @@ import { customerMock } from '../dto/customer.objects.mock';
 import { AlgoanAnalysisService } from './algoan-analysis.service';
 import { AlgoanHttpService } from './algoan-http.service';
 
-
 describe('AlgoanAnalysisService', () => {
   let algoanAnalysisService: AlgoanAnalysisService;
   let algoanHttpService: AlgoanHttpService;
@@ -19,9 +18,7 @@ describe('AlgoanAnalysisService', () => {
   beforeEach(async () => {
     // To mock scoped DI
     const contextId = ContextIdFactory.create();
-    jest
-      .spyOn(ContextIdFactory, 'getByRequest')
-      .mockImplementation(() => contextId);
+    jest.spyOn(ContextIdFactory, 'getByRequest').mockImplementation(() => contextId);
 
     const moduleRef: TestingModule = await Test.createTestingModule({
       providers: [
@@ -44,11 +41,9 @@ describe('AlgoanAnalysisService', () => {
 
   describe('updateAnalysis', () => {
     it('should patch an analysis', async () => {
-      const spy = jest
-        .spyOn(algoanHttpService, 'patch')
-        .mockReturnValue(Promise.resolve(analysisMock));
+      const spy = jest.spyOn(algoanHttpService, 'patch').mockReturnValue(Promise.resolve(analysisMock));
       const input: AnalysisUpdateInput = {
-        accounts: []
+        accounts: [],
       };
       const analysis: Analysis = await algoanAnalysisService.updateAnalysis(customerMock.id, analysisMock.id, input);
 

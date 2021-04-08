@@ -13,10 +13,7 @@ import { TinkTransactionService } from './services/tink-transaction.service';
  * Hooks module
  */
 @Module({
-  imports: [
-    ConfigModule,
-    HttpModule,
-  ],
+  imports: [ConfigModule, HttpModule],
   providers: [
     TinkAccountService,
     TinkHttpService,
@@ -32,6 +29,6 @@ import { TinkTransactionService } from './services/tink-transaction.service';
     TinkUserService,
     TinkProviderService,
     TinkTransactionService,
-  ]
+  ],
 })
 export class TinkModule {}

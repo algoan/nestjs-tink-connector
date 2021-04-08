@@ -17,9 +17,7 @@ export class AlgoanService implements OnModuleInit {
    */
   public algoanClient!: Algoan;
 
-  constructor(
-    @Inject(CONFIG) private readonly config: Config,
-  ) {}
+  constructor(@Inject(CONFIG) private readonly config: Config) {}
 
   /**
    * Fetch services and creates subscription

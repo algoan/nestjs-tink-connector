@@ -12,17 +12,8 @@ import { serviceAccoutProviders } from './service-account.providers';
  * Hooks module
  */
 @Module({
-  imports: [
-    AlgoanModule,
-    ConfigModule,
-    TinkModule,
-  ],
-  controllers: [
-    HooksController,
-  ],
-  providers: [
-    ...serviceAccoutProviders,
-    HooksService,
-  ],
+  imports: [AlgoanModule, ConfigModule, TinkModule],
+  controllers: [HooksController],
+  providers: [...serviceAccoutProviders, HooksService],
 })
 export class HooksModule {}

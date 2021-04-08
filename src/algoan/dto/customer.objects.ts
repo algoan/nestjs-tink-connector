@@ -1,4 +1,4 @@
-import { AggregationDetailsMode, AggregationDetailsAggregatorName } from "./customer.enums";
+import { AggregationDetailsMode, AggregationDetailsAggregatorName } from './customer.enums';
 
 /**
  * Customer

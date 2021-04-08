@@ -1,6 +1,6 @@
-import { customerMock } from "../../algoan/dto/customer.objects.mock";
+import { customerMock } from '../../algoan/dto/customer.objects.mock';
 
-import { BankDetailsRequiredDTO } from "./bank-details-required-payload.dto";
+import { BankDetailsRequiredDTO } from './bank-details-required-payload.dto';
 
 /**
  * Mock for a payload

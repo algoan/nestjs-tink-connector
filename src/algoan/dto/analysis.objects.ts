@@ -1,4 +1,4 @@
-import { AnalysisStatus } from "./analysis.enum";
+import { AnalysisStatus } from './analysis.enum';
 
 /**
  * Analysis

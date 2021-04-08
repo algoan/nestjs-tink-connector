@@ -1,10 +1,10 @@
 /* eslint-disable prefer-arrow/prefer-arrow-functions */
-import { AccountType, AccountUsage } from "../../algoan/dto/analysis.enum";
-import { Account, AccountTransaction, AnalysisUpdateInput } from "../../algoan/dto/analysis.inputs";
-import { TinkAccountFlag, TinkAccountType } from "../../tink/dto/account.enums";
-import { TinkAccountObject } from "../../tink/dto/account.objects";
-import { TinkProviderObject } from "../../tink/dto/provider.objects";
-import { TinkTransactionResponseObject } from "../../tink/dto/search.objects";
+import { AccountType, AccountUsage } from '../../algoan/dto/analysis.enum';
+import { Account, AccountTransaction, AnalysisUpdateInput } from '../../algoan/dto/analysis.inputs';
+import { TinkAccountFlag, TinkAccountType } from '../../tink/dto/account.enums';
+import { TinkAccountObject } from '../../tink/dto/account.objects';
+import { TinkProviderObject } from '../../tink/dto/provider.objects';
+import { TinkTransactionResponseObject } from '../../tink/dto/search.objects';
 
 /**
  * Default currency if no provided
@@ -20,41 +20,37 @@ export function mapTinkDataToAlgoanAnalysis(
   providers: TinkProviderObject[],
 ): AnalysisUpdateInput {
   // Map providers by financialInstitutionId
-  const providerById: Map<string, TinkProviderObject> = providers
-    .reduce(
-      (map: Map<string, TinkProviderObject>, p: TinkProviderObject) => {
-        map.set(p.financialInstitutionId, p);
+  const providerById: Map<string, TinkProviderObject> = providers.reduce(
+    (map: Map<string, TinkProviderObject>, p: TinkProviderObject) => {
+      map.set(p.financialInstitutionId, p);
 
-        return map;
-      },
-      new Map(),
-    );
+      return map;
+    },
+    new Map(),
+  );
 
   // Group transactions by accountId
-  const transactionsByAccountId: Map<string, TinkTransactionResponseObject[]> = transactions
-    .reduce(
-      (map: Map<string, TinkTransactionResponseObject[]>, t: TinkTransactionResponseObject) => {
-        map.set(t.accountId, [...(map.get(t.accountId) ?? []), t]);
+  const transactionsByAccountId: Map<string, TinkTransactionResponseObject[]> = transactions.reduce(
+    (map: Map<string, TinkTransactionResponseObject[]>, t: TinkTransactionResponseObject) => {
+      map.set(t.accountId, [...(map.get(t.accountId) ?? []), t]);
 
-        return map;
-      },
-      new Map(),
-    );
-
+      return map;
+    },
+    new Map(),
+  );
 
   return {
-    accounts: accounts
-      .map(
-        (tinkAccount: TinkAccountObject) => mapToAlgoanAccount(
-          tinkAccount,
-          transactionsByAccountId.get(tinkAccount.id) ?? [],
-          tinkAccount.financialInstitutionId !== undefined
-            ? providerById.get(tinkAccount.financialInstitutionId)
-            : undefined,
-        )
+    accounts: accounts.map((tinkAccount: TinkAccountObject) =>
+      mapToAlgoanAccount(
+        tinkAccount,
+        transactionsByAccountId.get(tinkAccount.id) ?? [],
+        tinkAccount.financialInstitutionId !== undefined
+          ? providerById.get(tinkAccount.financialInstitutionId)
+          : undefined,
       ),
+    ),
   };
-};
+}
 
 /**
  * Map To Algoan Account
@@ -70,11 +66,7 @@ export function mapToAlgoanAccount(
     currency: tinkAccount.currencyDenominatedBalance?.currencyCode ?? defaultCurrency,
     type: mapToAlgoanAccountType(tinkAccount.type),
     usage: AccountUsage.PERSONAL,
-    owners: tinkAccount.holderName !== undefined
-      ? [
-          { name: tinkAccount.holderName},
-        ]
-      : undefined,
+    owners: tinkAccount.holderName !== undefined ? [{ name: tinkAccount.holderName }] : undefined,
     name: tinkAccount.name,
     bank: {
       id: tinkAccount.financialInstitutionId,
@@ -88,7 +80,7 @@ export function mapToAlgoanAccount(
     },
     transactions: tinkTransactions.map(mapToAlgaonTransaction),
     ...mapToIbanAndBic(tinkAccount.identifiers),
-  }
+  };
 }
 
 /**
@@ -97,17 +89,17 @@ export function mapToAlgoanAccount(
 export function mapToAlgoanAccountType(tinkType: TinkAccountObject['type']): Account['type'] {
   switch (tinkType) {
     case TinkAccountType.CHECKING:
-      return AccountType.CHECKING
+      return AccountType.CHECKING;
     case TinkAccountType.SAVINGS:
-      return AccountType.SAVINGS
+      return AccountType.SAVINGS;
     case TinkAccountType.LOAN:
-      return AccountType.LOAN
+      return AccountType.LOAN;
     case TinkAccountType.CREDIT_CARD:
-      return AccountType.CREDIT_CARD
+      return AccountType.CREDIT_CARD;
     default:
       return AccountType.UNKNOWN;
   }
- }
+}
 
 /**
  * Map To Algoan iban and bic fields
@@ -122,7 +114,7 @@ export function mapToAlgoanAccountType(tinkType: TinkAccountObject['type']): Acc
 export function mapToIbanAndBic(identifiers: TinkAccountObject['identifiers']): Pick<Account, 'iban' | 'bic'> {
   const regex: RegExp = /^\[\"iban\:\/\/(?:(?:([A-Z0-9]+)|(?:([A-Z]+)\/([A-Z0-9]+))))\"\]/g;
 
-  const matchs: (string | undefined)[] | undefined = regex.exec(identifiers) ?? undefined;
+  const matchs: (string | undefined)[] | undefined = regex.exec(identifiers) ?? undefined;
 
   if (matchs !== undefined) {
     if (matchs[1] !== undefined) {
@@ -158,6 +150,6 @@ export function mapToAlgaonTransaction(tinkTransaction: TinkTransactionResponseO
       id: tinkTransaction.id,
       category: tinkTransaction.categoryType,
       type: tinkTransaction.type,
-    }
-  }
+    },
+  };
 }

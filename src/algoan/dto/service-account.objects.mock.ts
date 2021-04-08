@@ -1,5 +1,5 @@
-import { ClientPricing } from "./service-account.enums";
-import { ClientConfig } from "./service-account.objects";
+import { ClientPricing } from './service-account.enums';
+import { ClientConfig } from './service-account.objects';
 
 /**
  * Client Config

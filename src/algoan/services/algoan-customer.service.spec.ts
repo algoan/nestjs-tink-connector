@@ -17,9 +17,7 @@ describe('AlgoanCustomerService', () => {
   beforeEach(async () => {
     // To mock scoped DI
     const contextId = ContextIdFactory.create();
-    jest
-      .spyOn(ContextIdFactory, 'getByRequest')
-      .mockImplementation(() => contextId);
+    jest.spyOn(ContextIdFactory, 'getByRequest').mockImplementation(() => contextId);
 
     const moduleRef: TestingModule = await Test.createTestingModule({
       providers: [
@@ -42,9 +40,7 @@ describe('AlgoanCustomerService', () => {
 
   describe('getCustomerById', () => {
     it('should get a customer by id', async () => {
-      const spy = jest
-        .spyOn(algoanHttpService, 'get')
-        .mockReturnValue(Promise.resolve(customerMock));
+      const spy = jest.spyOn(algoanHttpService, 'get').mockReturnValue(Promise.resolve(customerMock));
 
       const customer: Customer = await algoanCustomerService.getCustomerById(customerMock.id);
 
@@ -55,9 +51,7 @@ describe('AlgoanCustomerService', () => {
 
   describe('updateCustomer', () => {
     it('should patch a customer', async () => {
-      const spy = jest
-        .spyOn(algoanHttpService, 'patch')
-        .mockReturnValue(Promise.resolve(customerMock));
+      const spy = jest.spyOn(algoanHttpService, 'patch').mockReturnValue(Promise.resolve(customerMock));
       const input: CustomerUpdateInput = {
         aggregationDetails: {
           callbackUrl: 'string',

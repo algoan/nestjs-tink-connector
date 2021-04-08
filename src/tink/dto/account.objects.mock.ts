@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { TinkAccountType } from "./account.enums";
+import { TinkAccountType } from './account.enums';
 import {
   TinkAccountObject,
   TinkAccountCurrencyDenominatedBalanceObject,
   TinkAccountListResponseObject,
-} from "./account.objects";
-import { tinkProviderObjectMock } from "./provider.objects.mock";
+} from './account.objects';
+import { tinkProviderObjectMock } from './provider.objects.mock';
 
 /**
  * Mock for a Tink Account Currency Denominated Balance
  */
- export const tinkAccountCurrencyDenominatedBalanceObjectMock: TinkAccountCurrencyDenominatedBalanceObject = {
+export const tinkAccountCurrencyDenominatedBalanceObjectMock: TinkAccountCurrencyDenominatedBalanceObject = {
   currencyCode: 'EUR',
-}
+};
 
 /**
  * Mock for a Tink account
@@ -28,13 +28,11 @@ export const tinkAccountObjectMock: TinkAccountObject = {
   holderName: 'Thomas Alan Waits',
   name: 'My account',
   type: TinkAccountType.CHECKING,
-}
+};
 
 /**
  * Mock for a Tink Account List Response
  */
 export const tinkAccountListResponseObjectMock: TinkAccountListResponseObject = {
   accounts: [tinkAccountObjectMock],
-}
-
-
+};

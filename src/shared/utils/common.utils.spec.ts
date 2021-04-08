@@ -30,9 +30,7 @@ describe('convertNullToUndefined', () => {
     // We convert to undefined
     const testUndefined: Record<string, unknown> = convertNullToUndefined(testNull);
     // The value should be undefined
-    expect(
-      testUndefined,
-    ).toEqual({
+    expect(testUndefined).toEqual({
       field: undefined,
       field1: undefined,
       field2: 0,
@@ -74,9 +72,7 @@ describe('convertNullToUndefined', () => {
     // We convert to undefined
     const testUndefined: Record<string, unknown> = convertNullToUndefined(testNull);
     // The value should be undefined
-    expect(
-      testUndefined,
-    ).toEqual({
+    expect(testUndefined).toEqual({
       field: undefined,
       field1: {
         field: undefined,
@@ -93,20 +89,22 @@ describe('convertNullToUndefined', () => {
   it(`Should convert null to undefined recursively in an array`, () => {
     // We have a multiple null item recursively
     const testNull: unknown[] = [
-      null, 0, null, undefined,
+      null,
+      0,
+      null,
+      undefined,
       [null, '1', null, undefined, [[null, 2, null, undefined], 'aaaa', null, undefined]],
     ];
     // We convert to undefined
     const testUndefined: unknown[] = convertNullToUndefined(testNull);
     // The value should be undefined
-    expect(
-      testUndefined,
-    ).toEqual(
-      [
-        undefined, 0, undefined, undefined,
-        [undefined, '1', undefined, undefined, [[undefined, 2, undefined, undefined], 'aaaa', undefined, undefined]],
-      ],
-    );
+    expect(testUndefined).toEqual([
+      undefined,
+      0,
+      undefined,
+      undefined,
+      [undefined, '1', undefined, undefined, [[undefined, 2, undefined, undefined], 'aaaa', undefined, undefined]],
+    ]);
   });
 
   it(`Should convert null to undefined recursively in an object and an array`, () => {
@@ -119,16 +117,7 @@ describe('convertNullToUndefined', () => {
           0,
           {
             field: 0,
-            field1: [
-              undefined,
-              null,
-              'aaaa',
-              0,
-              [
-                'bbbb',
-                null,
-              ],
-            ],
+            field1: [undefined, null, 'aaaa', 0, ['bbbb', null]],
           },
         ],
       },
@@ -136,9 +125,7 @@ describe('convertNullToUndefined', () => {
     // We convert to undefined
     const testUndefined: Record<string, unknown> = convertNullToUndefined(testNull);
     // The value should be undefined
-    expect(
-      testUndefined,
-    ).toEqual({
+    expect(testUndefined).toEqual({
       field: undefined,
       field1: {
         field: [
@@ -146,16 +133,7 @@ describe('convertNullToUndefined', () => {
           0,
           {
             field: 0,
-            field1: [
-              undefined,
-              undefined,
-              'aaaa',
-              0,
-              [
-                'bbbb',
-                undefined,
-              ],
-            ],
+            field1: [undefined, undefined, 'aaaa', 0, ['bbbb', undefined]],
           },
         ],
       },
@@ -167,24 +145,24 @@ describe('assertsTypeValidation', () => {
   /**
    * Test Validation Class
    */
-  class TestValidationClass  {
+  class TestValidationClass {
     @IsString()
     public testField: string;
   }
 
   it(`should NOT throw an error if data is correct`, () => {
-    expect(() => assertsTypeValidation(TestValidationClass, {testField: 'toto'})).not.toThrowError();
+    expect(() => assertsTypeValidation(TestValidationClass, { testField: 'toto' })).not.toThrowError();
   });
 
   it(`should throw an error if data is NOT correct`, () => {
-    expect(() => assertsTypeValidation(TestValidationClass, {testField: 5})).toThrowError();
+    expect(() => assertsTypeValidation(TestValidationClass, { testField: 5 })).toThrowError();
   });
 
   it(`should compile without error`, () => {
     const testValidation = (testData: { toto: number } | TestValidationClass): number => {
       assertsTypeValidation(TestValidationClass, testData);
 
-      return testData.testField.length
+      return testData.testField.length;
     };
   });
 });
