@@ -77,8 +77,8 @@ describe('HooksController (e2e)', () => {
           id: 'customerId',
           customIdentifier: 'client_unique_identifier',
           aggregationDetails: {
-            callbackUrl: `${fakeAlgoanBaseUrl}/callback`
-          }
+            callbackUrl: `${fakeAlgoanBaseUrl}/callback`,
+          },
         },
         path: '/v2/customers/customerId',
       });
@@ -92,7 +92,7 @@ describe('HooksController (e2e)', () => {
           aggregationDetails: {
             callbackUrl: `${fakeAlgoanBaseUrl}/callback`,
             redirectUrl: 'https://link.tink.com/1.0/account-check/...',
-          }
+          },
         },
         path: '/v2/customers/customerId',
       });

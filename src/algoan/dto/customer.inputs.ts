@@ -1,8 +1,7 @@
-
 /**
  * Customer Update Input
  */
- export interface CustomerUpdateInput {
+export interface CustomerUpdateInput {
   aggregationDetails?: AggregationDetailsUpdateInput;
 }
 

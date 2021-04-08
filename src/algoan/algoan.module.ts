@@ -11,20 +11,8 @@ import { AlgoanService } from './services/algoan.service';
  * Algoan module
  */
 @Module({
-  imports: [
-    ConfigModule,
-  ],
-  providers: [
-    AlgoanAnalysisService,
-    AlgoanCustomerService,
-    AlgoanHttpService,
-    AlgoanService,
-  ],
-  exports: [
-    AlgoanAnalysisService,
-    AlgoanCustomerService,
-    AlgoanHttpService,
-    AlgoanService,
-  ],
+  imports: [ConfigModule],
+  providers: [AlgoanAnalysisService, AlgoanCustomerService, AlgoanHttpService, AlgoanService],
+  exports: [AlgoanAnalysisService, AlgoanCustomerService, AlgoanHttpService, AlgoanService],
 })
 export class AlgoanModule {}

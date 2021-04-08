@@ -12,12 +12,10 @@ export enum TinkTransactionCategoryType {
 /**
  * Tink Transaction  Type
  */
- export enum TinkTransactionType {
+export enum TinkTransactionType {
   DEFAULT = 'DEFAULT',
   CREDIT_CARD = 'CREDIT_CARD',
   TRANSFER = 'TRANSFER',
   PAYMENT = 'PAYMENT',
   WITHDRAWAL = 'WITHDRAWAL',
 }
-
-

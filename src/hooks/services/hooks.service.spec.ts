@@ -60,26 +60,18 @@ describe('HookService', () => {
   beforeEach(async () => {
     // To mock scoped DI
     const contextId = ContextIdFactory.create();
-    jest
-      .spyOn(ContextIdFactory, 'getByRequest')
-      .mockImplementation(() => contextId);
+    jest.spyOn(ContextIdFactory, 'getByRequest').mockImplementation(() => contextId);
 
-    const serviceAccountValue: ServiceAccount = new ServiceAccount(
-      'mockBaseURL',
-      {
-        id: 'mockServiceAccountId',
-        clientId: 'mockClientId',
-        clientSecret: 'mockClientSecret',
-        createdAt: 'mockCreatedAt',
-        config: serviceAccountConfigMock,
-      } as IServiceAccount,
-    );
+    const serviceAccountValue: ServiceAccount = new ServiceAccount('mockBaseURL', {
+      id: 'mockServiceAccountId',
+      clientId: 'mockClientId',
+      clientSecret: 'mockClientSecret',
+      createdAt: 'mockCreatedAt',
+      config: serviceAccountConfigMock,
+    } as IServiceAccount);
 
     const moduleRef: TestingModule = await Test.createTestingModule({
-      imports: [
-        AlgoanModule,
-        TinkModule,
-      ],
+      imports: [AlgoanModule, TinkModule],
       providers: [
         HooksService,
         {
@@ -89,7 +81,7 @@ describe('HookService', () => {
         {
           provide: ServiceAccount,
           useValue: serviceAccountValue,
-        }
+        },
       ],
     }).compile();
 
@@ -116,10 +108,7 @@ describe('HookService', () => {
     jest.spyOn(algoanService.algoanClient, 'getServiceAccountBySubscriptionId').mockReturnValue(serviceAccount);
 
     serviceAccount.subscriptions = [
-      new Subscription(
-        subscriptionMock,
-        new RequestBuilder('mockBaseURL', { clientId: 'mockClientId' }),
-      ),
+      new Subscription(subscriptionMock, new RequestBuilder('mockBaseURL', { clientId: 'mockClientId' })),
     ];
   });
 
@@ -128,13 +117,13 @@ describe('HookService', () => {
   });
 
   describe('handleBankreaderLinkRequiredEvent', () => {
-    let algoanAuthenticateSpy
-    let tinkAuthenticateAsClientWithCredentialsSpy
-    let updateCustomerSpy
-    let getLinkSpy
-    let getCustomerByIdSpy
-    let createNewUserSpy
-    let delegateAuthorizationToUserSpy
+    let algoanAuthenticateSpy;
+    let tinkAuthenticateAsClientWithCredentialsSpy;
+    let updateCustomerSpy;
+    let getLinkSpy;
+    let getCustomerByIdSpy;
+    let createNewUserSpy;
+    let delegateAuthorizationToUserSpy;
 
     beforeEach(async () => {
       algoanAuthenticateSpy = jest.spyOn(algoanHttpService, 'authenticate').mockReturnValue();
@@ -152,26 +141,24 @@ describe('HookService', () => {
 
     it('should throw error if customer callback url missing', async () => {
       // We return a customer without callback url
-      updateCustomerSpy = jest
-        .spyOn(algoanCustomerService, 'getCustomerById')
-        .mockResolvedValue({
-          ...customerMock,
-          aggregationDetails: {
-            ...customerMock.aggregationDetails,
-            callbackUrl: undefined,
-          }
-        });
+      updateCustomerSpy = jest.spyOn(algoanCustomerService, 'getCustomerById').mockResolvedValue({
+        ...customerMock,
+        aggregationDetails: {
+          ...customerMock.aggregationDetails,
+          callbackUrl: undefined,
+        },
+      });
 
-      await expect(hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock))
-        .rejects
-        .toThrowError(`Missing information: callbackUrl: undefined, clientConfig: ${JSON.stringify(serviceAccountConfigMock)}`);
+      await expect(hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock)).rejects.toThrowError(
+        `Missing information: callbackUrl: undefined, clientConfig: ${JSON.stringify(serviceAccountConfigMock)}`,
+      );
     });
 
     it('should throw error if client config missing', async () => {
       serviceAccount.config = undefined;
-      await expect(hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock))
-        .rejects
-        .toThrowError(`Missing information: callbackUrl: ${customerMock.aggregationDetails.callbackUrl}, clientConfig: undefined`);
+      await expect(hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock)).rejects.toThrowError(
+        `Missing information: callbackUrl: ${customerMock.aggregationDetails.callbackUrl}, clientConfig: undefined`,
+      );
     });
 
     it('should do these steps if pricing STANDARD', async () => {
@@ -198,13 +185,11 @@ describe('HookService', () => {
       });
 
       // update
-      expect(updateCustomerSpy).toHaveBeenCalledWith(
-        aggregatorLinkRequiredMock.customerId,
-        {
-          aggregationDetails: {
-            redirectUrl: 'MY_LINK_URL',
-          }
-        });
+      expect(updateCustomerSpy).toHaveBeenCalledWith(aggregatorLinkRequiredMock.customerId, {
+        aggregationDetails: {
+          redirectUrl: 'MY_LINK_URL',
+        },
+      });
     });
 
     it('should do these steps if pricing PREMIUM WITHOUT an existing tink user', async () => {
@@ -219,7 +204,7 @@ describe('HookService', () => {
       expect(tinkAuthenticateAsClientWithCredentialsSpy).toHaveBeenCalledWith(
         serviceAccountConfigMock.clientId,
         serviceAccountConfigMock.clientSecret,
-      )
+      );
       expect(createNewUserSpy).toHaveBeenCalledWith({
         external_user_id: aggregatorLinkRequiredMock.customerId,
         locale: serviceAccountConfigMock.locale,
@@ -242,27 +227,23 @@ describe('HookService', () => {
       });
 
       // update
-      expect(updateCustomerSpy).toHaveBeenCalledWith(
-        aggregatorLinkRequiredMock.customerId,
-        {
-          aggregationDetails: {
-            redirectUrl: 'MY_LINK_URL',
-            userId: createUserObject.user_id,
-          }
-        });
+      expect(updateCustomerSpy).toHaveBeenCalledWith(aggregatorLinkRequiredMock.customerId, {
+        aggregationDetails: {
+          redirectUrl: 'MY_LINK_URL',
+          userId: createUserObject.user_id,
+        },
+      });
     });
 
     it('should do these steps if pricing PREMIUM WITH an existing tink user', async () => {
       // mock to return an existing userId
-      getCustomerByIdSpy = jest
-        .spyOn(algoanCustomerService, 'getCustomerById')
-        .mockResolvedValue({
-          ...customerMock,
-          aggregationDetails: {
-            ...customerMock.aggregationDetails,
-            userId: createUserObject.user_id,
-          }
-        });
+      getCustomerByIdSpy = jest.spyOn(algoanCustomerService, 'getCustomerById').mockResolvedValue({
+        ...customerMock,
+        aggregationDetails: {
+          ...customerMock.aggregationDetails,
+          userId: createUserObject.user_id,
+        },
+      });
 
       serviceAccountConfigMock.pricing = ClientPricing.PREMIUM;
       await hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock);
@@ -291,14 +272,12 @@ describe('HookService', () => {
       });
 
       // update
-      expect(updateCustomerSpy).toHaveBeenCalledWith(
-        aggregatorLinkRequiredMock.customerId,
-        {
-          aggregationDetails: {
-            redirectUrl: 'MY_LINK_URL',
-            userId: createUserObject.user_id,
-          }
-        });
+      expect(updateCustomerSpy).toHaveBeenCalledWith(aggregatorLinkRequiredMock.customerId, {
+        aggregationDetails: {
+          redirectUrl: 'MY_LINK_URL',
+          userId: createUserObject.user_id,
+        },
+      });
     });
   });
 
@@ -308,12 +287,12 @@ describe('HookService', () => {
     const toISOStringFn = Date.prototype.toISOString;
     const isoString = new Date().toISOString();
 
-    let algoanAuthenticateSpy
-    let updateAnalysisSpy
-    let tinkAuthenticateAsUserWithCodesSpy
-    let getAccountsSpy
-    let getTransactionsSpy
-    let getProvidersSpy
+    let algoanAuthenticateSpy;
+    let updateAnalysisSpy;
+    let tinkAuthenticateAsUserWithCodesSpy;
+    let getAccountsSpy;
+    let getTransactionsSpy;
+    let getProvidersSpy;
 
     beforeEach(async () => {
       Date.prototype.toISOString = () => isoString;
@@ -325,15 +304,11 @@ describe('HookService', () => {
       tinkAuthenticateAsUserWithCodesSpy = jest
         .spyOn(tinkHttpService, 'authenticateAsUserWithCode')
         .mockResolvedValue();
-      getAccountsSpy = jest
-        .spyOn(tinkAccountService, 'getAccounts')
-        .mockResolvedValue([tinkAccountObjectMock]);
+      getAccountsSpy = jest.spyOn(tinkAccountService, 'getAccounts').mockResolvedValue([tinkAccountObjectMock]);
       getTransactionsSpy = jest
         .spyOn(tinkTransactionService, 'getTransactions')
         .mockResolvedValue([tinkSearchResponseObjectMock.results[0].transaction]);
-      getProvidersSpy = jest
-        .spyOn(tinkProviderService, 'getProviders')
-        .mockResolvedValue([tinkProviderObjectMock]);
+      getProvidersSpy = jest.spyOn(tinkProviderService, 'getProviders').mockResolvedValue([tinkProviderObjectMock]);
     });
 
     it('should do these steps', async () => {
@@ -364,15 +339,15 @@ describe('HookService', () => {
       expect(updateAnalysisSpy).toHaveBeenCalledWith(
         bankDetailsRequiredMock.customerId,
         bankDetailsRequiredMock.analysisId,
-        analysisInputMock
+        analysisInputMock,
       );
     });
 
     it('should throw error if client config missing', async () => {
       serviceAccount.config = undefined;
-      await expect(hookService.handleBankDetailsRequiredEvent(bankDetailsRequiredMock))
-        .rejects
-        .toThrowError(`Missing information: clientConfig: undefined`);
+      await expect(hookService.handleBankDetailsRequiredEvent(bankDetailsRequiredMock)).rejects.toThrowError(
+        `Missing information: clientConfig: undefined`,
+      );
     });
 
     afterEach(async () => {

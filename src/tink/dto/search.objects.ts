@@ -1,4 +1,4 @@
-import { TinkTransactionCategoryType, TinkTransactionType } from "./transaction.enums"
+import { TinkTransactionCategoryType, TinkTransactionType } from './transaction.enums';
 
 /**
  * Search response
@@ -12,7 +12,6 @@ export interface TinkSearchResponseObject<NullOrUndefined = undefined> {
   results: TinkSearchResultObject<NullOrUndefined>[];
 }
 
-
 /**
  * Search result
  *
@@ -20,8 +19,8 @@ export interface TinkSearchResponseObject<NullOrUndefined = undefined> {
  *
  * @link https://docs.tink.com/api#search-query-transactions-response-searchresponse-searchresult
  */
- export interface TinkSearchResultObject<NullOrUndefined = undefined> {
-  transaction: TinkTransactionResponseObject<NullOrUndefined>,
+export interface TinkSearchResultObject<NullOrUndefined = undefined> {
+  transaction: TinkTransactionResponseObject<NullOrUndefined>;
 }
 
 /**
@@ -31,7 +30,7 @@ export interface TinkSearchResponseObject<NullOrUndefined = undefined> {
  *
  * @link https://docs.tink.com/api#search-query-transactions-response-searchresponse-transactionresponse
  */
- export interface TinkTransactionResponseObject<NullOrUndefined = undefined> {
+export interface TinkTransactionResponseObject<NullOrUndefined = undefined> {
   id: string;
   accountId: string;
   amount: number;
@@ -40,10 +39,8 @@ export interface TinkSearchResponseObject<NullOrUndefined = undefined> {
   originalDate: number; // timestamp
   originalDescription: string;
   type: TinkTransactionType;
-  upcoming: boolean | NullOrUndefined,
+  upcoming: boolean | NullOrUndefined;
 }
-
-
 
 /**
  * Currency Denominated Amount Object
@@ -52,6 +49,6 @@ export interface TinkSearchResponseObject<NullOrUndefined = undefined> {
  *
  * @link https://docs.tink.com/api#search-query-transactions-response-searchresponse-currencydenominatedamount
  */
- export interface TinkCurrencyDenominatedAmountObject {
+export interface TinkCurrencyDenominatedAmountObject {
   currencyCode: string; // ISO 4217
- }
+}

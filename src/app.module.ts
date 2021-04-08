@@ -13,14 +13,8 @@ import { HooksModule } from './hooks/hooks.module';
  * App module
  */
 @Module({
-  imports: [
-    ConfigModule,
-    HttpModule,
-    HooksModule,
-  ],
-  controllers: [
-    AppController,
-  ],
+  imports: [ConfigModule, HttpModule, HooksModule],
+  controllers: [AppController],
   providers: [
     AppService,
     {
@@ -35,16 +29,12 @@ import { HooksModule } from './hooks/hooks.module';
   ],
 })
 export class AppModule implements OnModuleInit {
-
-  constructor(
-    @Inject(CONFIG) private readonly config: Config,
-    private readonly httpService: HttpService,
-  ) {}
+  constructor(@Inject(CONFIG) private readonly config: Config, private readonly httpService: HttpService) {}
 
   /**
    * Log all httpService requests
    */
-   public onModuleInit(): void {
+  public onModuleInit(): void {
     const logger: Logger = new Logger(HttpService.name);
 
     this.httpService.axiosRef.interceptors.request.use(
@@ -80,7 +70,7 @@ export class AppModule implements OnModuleInit {
               body: error.response?.data,
             },
             error.stack,
-            error.message
+            error.message,
           );
         }
 

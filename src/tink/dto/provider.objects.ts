@@ -1,4 +1,3 @@
-
 /**
  * Tink Provider List Response
  *
@@ -32,4 +31,3 @@ export interface TinkProviderObject<NullOrUndefined = undefined> {
 export interface TinkProviderImageObject<NullOrUndefined = undefined> {
   icon: string | NullOrUndefined;
 }
-

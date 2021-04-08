@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Module } from '@nestjs/common';
-import { config } from "node-config-ts";
+import { config } from 'node-config-ts';
 
 export const CONFIG: string = 'CONFIG';
 
@@ -14,8 +14,6 @@ export const CONFIG: string = 'CONFIG';
       useValue: config,
     },
   ],
-  exports: [
-    CONFIG,
-  ]
+  exports: [CONFIG],
 })
 export class ConfigModule {}

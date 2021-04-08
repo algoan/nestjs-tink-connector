@@ -22,14 +22,10 @@ describe('TinkUserService', () => {
   beforeEach(async () => {
     // To mock scoped DI
     const contextId = ContextIdFactory.create();
-    jest
-      .spyOn(ContextIdFactory, 'getByRequest')
-      .mockImplementation(() => contextId);
+    jest.spyOn(ContextIdFactory, 'getByRequest').mockImplementation(() => contextId);
 
     const moduleRef: TestingModule = await Test.createTestingModule({
-      imports: [
-        HttpModule,
-      ],
+      imports: [HttpModule],
       providers: [
         TinkHttpService,
         TinkUserService,
@@ -50,9 +46,7 @@ describe('TinkUserService', () => {
 
   describe('createNewUser', () => {
     it('should create a new user', async () => {
-      const spy = jest
-        .spyOn(tinkHttpService, 'post')
-        .mockReturnValue(Promise.resolve(createUserObject));
+      const spy = jest.spyOn(tinkHttpService, 'post').mockReturnValue(Promise.resolve(createUserObject));
       const input: CreateUserInput = {
         external_user_id: 'external_user_id',
         locale: 'locale',
@@ -67,9 +61,7 @@ describe('TinkUserService', () => {
 
   describe('delegateAuthorizationToUser', () => {
     it('should create a delegate authorization', async () => {
-      const spy = jest
-        .spyOn(tinkHttpService, 'post')
-        .mockReturnValue(Promise.resolve(createAuthorizationObjectMock));
+      const spy = jest.spyOn(tinkHttpService, 'post').mockReturnValue(Promise.resolve(createAuthorizationObjectMock));
 
       const input: CreateDelegatedAuthorizationInput = {
         user_id: 'user_id',

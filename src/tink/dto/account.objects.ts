@@ -5,8 +5,8 @@ import { TinkAccountType } from './account.enums';
  *
  * @link https://docs.tink.com/api#account-list-accounts-response-accountlistresponse
  */
- export interface TinkAccountListResponseObject<NullOrUndefined = undefined> {
-  accounts: TinkAccountObject<NullOrUndefined>[],
+export interface TinkAccountListResponseObject<NullOrUndefined = undefined> {
+  accounts: TinkAccountObject<NullOrUndefined>[];
 }
 
 /**
@@ -26,7 +26,7 @@ export interface TinkAccountObject<NullOrUndefined = undefined> {
   id: string;
   name: string;
   type: TinkAccountType;
-  iban?: string, // Don't know yet if it is returned each time, not in the documentation.
+  iban?: string; // Don't know yet if it is returned each time, not in the documentation.
 }
 
 /**

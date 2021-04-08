@@ -1,20 +1,18 @@
-import { RequestBuilder } from "@algoan/rest";
-import { Inject, Injectable, Scope } from "@nestjs/common";
-import { AxiosRequestConfig } from "axios";
-import { Config } from "node-config-ts";
+import { RequestBuilder } from '@algoan/rest';
+import { Inject, Injectable, Scope } from '@nestjs/common';
+import { AxiosRequestConfig } from 'axios';
+import { Config } from 'node-config-ts';
 
-import { CONFIG } from "../../config/config.module";
+import { CONFIG } from '../../config/config.module';
 
 /**
  * AlgoanHttpService
  */
-@Injectable({scope: Scope.REQUEST})
+@Injectable({ scope: Scope.REQUEST })
 export class AlgoanHttpService {
   private requestBuilder: RequestBuilder | undefined;
 
-  constructor(
-    @Inject(CONFIG) private readonly config: Config,
-  ) {}
+  constructor(@Inject(CONFIG) private readonly config: Config) {}
 
   /**
    * Authenticate the service to algoan
@@ -24,11 +22,11 @@ export class AlgoanHttpService {
       this.config.algoan.baseUrl,
       {
         clientId,
-        clientSecret
+        clientSecret,
       },
       {
         version: 2,
-      }
+      },
     );
   }
 
@@ -58,7 +56,7 @@ export class AlgoanHttpService {
    */
   public async request<T>(config: AxiosRequestConfig): Promise<T> {
     if (this.requestBuilder === undefined) {
-      throw new Error('You should be authenticated before requesting Algoan')
+      throw new Error('You should be authenticated before requesting Algoan');
     }
 
     return this.requestBuilder.request(config);

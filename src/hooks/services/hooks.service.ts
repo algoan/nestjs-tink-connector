@@ -57,11 +57,13 @@ export class HooksService {
     // Get user information and client config
     const customer: Customer = await this.algoanCustomerService.getCustomerById(payload.customerId);
     const callbackUrl: string | undefined = customer.aggregationDetails.callbackUrl;
-    const clientConfig: ClientConfig | undefined = (this.serviceAccount.config as ClientConfig | undefined);
+    const clientConfig: ClientConfig | undefined = this.serviceAccount.config as ClientConfig | undefined;
 
     // Validate config
     if (callbackUrl === undefined || clientConfig === undefined) {
-      throw new Error(`Missing information: callbackUrl: ${callbackUrl}, clientConfig: ${JSON.stringify(clientConfig)}`);
+      throw new Error(
+        `Missing information: callbackUrl: ${callbackUrl}, clientConfig: ${JSON.stringify(clientConfig)}`,
+      );
     }
     assertsTypeValidation(ClientConfig, clientConfig);
 
@@ -70,12 +72,11 @@ export class HooksService {
 
     // if premium pricing
     if (clientConfig.pricing === ClientPricing.PREMIUM) {
-
       // Get the saved tink user id from algoan customer
       tinkUserId = customer.aggregationDetails.userId;
 
       // Authenticate to tink
-      await this.tinkHttpService.authenticateAsClientWithCredentials(clientConfig.clientId, clientConfig.clientSecret)
+      await this.tinkHttpService.authenticateAsClientWithCredentials(clientConfig.clientId, clientConfig.clientSecret);
 
       // If no tink user already created
       if (tinkUserId === undefined) {
@@ -121,15 +122,12 @@ export class HooksService {
     });
 
     // Update user with redirect link information and userId if provided
-    await this.algoanCustomerService.updateCustomer(
-      payload.customerId,
-      {
-        aggregationDetails: {
-          redirectUrl,
-          userId: tinkUserId,
-        }
-      }
-    );
+    await this.algoanCustomerService.updateCustomer(payload.customerId, {
+      aggregationDetails: {
+        redirectUrl,
+        userId: tinkUserId,
+      },
+    });
 
     return;
   }
@@ -139,7 +137,7 @@ export class HooksService {
    */
   public async handleBankDetailsRequiredEvent(payload: BankDetailsRequiredDTO): Promise<void> {
     // Get client config
-    const clientConfig: ClientConfig | undefined = (this.serviceAccount.config as ClientConfig | undefined);
+    const clientConfig: ClientConfig | undefined = this.serviceAccount.config as ClientConfig | undefined;
 
     // Validate config
     if (clientConfig === undefined) {
@@ -156,10 +154,9 @@ export class HooksService {
 
     // Get bank information
     const accounts: TinkAccountObject[] = await this.tinkAccountService.getAccounts();
-    const transactions: TinkTransactionResponseObject[] = await this.tinkTransactionService
-      .getTransactions({
-        accounts: accounts.map((a: TinkAccountObject) => a.id),
-      });
+    const transactions: TinkTransactionResponseObject[] = await this.tinkTransactionService.getTransactions({
+      accounts: accounts.map((a: TinkAccountObject) => a.id),
+    });
     const providers: TinkProviderObject[] = await this.tinkProviderService.getProviders();
 
     // Generate an Algoan analysis from data information
@@ -169,11 +166,7 @@ export class HooksService {
     this.algoanHttpService.authenticate(this.serviceAccount.clientId, this.serviceAccount.clientSecret);
 
     // Update the user analysis
-    await this.algoanAnalysisService.updateAnalysis(
-      payload.customerId,
-      payload.analysisId,
-      analysis
-    );
+    await this.algoanAnalysisService.updateAnalysis(payload.customerId, payload.analysisId, analysis);
 
     return;
   }

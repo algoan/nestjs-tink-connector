@@ -18,8 +18,9 @@ export const serviceAccoutProviders: FactoryProvider[] = [
         return undefined;
       }
 
-      const serviceAccount: ServiceAccount | undefined = algoanService.algoanClient
-        .getServiceAccountBySubscriptionId(subScriptionId);
+      const serviceAccount: ServiceAccount | undefined = algoanService.algoanClient.getServiceAccountBySubscriptionId(
+        subScriptionId,
+      );
 
       if (serviceAccount === undefined) {
         throw new UnauthorizedException(`No service account found for subscription ${subScriptionId}`);

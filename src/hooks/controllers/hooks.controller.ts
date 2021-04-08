@@ -19,10 +19,7 @@ interface IHeaders {
  */
 @Controller()
 export class HooksController {
-  constructor(
-    private readonly hooksService: HooksService,
-    private readonly serviceAccount: ServiceAccount,
-  ) {}
+  constructor(private readonly hooksService: HooksService, private readonly serviceAccount: ServiceAccount) {}
 
   /**
    * Hooks route

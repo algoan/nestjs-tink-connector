@@ -3,7 +3,7 @@
 /**
  * Tink Account Type
  */
- export enum TinkAccountType {
+export enum TinkAccountType {
   CHECKING = 'CHECKING',
   SAVINGS = 'SAVINGS',
   INVESTMENT = 'INVESTMENT',
@@ -18,7 +18,7 @@
 /**
  * Tink Account flag
  */
- export enum TinkAccountFlag {
+export enum TinkAccountFlag {
   BUSINESS = 'BUSINESS',
   MANDATE = 'MANDATE',
 }

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention, camelcase */
 import * as qs from 'qs';
-import { Inject, Injectable, Scope } from "@nestjs/common";
-import { Config } from "node-config-ts";
+import { Inject, Injectable, Scope } from '@nestjs/common';
+import { Config } from 'node-config-ts';
 
-import { CONFIG } from "../../config/config.module";
+import { CONFIG } from '../../config/config.module';
 
 import { AccountCheckArgs } from '../dto/account-check.args';
 
@@ -12,9 +12,7 @@ import { AccountCheckArgs } from '../dto/account-check.args';
  */
 @Injectable()
 export class TinkLinkService {
-  constructor(
-    @Inject(CONFIG) private readonly config: Config,
-  ) {}
+  constructor(@Inject(CONFIG) private readonly config: Config) {}
 
   /**
    * Get a link to get a code authorization, to be able to access to all data

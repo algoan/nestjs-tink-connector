@@ -5,6 +5,6 @@
  *
  * @link https://docs.tink.com/api#oauth-create-authorization-response-oauth2authorizeresponse
  */
- export interface CreateAuthorizationObject {
+export interface CreateAuthorizationObject {
   code: string;
 }

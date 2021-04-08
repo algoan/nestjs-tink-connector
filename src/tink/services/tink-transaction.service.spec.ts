@@ -19,14 +19,10 @@ describe('TinkSearchService', () => {
   beforeEach(async () => {
     // To mock scoped DI
     const contextId = ContextIdFactory.create();
-    jest
-      .spyOn(ContextIdFactory, 'getByRequest')
-      .mockImplementation(() => contextId);
+    jest.spyOn(ContextIdFactory, 'getByRequest').mockImplementation(() => contextId);
 
     const moduleRef: TestingModule = await Test.createTestingModule({
-      imports: [
-        HttpModule,
-      ],
+      imports: [HttpModule],
       providers: [
         TinkHttpService,
         TinkTransactionService,
@@ -48,9 +44,7 @@ describe('TinkSearchService', () => {
   describe('getTransactions', () => {
     it('should return a transactons list', async () => {
       const itemPerPage: number = 1000;
-      const spy = jest
-        .spyOn(tinkHttpService, 'post')
-        .mockReturnValue(Promise.resolve(tinkSearchResponseObjectMock));
+      const spy = jest.spyOn(tinkHttpService, 'post').mockReturnValue(Promise.resolve(tinkSearchResponseObjectMock));
 
       const input: TinkSearchQueryInput = {
         accounts: ['12345678910'],
@@ -63,34 +57,35 @@ describe('TinkSearchService', () => {
       expect(spy).toHaveBeenCalledWith(`/api/v1/search`, input);
       expect(transactions).toEqual(
         tinkSearchResponseObjectMock.results.map((r: TinkSearchResultObject) => r.transaction),
-      )
+      );
     });
 
     it('should return a transactons list of all pages', async () => {
       const totalTransactionsCount: number = 2050;
       const itemPerPage: number = 1000;
-      const allTransactionResultsMock: TinkSearchResultObject[] = Array(totalTransactionsCount)
-        .fill(tinkSearchResponseObjectMock.results[0])
+      const allTransactionResultsMock: TinkSearchResultObject[] = Array(totalTransactionsCount).fill(
+        tinkSearchResponseObjectMock.results[0],
+      );
 
       const spy = jest
         .spyOn(tinkHttpService, 'post')
-        .mockImplementation(
-          async (_: string, input: TinkSearchQueryInput) => {
-            const transactionResultsPaginated: TinkSearchResultObject[] = allTransactionResultsMock
-              .slice(input.offset, (input.offset ?? 0) + (input.limit ?? 0));
-            const searchResult: TinkSearchResponseObject = {
-              count: transactionResultsPaginated.length,
-              results: transactionResultsPaginated,
-            };
+        .mockImplementation(async (_: string, input: TinkSearchQueryInput) => {
+          const transactionResultsPaginated: TinkSearchResultObject[] = allTransactionResultsMock.slice(
+            input.offset,
+            (input.offset ?? 0) + (input.limit ?? 0),
+          );
+          const searchResult: TinkSearchResponseObject = {
+            count: transactionResultsPaginated.length,
+            results: transactionResultsPaginated,
+          };
 
-            return Promise.resolve(searchResult);
-          },
-        );
+          return Promise.resolve(searchResult);
+        });
 
       const transactions: TinkTransactionResponseObject[] = await tinkTransactionService.getTransactions();
 
-      expect(spy).toHaveBeenCalledTimes(Math.ceil(totalTransactionsCount/itemPerPage));
-      expect(transactions.length).toEqual(totalTransactionsCount)
+      expect(spy).toHaveBeenCalledTimes(Math.ceil(totalTransactionsCount / itemPerPage));
+      expect(transactions.length).toEqual(totalTransactionsCount);
     });
   });
 });

@@ -4,16 +4,16 @@
  * Analysis Status enum
  */
 export enum AnalysisStatus {
-  CREATED = "CREATED",
-  ERROR = "ERROR",
-  INPROGRESS = "IN_PROGRESS",
-  COMPLETED = "COMPLETED",
+  CREATED = 'CREATED',
+  ERROR = 'ERROR',
+  INPROGRESS = 'IN_PROGRESS',
+  COMPLETED = 'COMPLETED',
 }
 
 /**
  * Account Type enum
  */
- export enum AccountType {
+export enum AccountType {
   CHECKING = 'CHECKING',
   SAVINGS = 'SAVINGS',
   LOAN = 'LOAN',
@@ -24,7 +24,7 @@ export enum AnalysisStatus {
 /**
  * Account Usage enum
  */
- export enum AccountUsage {
+export enum AccountUsage {
   PROFESSIONAL = 'PROFESSIONAL',
   PERSONAL = 'PERSONAL',
   UNKNOWN = 'UNKNOWN',
@@ -33,7 +33,7 @@ export enum AnalysisStatus {
 /**
  * Account Sing Type enum
  */
- export enum AccountSavingType {
+export enum AccountSavingType {
   SHORT_TERM = 'SHORT_TERM',
   LONG_TERM = 'LONG_TERM',
   UNKNOWN = 'UNKNOWN',
@@ -42,7 +42,7 @@ export enum AnalysisStatus {
 /**
  * Account Loan Type enum
  */
- export enum AccountLoanType {
+export enum AccountLoanType {
   REVOLVING = 'REVOLVING',
   PERSONAL = 'PERSONAL',
   MORTGAGE = 'MORTGAGE',

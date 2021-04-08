@@ -20,14 +20,10 @@ describe('TinkProviderService', () => {
     beforeEach(async () => {
       // To mock scoped DI
       const contextId = ContextIdFactory.create();
-      jest
-        .spyOn(ContextIdFactory, 'getByRequest')
-        .mockImplementation(() => contextId);
+      jest.spyOn(ContextIdFactory, 'getByRequest').mockImplementation(() => contextId);
 
       const moduleRef: TestingModule = await Test.createTestingModule({
-        imports: [
-          HttpModule,
-        ],
+        imports: [HttpModule],
         providers: [
           TinkHttpService,
           TinkProviderService,
@@ -51,14 +47,10 @@ describe('TinkProviderService', () => {
     beforeEach(async () => {
       // To mock scoped DI
       const contextId = ContextIdFactory.create();
-      jest
-        .spyOn(ContextIdFactory, 'getByRequest')
-        .mockImplementation(() => contextId);
+      jest.spyOn(ContextIdFactory, 'getByRequest').mockImplementation(() => contextId);
 
       const moduleRef: TestingModule = await Test.createTestingModule({
-        imports: [
-          HttpModule,
-        ],
+        imports: [HttpModule],
         providers: [
           TinkHttpService,
           TinkProviderService,
@@ -69,7 +61,7 @@ describe('TinkProviderService', () => {
               tink: {
                 ...config.tink,
                 test: true,
-              }
+              },
             },
           },
         ],
@@ -100,14 +92,10 @@ describe('TinkProviderService', () => {
     beforeEach(async () => {
       // To mock scoped DI
       const contextId = ContextIdFactory.create();
-      jest
-        .spyOn(ContextIdFactory, 'getByRequest')
-        .mockImplementation(() => contextId);
+      jest.spyOn(ContextIdFactory, 'getByRequest').mockImplementation(() => contextId);
 
       const moduleRef: TestingModule = await Test.createTestingModule({
-        imports: [
-          HttpModule,
-        ],
+        imports: [HttpModule],
         providers: [
           TinkHttpService,
           TinkProviderService,
@@ -118,7 +106,7 @@ describe('TinkProviderService', () => {
               tink: {
                 ...config.tink,
                 test: false,
-              }
+              },
             },
           },
         ],
