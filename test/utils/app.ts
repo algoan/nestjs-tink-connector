@@ -32,7 +32,7 @@ export const buildFakeApp = async (): Promise<INestApplication> => {
       expires_in: 3000,
       refresh_expires_in: 10000,
     },
-    path: '/v2/oauth/token',
+    path: '/v1/oauth/token',
     nbOfCalls: 2,
   });
   const fakeServiceAccounts: nock.Scope = fakeAPI({
