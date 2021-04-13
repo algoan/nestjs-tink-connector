@@ -21,7 +21,7 @@ const middlewares = jsonServer.defaults();
 server.use(middlewares);
 
 // Add custom routes before JSON Server router
-server.post('/v2/oauth/token', (req, res) => {
+server.post('/v1/oauth/token', (req, res) => {
   res.json({
     access_token: 'access_token_jwt',
     expires_in: 60,
