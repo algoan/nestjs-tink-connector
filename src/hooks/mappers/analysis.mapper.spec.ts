@@ -12,7 +12,7 @@ import { TinkProviderObject } from '../../tink/dto/provider.objects';
 import {
   defaultCurrency,
   mapTinkDataToAlgoanAnalysis,
-  mapToAlgaonTransaction,
+  mapToAlgoanTransaction,
   mapToAlgoanAccount,
   mapToAlgoanAccountType,
   mapToIbanAndBic,
@@ -25,7 +25,7 @@ describe('AnalysisMapper', () => {
       const tinkTransaction: TinkTransactionResponseObject = tinkSearchResponseObjectMock.results[0].transaction;
 
       // We map it
-      const accountTransaction: AccountTransaction = mapToAlgaonTransaction(tinkTransaction);
+      const accountTransaction: AccountTransaction = mapToAlgoanTransaction(tinkTransaction);
 
       // We get an algoan transaction
       expect(accountTransaction).toEqual({
@@ -55,7 +55,7 @@ describe('AnalysisMapper', () => {
       expect(tinkTransaction.currencyDenominatedOriginalAmount?.currencyCode).toBeUndefined();
 
       // We map it
-      const accountTransaction: AccountTransaction = mapToAlgaonTransaction(tinkTransaction);
+      const accountTransaction: AccountTransaction = mapToAlgoanTransaction(tinkTransaction);
 
       // New transaction has the default currency
       expect(accountTransaction.currency).toEqual(defaultCurrency);
@@ -208,7 +208,7 @@ describe('AnalysisMapper', () => {
         aggregator: {
           id: tinkAccountObjectMock.id,
         },
-        transactions: tinkTransactionsMock.map(mapToAlgaonTransaction),
+        transactions: tinkTransactionsMock.map(mapToAlgoanTransaction),
         ...mapToIbanAndBic(tinkAccountObjectMock.identifiers),
       });
 
@@ -250,7 +250,7 @@ describe('AnalysisMapper', () => {
         aggregator: {
           id: tinkAccountObjectMock.id,
         },
-        transactions: tinkTransactionsMock.map(mapToAlgaonTransaction),
+        transactions: tinkTransactionsMock.map(mapToAlgoanTransaction),
         ...mapToIbanAndBic(tinkAccountObjectMock.identifiers),
       });
     });

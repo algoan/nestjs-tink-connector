@@ -78,7 +78,7 @@ export function mapToAlgoanAccount(
     aggregator: {
       id: tinkAccount.id,
     },
-    transactions: tinkTransactions.map(mapToAlgaonTransaction),
+    transactions: tinkTransactions.map(mapToAlgoanTransaction),
     ...mapToIbanAndBic(tinkAccount.identifiers),
   };
 }
@@ -137,7 +137,7 @@ export function mapToIbanAndBic(identifiers: TinkAccountObject['identifiers']): 
 /**
  * Map To Algoan transaction
  */
-export function mapToAlgaonTransaction(tinkTransaction: TinkTransactionResponseObject): AccountTransaction {
+export function mapToAlgoanTransaction(tinkTransaction: TinkTransactionResponseObject): AccountTransaction {
   return {
     dates: {
       debitedAt: new Date(tinkTransaction.originalDate).toISOString(),
