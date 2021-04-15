@@ -14,6 +14,7 @@ export const tinkSearchResponseObjectMock: TinkSearchResponseObject = {
         id: '79c6c9c27d6e42489e888e08d27205a1',
         accountId: tinkAccountObjectMock.id,
         amount: 34.5,
+        categoryId: '01f944531ab04cd3ba32a14cebe8a927',
         categoryType: TinkTransactionCategoryType.EXPENSES,
         currencyDenominatedOriginalAmount: {
           currencyCode: 'EUR',

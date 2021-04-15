@@ -6,13 +6,13 @@ import { tinkProviderObjectMock } from '../../tink/dto/provider.objects.mock';
 import { TinkAccountType } from '../../tink/dto/account.enums';
 import { AccountType, AccountUsage } from '../../algoan/dto/analysis.enum';
 import { Account, AccountTransaction, AnalysisUpdateInput } from '../../algoan/dto/analysis.inputs';
-import { TinkTransactionResponseObject } from '../../tink/dto/search.objects';
+import { ExtendedTinkTransactionResponseObject, TinkTransactionResponseObject } from '../../tink/dto/search.objects';
 import { tinkSearchResponseObjectMock } from '../../tink/dto/search.objects.mock';
 import { TinkProviderObject } from '../../tink/dto/provider.objects';
 import {
   defaultCurrency,
   mapTinkDataToAlgoanAnalysis,
-  mapToAlgaonTransaction,
+  mapToAlgoanTransaction,
   mapToAlgoanAccount,
   mapToAlgoanAccountType,
   mapToIbanAndBic,
@@ -22,10 +22,13 @@ describe('AnalysisMapper', () => {
   describe('mapToAlgaonTransaction', () => {
     it('should return an algoan transaction', async () => {
       // Transaction mock
-      const tinkTransaction: TinkTransactionResponseObject = tinkSearchResponseObjectMock.results[0].transaction;
+      const tinkTransaction: ExtendedTinkTransactionResponseObject = {
+        categoryCode: 'expenses:house.other',
+        ...tinkSearchResponseObjectMock.results[0].transaction,
+      };
 
       // We map it
-      const accountTransaction: AccountTransaction = mapToAlgaonTransaction(tinkTransaction);
+      const accountTransaction: AccountTransaction = mapToAlgoanTransaction(tinkTransaction);
 
       // We get an algoan transaction
       expect(accountTransaction).toEqual({
@@ -38,7 +41,7 @@ describe('AnalysisMapper', () => {
         isComing: tinkTransaction.upcoming,
         aggregator: {
           id: tinkTransaction.id,
-          category: tinkTransaction.categoryType,
+          category: 'expenses:house.other',
           type: tinkTransaction.type,
         },
       });
@@ -55,7 +58,7 @@ describe('AnalysisMapper', () => {
       expect(tinkTransaction.currencyDenominatedOriginalAmount?.currencyCode).toBeUndefined();
 
       // We map it
-      const accountTransaction: AccountTransaction = mapToAlgaonTransaction(tinkTransaction);
+      const accountTransaction: AccountTransaction = mapToAlgoanTransaction(tinkTransaction);
 
       // New transaction has the default currency
       expect(accountTransaction.currency).toEqual(defaultCurrency);
@@ -208,7 +211,7 @@ describe('AnalysisMapper', () => {
         aggregator: {
           id: tinkAccountObjectMock.id,
         },
-        transactions: tinkTransactionsMock.map(mapToAlgaonTransaction),
+        transactions: tinkTransactionsMock.map(mapToAlgoanTransaction),
         ...mapToIbanAndBic(tinkAccountObjectMock.identifiers),
       });
 
@@ -250,7 +253,7 @@ describe('AnalysisMapper', () => {
         aggregator: {
           id: tinkAccountObjectMock.id,
         },
-        transactions: tinkTransactionsMock.map(mapToAlgaonTransaction),
+        transactions: tinkTransactionsMock.map(mapToAlgoanTransaction),
         ...mapToIbanAndBic(tinkAccountObjectMock.identifiers),
       });
     });
@@ -294,7 +297,10 @@ describe('AnalysisMapper', () => {
 
     it('should return an algoan analysis with 2 account', async () => {
       // transactions mock
-      const tinkTransactionMock: TinkTransactionResponseObject = tinkSearchResponseObjectMock.results[0].transaction;
+      const tinkTransactionMock: ExtendedTinkTransactionResponseObject = {
+        categoryCode: 'expenses:house.other',
+        ...tinkSearchResponseObjectMock.results[0].transaction,
+      };
 
       // mock
       const tinkTransactionsMock: TinkTransactionResponseObject[] = [
@@ -361,7 +367,7 @@ describe('AnalysisMapper', () => {
             transactions: [
               {
                 aggregator: {
-                  category: 'EXPENSES',
+                  category: 'expenses:house.other',
                   id: '79c6c9c27d6e42489e888e08d27205a1',
                   type: 'CREDIT_CARD',
                 },
@@ -402,7 +408,7 @@ describe('AnalysisMapper', () => {
             transactions: [
               {
                 aggregator: {
-                  category: 'EXPENSES',
+                  category: 'expenses:house.other',
                   id: '79c6c9c27d6e42489e888e08d27205a1',
                   type: 'CREDIT_CARD',
                 },
