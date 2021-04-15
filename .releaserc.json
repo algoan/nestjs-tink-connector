@@ -1,0 +1,26 @@
+{
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/github",
+    ["@semantic-release/git", {
+      "assets": ["package.json", "package-lock.json"],
+      "message": "chore(release): ${nextRelease.version} [skip ci]"
+    }],
+    ["@semantic-release/exec", {
+      "prepareCmd": "docker build -t algoan/tink-connector ."
+    }],
+    ["@eclass/semantic-release-docker", {
+      "baseImageName": "algoan/tink-connector",
+      "registries": [
+        {
+          "url": "docker.io",
+          "imageName": "docker.io/algoan/tink-connector",
+          "username": "DOCKERHUB_USERNAME",
+          "password": "DOCKERHUB_PASSWORD"
+        }
+      ]
+    }]
+  ],
+  "preset": "angular"
+}
