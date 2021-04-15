@@ -9,8 +9,10 @@ import { CONFIG } from '../../config/config.module';
 import { TinkSearchResponseObject, TinkSearchResultObject, TinkTransactionResponseObject } from '../dto/search.objects';
 import { tinkSearchResponseObjectMock } from '../dto/search.objects.mock';
 import { TinkSearchQueryInput } from '../dto/search.input';
+import { tinkCategoryListMock } from '../dto/category.object.mock';
 import { TinkTransactionService } from './tink-transaction.service';
 import { TinkHttpService } from './tink-http.service';
+import { TinkCategoryService } from './tink-category.service';
 
 describe('TinkSearchService', () => {
   let tinkTransactionService: TinkTransactionService;
@@ -26,6 +28,7 @@ describe('TinkSearchService', () => {
       providers: [
         TinkHttpService,
         TinkTransactionService,
+        TinkCategoryService,
         {
           provide: CONFIG,
           useValue: config,
@@ -35,6 +38,12 @@ describe('TinkSearchService', () => {
 
     tinkTransactionService = await moduleRef.resolve<TinkTransactionService>(TinkTransactionService, contextId);
     tinkHttpService = await moduleRef.resolve<TinkHttpService>(TinkHttpService, contextId);
+    const tinkCategoryService: TinkCategoryService = await moduleRef.resolve<TinkCategoryService>(
+      TinkCategoryService,
+      contextId,
+    );
+
+    tinkCategoryService.categories = tinkCategoryListMock;
   });
 
   it('should be defined', () => {
@@ -56,7 +65,10 @@ describe('TinkSearchService', () => {
 
       expect(spy).toHaveBeenCalledWith(`/api/v1/search`, input);
       expect(transactions).toEqual(
-        tinkSearchResponseObjectMock.results.map((r: TinkSearchResultObject) => r.transaction),
+        tinkSearchResponseObjectMock.results.map((r: TinkSearchResultObject) => ({
+          categoryCode: 'expenses:house.other',
+          ...r.transaction,
+        })),
       );
     });
 

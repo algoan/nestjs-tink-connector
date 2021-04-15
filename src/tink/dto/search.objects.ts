@@ -34,6 +34,7 @@ export interface TinkTransactionResponseObject<NullOrUndefined = undefined> {
   id: string;
   accountId: string;
   amount: number;
+  categoryId: string;
   categoryType: TinkTransactionCategoryType;
   currencyDenominatedOriginalAmount: TinkCurrencyDenominatedAmountObject | NullOrUndefined;
   originalDate: number; // timestamp
@@ -41,6 +42,15 @@ export interface TinkTransactionResponseObject<NullOrUndefined = undefined> {
   type: TinkTransactionType;
   upcoming: boolean | NullOrUndefined;
 }
+
+/**
+ * Extends Tink transaction with the category code
+ */
+export type ExtendedTinkTransactionResponseObject<
+  NullOrUndefined = undefined
+> = TinkTransactionResponseObject<NullOrUndefined> & {
+  categoryCode?: string;
+};
 
 /**
  * Currency Denominated Amount Object

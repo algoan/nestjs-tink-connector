@@ -9,7 +9,7 @@ import { TinkAccountService } from '../../tink/services/tink-account.service';
 import { TinkProviderService } from '../../tink/services/tink-provider.service';
 import { TinkTransactionService } from '../../tink/services/tink-transaction.service';
 import { TinkProviderObject } from '../../tink/dto/provider.objects';
-import { TinkTransactionResponseObject } from '../../tink/dto/search.objects';
+import { ExtendedTinkTransactionResponseObject, TinkTransactionResponseObject } from '../../tink/dto/search.objects';
 import { AnalysisUpdateInput } from '../../algoan/dto/analysis.inputs';
 import { TINK_LINK_ACTOR_CLIENT_ID } from '../../tink/contstants/tink.constants';
 import { Customer } from '../../algoan/dto/customer.objects';
@@ -154,7 +154,7 @@ export class HooksService {
 
     // Get bank information
     const accounts: TinkAccountObject[] = await this.tinkAccountService.getAccounts();
-    const transactions: TinkTransactionResponseObject[] = await this.tinkTransactionService.getTransactions({
+    const transactions: ExtendedTinkTransactionResponseObject[] = await this.tinkTransactionService.getTransactions({
       accounts: accounts.map((a: TinkAccountObject) => a.id),
     });
     const providers: TinkProviderObject[] = await this.tinkProviderService.getProviders();

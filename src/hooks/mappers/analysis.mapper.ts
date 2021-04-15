@@ -4,7 +4,7 @@ import { Account, AccountTransaction, AnalysisUpdateInput } from '../../algoan/d
 import { TinkAccountFlag, TinkAccountType } from '../../tink/dto/account.enums';
 import { TinkAccountObject } from '../../tink/dto/account.objects';
 import { TinkProviderObject } from '../../tink/dto/provider.objects';
-import { TinkTransactionResponseObject } from '../../tink/dto/search.objects';
+import { ExtendedTinkTransactionResponseObject, TinkTransactionResponseObject } from '../../tink/dto/search.objects';
 
 /**
  * Default currency if no provided
@@ -137,7 +137,7 @@ export function mapToIbanAndBic(identifiers: TinkAccountObject['identifiers']): 
 /**
  * Map To Algoan transaction
  */
-export function mapToAlgoanTransaction(tinkTransaction: TinkTransactionResponseObject): AccountTransaction {
+export function mapToAlgoanTransaction(tinkTransaction: ExtendedTinkTransactionResponseObject): AccountTransaction {
   return {
     dates: {
       debitedAt: new Date(tinkTransaction.originalDate).toISOString(),
@@ -148,7 +148,7 @@ export function mapToAlgoanTransaction(tinkTransaction: TinkTransactionResponseO
     isComing: tinkTransaction.upcoming,
     aggregator: {
       id: tinkTransaction.id,
-      category: tinkTransaction.categoryType,
+      category: tinkTransaction.categoryCode,
       type: tinkTransaction.type,
     },
   };

@@ -8,6 +8,7 @@ import { TinkUserService } from './services/tink-user.service';
 import { TinkAccountService } from './services/tink-account.service';
 import { TinkProviderService } from './services/tink-provider.service';
 import { TinkTransactionService } from './services/tink-transaction.service';
+import { TinkCategoryService } from './services/tink-category.service';
 
 /**
  * Hooks module
@@ -21,6 +22,7 @@ import { TinkTransactionService } from './services/tink-transaction.service';
     TinkUserService,
     TinkProviderService,
     TinkTransactionService,
+    TinkCategoryService,
   ],
   exports: [
     TinkAccountService,
@@ -29,6 +31,7 @@ import { TinkTransactionService } from './services/tink-transaction.service';
     TinkUserService,
     TinkProviderService,
     TinkTransactionService,
+    TinkCategoryService,
   ],
 })
 export class TinkModule {}

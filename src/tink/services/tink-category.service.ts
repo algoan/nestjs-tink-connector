@@ -23,7 +23,7 @@ export class TinkCategoryService implements OnModuleInit {
    */
   public async onModuleInit(): Promise<void> {
     const response: AxiosResponse<TinkCategory[]> = await this.httpService
-      .get(`${this.config.tink.apiBaseUrl}/v1/categories`)
+      .get(`${this.config.tink.apiBaseUrl}/api/v1/categories`)
       .toPromise();
 
     this.categories = response.data;
