@@ -1,10 +1,13 @@
 {
-  "name": "nestjs-connector-boilerplate",
+  "name": "@algoan/nestjs-tink-connector",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Tink connector for Algoan",
+  "author": "algoan",
   "private": true,
   "license": "UNLICENSED",
+  "repository": {
+    "url": "https://github.com/algoan/nestjs-tink-connector"
+  },
   "scripts": {
     "postinstall": "node-config-ts",
     "prebuild": "rimraf dist",

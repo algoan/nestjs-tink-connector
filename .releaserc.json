@@ -1,4 +1,5 @@
 {
+  "repositoryUrl": "https://github.com/algoan/nestjs-tink-connector",
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
