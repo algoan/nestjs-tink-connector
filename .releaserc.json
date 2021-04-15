@@ -16,7 +16,7 @@
         {
           "url": "docker.io",
           "imageName": "docker.io/algoan/tink-connector",
-          "username": "DOCKERHUB_USERNAME",
+          "user": "DOCKERHUB_USERNAME",
           "password": "DOCKERHUB_PASSWORD"
         }
       ]
