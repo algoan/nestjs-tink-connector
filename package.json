@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "Tink connector for Algoan",
   "author": "algoan",
-  "private": true,
   "license": "UNLICENSED",
   "repository": {
     "url": "https://github.com/algoan/nestjs-tink-connector"
