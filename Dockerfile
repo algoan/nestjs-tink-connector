@@ -38,9 +38,9 @@ RUN npm ci
 USER node
 
 # Set NODE_ENV to production and open
-ENV PORT 8080
+ENV PORT 3000
 ENV DEPLOYMENT 'production.secret'
 
-EXPOSE 8080
+EXPOSE 3000
 
 CMD [ "node", "dist/main.js"]
