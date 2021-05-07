@@ -141,6 +141,7 @@ export function mapToAlgoanTransaction(tinkTransaction: ExtendedTinkTransactionR
   return {
     dates: {
       debitedAt: new Date(tinkTransaction.originalDate).toISOString(),
+      bookedAt: new Date(tinkTransaction.originalDate).toISOString(),
     },
     description: tinkTransaction.originalDescription,
     amount: tinkTransaction.amount,
