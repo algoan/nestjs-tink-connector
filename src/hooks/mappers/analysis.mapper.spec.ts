@@ -19,7 +19,7 @@ import {
 } from './analysis.mapper';
 
 describe('AnalysisMapper', () => {
-  describe('mapToAlgaonTransaction', () => {
+  describe('mapToAlgoanTransaction', () => {
     it('should return an algoan transaction', async () => {
       // Transaction mock
       const tinkTransaction: ExtendedTinkTransactionResponseObject = {
@@ -34,6 +34,7 @@ describe('AnalysisMapper', () => {
       expect(accountTransaction).toEqual({
         dates: {
           debitedAt: '2016-02-17T20:27:54.875Z',
+          bookedAt: '2016-02-17T20:27:54.875Z',
         },
         description: tinkTransaction.originalDescription,
         amount: tinkTransaction.amount,
@@ -375,6 +376,7 @@ describe('AnalysisMapper', () => {
                 currency: 'EUR',
                 dates: {
                   debitedAt: isoString, // Force because of currentDate ....
+                  bookedAt: isoString,
                 },
                 description: 'Stadium Sergelg Stockholm',
                 isComing: false,
@@ -416,6 +418,7 @@ describe('AnalysisMapper', () => {
                 currency: 'EUR',
                 dates: {
                   debitedAt: isoString, // Force because of currentDate ....
+                  bookedAt: isoString,
                 },
                 description: `Stadium Sergelg Stockholm-${process.pid}`,
                 isComing: false,
