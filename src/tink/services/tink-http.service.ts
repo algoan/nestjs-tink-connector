@@ -36,6 +36,24 @@ export class TinkHttpService {
   /**
    * Authenticate the service to tink
    */
+  public async authenticateAsClientWithRefreshToken(
+    clientId: string,
+    clientSecret: string,
+    refreshToken: string,
+  ): Promise<void> {
+    const input: AccessTokenInput = {
+      client_id: clientId,
+      client_secret: clientSecret,
+      grant_type: GrantType.REFRESH_TOKEN,
+      refresh_token: refreshToken,
+    };
+
+    return this.authenticate(input);
+  }
+
+  /**
+   * Authenticate the service to tink
+   */
   public async authenticateAsUserWithCode(clientId: string, clientSecret: string, code: string): Promise<void> {
     const input: AccessTokenInput = {
       client_id: clientId,
@@ -100,6 +118,17 @@ export class TinkHttpService {
       .toPromise();
 
     return response.data;
+  }
+
+  /**
+   * Get tink refresh token
+   */
+  public getRefreshToken(): string {
+    if (this.tokenInfo === undefined) {
+      throw new Error('You should be authenticated before requesting Tink');
+    }
+
+    return this.tokenInfo.refresh_token;
   }
 
   /**
