@@ -12,7 +12,7 @@ import { TinkProviderObject } from '../../tink/dto/provider.objects';
 import { ExtendedTinkTransactionResponseObject, TinkTransactionResponseObject } from '../../tink/dto/search.objects';
 import { AnalysisUpdateInput } from '../../algoan/dto/analysis.inputs';
 import { TINK_LINK_ACTOR_CLIENT_ID } from '../../tink/contstants/tink.constants';
-import { Customer } from '../../algoan/dto/customer.objects';
+import { AggregationDetails, Customer } from '../../algoan/dto/customer.objects';
 import { AlgoanCustomerService } from '../../algoan/services/algoan-customer.service';
 import { ClientPricing } from '../../algoan/dto/service-account.enums';
 import { TinkLinkService } from '../../tink/services/tink-link.service';
@@ -139,18 +139,39 @@ export class HooksService {
     // Get client config
     const clientConfig: ClientConfig | undefined = this.serviceAccount.config as ClientConfig | undefined;
 
+    // Authenticate to algoan
+    this.algoanHttpService.authenticate(this.serviceAccount.clientId, this.serviceAccount.clientSecret);
+
     // Validate config
     if (clientConfig === undefined) {
       throw new Error(`Missing information: clientConfig: undefined`);
     }
     assertsTypeValidation(ClientConfig, clientConfig);
 
-    // Authenticate to tink as a user
-    await this.tinkHttpService.authenticateAsUserWithCode(
-      clientConfig.clientId,
-      clientConfig.clientSecret,
-      payload.temporaryCode,
-    );
+    if (payload.temporaryCode === undefined) {
+      // Refresh mode — Authenticate to tink with a refresh token from the customer
+      const customer: Customer = await this.algoanCustomerService.getCustomerById(payload.customerId);
+
+      if (customer.aggregationDetails?.token !== undefined) {
+        await this.tinkHttpService.authenticateAsClientWithRefreshToken(
+          clientConfig.clientId,
+          clientConfig.clientSecret,
+          customer.aggregationDetails.token,
+        );
+      } else {
+        throw new Error(`Missing information: customer.aggregationDetails.token: undefined for ${payload.customerId}`);
+      }
+    } else {
+      // Snapshot mode — Authenticate to tink as a user
+      await this.tinkHttpService.authenticateAsUserWithCode(
+        clientConfig.clientId,
+        clientConfig.clientSecret,
+        payload.temporaryCode,
+      );
+
+      const aggregationDetails: AggregationDetails = { token: this.tinkHttpService.getRefreshToken() };
+      await this.algoanCustomerService.updateCustomer(payload.customerId, { aggregationDetails });
+    }
 
     // Get bank information
     const accounts: TinkAccountObject[] = await this.tinkAccountService.getAccounts();
@@ -161,9 +182,6 @@ export class HooksService {
 
     // Generate an Algoan analysis from data information
     const analysis: AnalysisUpdateInput = mapTinkDataToAlgoanAnalysis(accounts, transactions, providers);
-
-    // Authenticate to algoan
-    this.algoanHttpService.authenticate(this.serviceAccount.clientId, this.serviceAccount.clientSecret);
 
     // Update the user analysis
     await this.algoanAnalysisService.updateAnalysis(payload.customerId, payload.analysisId, analysis);

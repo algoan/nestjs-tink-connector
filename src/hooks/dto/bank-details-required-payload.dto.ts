@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 /**
  * Payload for event `bank_details_required`
  */
@@ -19,8 +19,10 @@ export class BankDetailsRequiredDTO {
 
   /**
    * Temp code to convert to an access token
+   *
+   * If not defined, the event is considered as a refresh
    */
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  public temporaryCode: string;
+  public temporaryCode?: string;
 }

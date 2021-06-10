@@ -288,8 +288,12 @@ describe('HookService', () => {
     const isoString = new Date().toISOString();
 
     let algoanAuthenticateSpy;
+    let getCustomerSpy;
+    let updateCustomerSpy;
     let updateAnalysisSpy;
+    let tinkRefreshTokenSpy;
     let tinkAuthenticateAsUserWithCodesSpy;
+    let tinkAuthenticateWithRefreshTokenSpy;
     let getAccountsSpy;
     let getTransactionsSpy;
     let getProvidersSpy;
@@ -300,10 +304,22 @@ describe('HookService', () => {
 
     beforeEach(async () => {
       algoanAuthenticateSpy = jest.spyOn(algoanHttpService, 'authenticate').mockReturnValue();
+      getCustomerSpy = jest.spyOn(algoanCustomerService, 'getCustomerById').mockResolvedValue({
+        ...customerMock,
+        aggregationDetails: {
+          ...customerMock.aggregationDetails,
+          token: 'mockRefreshToken',
+        },
+      });
+      updateCustomerSpy = jest.spyOn(algoanCustomerService, 'updateCustomer').mockResolvedValue(customerMock);
       updateAnalysisSpy = jest.spyOn(algoanAnalysisService, 'updateAnalysis').mockResolvedValue(analysisMock);
       tinkAuthenticateAsUserWithCodesSpy = jest
         .spyOn(tinkHttpService, 'authenticateAsUserWithCode')
         .mockResolvedValue();
+      tinkAuthenticateWithRefreshTokenSpy = jest
+        .spyOn(tinkHttpService, 'authenticateAsClientWithRefreshToken')
+        .mockResolvedValue();
+      tinkRefreshTokenSpy = jest.spyOn(tinkHttpService, 'getRefreshToken').mockReturnValue('mockRefreshToken');
       getAccountsSpy = jest.spyOn(tinkAccountService, 'getAccounts').mockResolvedValue([tinkAccountObjectMock]);
       getTransactionsSpy = jest
         .spyOn(tinkTransactionService, 'getTransactions')
@@ -311,7 +327,7 @@ describe('HookService', () => {
       getProvidersSpy = jest.spyOn(tinkProviderService, 'getProviders').mockResolvedValue([tinkProviderObjectMock]);
     });
 
-    it('should do these steps', async () => {
+    it('should do these steps in "snapshot" mode', async () => {
       await hookService.handleBankDetailsRequiredEvent(bankDetailsRequiredMock);
 
       // Authenticate as user
@@ -320,6 +336,47 @@ describe('HookService', () => {
         serviceAccountConfigMock.clientSecret,
         bankDetailsRequiredMock.temporaryCode,
       );
+      expect(tinkAuthenticateWithRefreshTokenSpy).not.toHaveBeenCalled();
+
+      // Update Customer with the refresh token
+      expect(tinkRefreshTokenSpy).toHaveBeenCalled();
+      expect(updateCustomerSpy).toHaveBeenCalledWith(bankDetailsRequiredMock.customerId, {
+        aggregationDetails: { token: 'mockRefreshToken' },
+      });
+
+      // Get data from tink
+      expect(getAccountsSpy).toHaveBeenCalled();
+      expect(getTransactionsSpy).toHaveBeenCalled();
+      expect(getProvidersSpy).toHaveBeenCalled();
+
+      const analysisInputMock: AnalysisUpdateInput = mapTinkDataToAlgoanAnalysis(
+        [tinkAccountObjectMock],
+        [tinkSearchResponseObjectMock.results[0].transaction],
+        [tinkProviderObjectMock],
+      );
+
+      // Authenticate to Algoan
+      expect(algoanAuthenticateSpy).toHaveBeenCalled();
+
+      // Update analysis
+      expect(updateAnalysisSpy).toHaveBeenCalledWith(
+        bankDetailsRequiredMock.customerId,
+        bankDetailsRequiredMock.analysisId,
+        analysisInputMock,
+      );
+    });
+
+    it('should do these steps in "refresh" mode', async () => {
+      await hookService.handleBankDetailsRequiredEvent({ ...bankDetailsRequiredMock, temporaryCode: undefined });
+
+      // Authenticate with the refresh token
+      expect(getCustomerSpy).toHaveBeenCalledWith(bankDetailsRequiredMock.customerId);
+      expect(tinkAuthenticateWithRefreshTokenSpy).toHaveBeenCalledWith(
+        serviceAccountConfigMock.clientId,
+        serviceAccountConfigMock.clientSecret,
+        'mockRefreshToken'
+      );
+      expect(tinkAuthenticateAsUserWithCodesSpy).not.toHaveBeenCalled();
 
       // Get data from tink
       expect(getAccountsSpy).toHaveBeenCalled();
