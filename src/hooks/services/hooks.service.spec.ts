@@ -43,6 +43,7 @@ import { bankDetailsRequiredMock } from '../dto/bank-details-required-payload.dt
 import { mapTinkDataToAlgoanAnalysis } from '../mappers/analysis.mapper';
 import { AggregationDetailsMode } from '../../algoan/dto/customer.enums';
 import { HooksService } from './hooks.service';
+import { AnalysisStatus, ErrorCodes } from '../../algoan/dto/analysis.enum';
 
 describe('HookService', () => {
   let hookService: HooksService;
@@ -434,6 +435,18 @@ describe('HookService', () => {
       serviceAccount.config = undefined;
       await expect(hookService.handleBankDetailsRequiredEvent(bankDetailsRequiredMock)).rejects.toThrowError(
         `Missing information: clientConfig: undefined`,
+      );
+
+      expect(updateAnalysisSpy).toHaveBeenCalledWith(
+        bankDetailsRequiredMock.customerId,
+        bankDetailsRequiredMock.analysisId,
+        {
+          status: AnalysisStatus.ERROR,
+          error: {
+            code: ErrorCodes.INTERNAL_ERROR,
+            message: `An error occured when fetching data from the aggregator`,
+          },
+        },
       );
     });
 

@@ -48,3 +48,14 @@ export enum AccountLoanType {
   MORTGAGE = 'MORTGAGE',
   OTHER = 'OTHER',
 }
+
+/**
+ * Error codes for the application
+ */
+export enum ErrorCodes {
+  UNKNOWN_ENTITY = 'UNKNOWN_ENTITY',
+  UNAUTHORIZED = 'UNAUTHORIZED',
+  ALREADY_EXISTS = 'ALREADY_EXISTS',
+  BAD_REQUEST = 'BAD_REQUEST',
+  INTERNAL_ERROR = 'INTERNAL_ERROR',
+}
