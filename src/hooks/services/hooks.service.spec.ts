@@ -161,7 +161,7 @@ describe('HookService', () => {
       );
     });
 
-    it('should do these steps if pricing STANDARD', async () => {
+    it('should do these steps if pricing STANDARD (redirect mode)', async () => {
       serviceAccountConfigMock.pricing = ClientPricing.STANDARD;
       await hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock);
 
@@ -192,7 +192,7 @@ describe('HookService', () => {
       });
     });
 
-    it('should do these steps if pricing PREMIUM WITHOUT an existing tink user', async () => {
+    it('should do these steps if pricing PREMIUM WITHOUT an existing tink user (redirect mode)', async () => {
       serviceAccountConfigMock.pricing = ClientPricing.PREMIUM;
       await hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock);
 
@@ -235,7 +235,7 @@ describe('HookService', () => {
       });
     });
 
-    it('should do these steps if pricing PREMIUM WITH an existing tink user', async () => {
+    it('should do these steps if pricing PREMIUM WITH an existing tink user (redirect mode)', async () => {
       // mock to return an existing userId
       getCustomerByIdSpy = jest.spyOn(algoanCustomerService, 'getCustomerById').mockResolvedValue({
         ...customerMock,
