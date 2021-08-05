@@ -374,7 +374,7 @@ describe('HookService', () => {
       expect(tinkAuthenticateWithRefreshTokenSpy).toHaveBeenCalledWith(
         serviceAccountConfigMock.clientId,
         serviceAccountConfigMock.clientSecret,
-        'mockRefreshToken'
+        'mockRefreshToken',
       );
       expect(tinkAuthenticateAsUserWithCodesSpy).not.toHaveBeenCalled();
 

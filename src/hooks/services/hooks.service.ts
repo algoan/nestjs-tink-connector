@@ -56,7 +56,8 @@ export class HooksService {
 
     // Get user information and client config
     const customer: Customer = await this.algoanCustomerService.getCustomerById(payload.customerId);
-    const callbackUrl: string | undefined = customer.aggregationDetails.callbackUrl;
+    // Ignore query params since Tink does not accept variables
+    const callbackUrl: string | undefined = customer.aggregationDetails.callbackUrl?.split(/[?#]/)[0];
     const clientConfig: ClientConfig | undefined = this.serviceAccount.config as ClientConfig | undefined;
 
     // Validate config
