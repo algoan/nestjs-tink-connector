@@ -29,6 +29,7 @@ import { AlgoanHttpService } from '../../algoan/services/algoan-http.service';
 import { AggregatorLinkRequiredDTO } from '../dto/aggregator-link-required-payload.dto';
 import { BankDetailsRequiredDTO } from '../dto/bank-details-required-payload.dto';
 import { mapTinkDataToAlgoanAnalysis } from '../mappers/analysis.mapper';
+import { AccountCheckArgs } from '../../tink/dto/account-check.args'
 
 /**
  * Hook service
@@ -129,24 +130,31 @@ export class HooksService {
    */
   private generateLinkDataFromAggregationMode(mode: AggregationDetailsMode | undefined, data: { clientConfig: ClientConfig, callbackUrl: string, authorizationCode?: string}): CustomerUpdateInput["aggregationDetails"] {
     const { clientConfig, callbackUrl, authorizationCode} = data
+    const sharedLinkParameters: AccountCheckArgs = {
+      client_id: clientConfig.clientId,
+      redirect_uri: callbackUrl,
+      market: clientConfig.market,
+      locale: clientConfig.locale,
+      test: this.config.tink.test ?? false,
+      scope: [
+        'accounts:read', // To list account: https://docs.tink.com/api#account-list-accounts-required-scopes-
+        'transactions:read', // To list transactions: https://docs.tink.com/api#search-query-transactions-required-scopes-
+        'credentials:read', // To list providers: https://docs.tink.com/api#provider-list-providers-required-scopes-
+      ].join(','),
+      authorization_code: authorizationCode,
+    }
+
 
     switch (mode) {
       case AggregationDetailsMode.redirect:
-        const redirectUrl: string | undefined = this.tinkLinkService.getAuthorizeLink({
-          client_id: clientConfig.clientId,
-          redirect_uri: callbackUrl,
-          market: clientConfig.market,
-          locale: clientConfig.locale,
-          test: this.config.tink.test ?? false,
-          scope: [
-            'accounts:read', // To list account: https://docs.tink.com/api#account-list-accounts-required-scopes-
-            'transactions:read', // To list transactions: https://docs.tink.com/api#search-query-transactions-required-scopes-
-            'credentials:read', // To list providers: https://docs.tink.com/api#provider-list-providers-required-scopes-
-          ].join(','),
-          authorization_code: authorizationCode,
-        });
+        const redirectUrl: string | undefined = this.tinkLinkService.getAuthorizeLink(sharedLinkParameters);
 
         return { redirectUrl }
+      case AggregationDetailsMode.iframe:
+        const iframeUrl: string | undefined = this.tinkLinkService.getAuthorizeLink({...sharedLinkParameters, iframe: true});
+
+        return { iframeUrl }
+
       default:
         throw new Error(`Invalid bank connection mode ${mode}`);
     }
