@@ -29,7 +29,7 @@ This section describes the process required for each subscription for an aggrega
 
 ### Aggregator Link Required
 
-The Tink user needs to be redirected to an external page. 
+The Tink user needs to be redirected to an external page.
 
 * The client should have this configuration data in the service account:
 ```
@@ -127,12 +127,12 @@ $ npm install
 To test locally the Tink Link process, a simple `index.html` file is rendered. To use it:
 
 Before testing
-- The client config: `locale`, `market`, `pricing` should be update in `service-accounts.config` in  `./json-server/default.json'.
+- The client config: `locale`, `market`, `pricing` should be updated in `service-accounts.config` in  `./json-server/default.json'.
 - You can enable http log `config/default.json` with `enableHttpRequestLog`, `enableHttpResponseLog`, `enableHttpErrorLog`
 
 Run Test
 - Run `npm run start:dev`. It will render an index.html file. Algoan APIs are exposed and mocked by a [json-server](https://github.com/typicode/json-server).
-- Go to your favorite browser and navigate to http://localhost:4000. It should display a web page: 
+- Go to your favorite browser and navigate to http://localhost:4000. It should display a web page:
 
 ![index_page](public/index-page.png)
 
