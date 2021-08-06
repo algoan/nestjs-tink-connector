@@ -41,6 +41,7 @@ import { TINK_LINK_ACTOR_CLIENT_ID } from '../../tink/contstants/tink.constants'
 
 import { bankDetailsRequiredMock } from '../dto/bank-details-required-payload.dto.mock';
 import { mapTinkDataToAlgoanAnalysis } from '../mappers/analysis.mapper';
+import { AggregationDetailsMode } from '../../algoan/dto/customer.enums';
 import { HooksService } from './hooks.service';
 
 describe('HookService', () => {
@@ -161,7 +162,7 @@ describe('HookService', () => {
       );
     });
 
-    it('should do these steps if pricing STANDARD', async () => {
+    it('should do these steps if pricing STANDARD (redirect mode)', async () => {
       serviceAccountConfigMock.pricing = ClientPricing.STANDARD;
       await hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock);
 
@@ -192,7 +193,7 @@ describe('HookService', () => {
       });
     });
 
-    it('should do these steps if pricing PREMIUM WITHOUT an existing tink user', async () => {
+    it('should do these steps if pricing PREMIUM WITHOUT an existing tink user (redirect mode)', async () => {
       serviceAccountConfigMock.pricing = ClientPricing.PREMIUM;
       await hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock);
 
@@ -235,7 +236,7 @@ describe('HookService', () => {
       });
     });
 
-    it('should do these steps if pricing PREMIUM WITH an existing tink user', async () => {
+    it('should do these steps if pricing PREMIUM WITH an existing tink user (redirect mode)', async () => {
       // mock to return an existing userId
       getCustomerByIdSpy = jest.spyOn(algoanCustomerService, 'getCustomerById').mockResolvedValue({
         ...customerMock,
@@ -275,6 +276,35 @@ describe('HookService', () => {
       expect(updateCustomerSpy).toHaveBeenCalledWith(aggregatorLinkRequiredMock.customerId, {
         aggregationDetails: {
           redirectUrl: 'MY_LINK_URL',
+          userId: createUserObject.user_id,
+        },
+      });
+    });
+
+    it('should generate an iframe link and should update the customer with the new iframe URL', async () => {
+      getCustomerByIdSpy = jest.spyOn(algoanCustomerService, 'getCustomerById').mockResolvedValue({
+        ...customerMock,
+        aggregationDetails: {
+          ...customerMock.aggregationDetails,
+          mode: AggregationDetailsMode.iframe,
+        },
+      });
+      await hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock);
+      expect(getLinkSpy).toHaveBeenCalledWith({
+        client_id: serviceAccountConfigMock.clientId,
+        redirect_uri: customerMock.aggregationDetails.callbackUrl,
+        market: serviceAccountConfigMock.market,
+        locale: serviceAccountConfigMock.locale,
+        scope: 'accounts:read,transactions:read,credentials:read',
+        test: config.tink.test,
+        authorization_code: createAuthorizationObjectMock.code,
+        iframe: true,
+      });
+
+      // update
+      expect(updateCustomerSpy).toHaveBeenCalledWith(aggregatorLinkRequiredMock.customerId, {
+        aggregationDetails: {
+          iframeUrl: 'MY_LINK_URL',
           userId: createUserObject.user_id,
         },
       });

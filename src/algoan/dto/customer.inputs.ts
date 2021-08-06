@@ -13,6 +13,7 @@ export interface AggregationDetailsUpdateInput {
   token?: string;
   redirectUrl?: string;
   apiUrl?: string;
+  iframeUrl?: string;
   userId?: string;
   clientId?: string;
 }

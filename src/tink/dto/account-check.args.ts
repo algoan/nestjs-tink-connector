@@ -13,4 +13,5 @@ export interface AccountCheckArgs {
   scope?: string;
   test: boolean;
   authorization_code?: string;
+  iframe?: boolean;
 }
