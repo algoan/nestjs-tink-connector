@@ -41,7 +41,7 @@ import { TINK_LINK_ACTOR_CLIENT_ID } from '../../tink/contstants/tink.constants'
 
 import { bankDetailsRequiredMock } from '../dto/bank-details-required-payload.dto.mock';
 import { mapTinkDataToAlgoanAnalysis } from '../mappers/analysis.mapper';
-import { AggregationDetailsMode } from '../../algoan/dto/customer.enums'
+import { AggregationDetailsMode } from '../../algoan/dto/customer.enums';
 import { HooksService } from './hooks.service';
 
 describe('HookService', () => {
@@ -286,7 +286,7 @@ describe('HookService', () => {
         ...customerMock,
         aggregationDetails: {
           ...customerMock.aggregationDetails,
-          mode: AggregationDetailsMode.iframe
+          mode: AggregationDetailsMode.iframe,
         },
       });
       await hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock);
@@ -298,7 +298,7 @@ describe('HookService', () => {
         scope: 'accounts:read,transactions:read,credentials:read',
         test: config.tink.test,
         authorization_code: createAuthorizationObjectMock.code,
-        iframe: true
+        iframe: true,
       });
 
       // update
@@ -404,7 +404,7 @@ describe('HookService', () => {
       expect(tinkAuthenticateWithRefreshTokenSpy).toHaveBeenCalledWith(
         serviceAccountConfigMock.clientId,
         serviceAccountConfigMock.clientSecret,
-        'mockRefreshToken'
+        'mockRefreshToken',
       );
       expect(tinkAuthenticateAsUserWithCodesSpy).not.toHaveBeenCalled();
 

@@ -20,7 +20,7 @@ export interface AggregationDetails {
   mode?: AggregationDetailsMode;
   redirectUrl?: string;
   apiUrl?: string;
-  iframeUrl?: string
+  iframeUrl?: string;
   userId?: string;
   clientId?: string;
 }

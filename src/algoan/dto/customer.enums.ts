@@ -4,7 +4,7 @@
 export enum AggregationDetailsMode {
   redirect = 'REDIRECT',
   api = 'API',
-  iframe = 'IFRAME'
+  iframe = 'IFRAME',
 }
 
 /**

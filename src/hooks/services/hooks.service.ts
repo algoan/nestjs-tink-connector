@@ -3,8 +3,8 @@ import { ServiceAccount } from '@algoan/rest';
 import { Injectable, Inject } from '@nestjs/common';
 import { Config } from 'node-config-ts';
 
-import { AggregationDetailsMode } from '../../algoan/dto/customer.enums'
-import { CustomerUpdateInput } from '../../algoan/dto/customer.inputs'
+import { AggregationDetailsMode } from '../../algoan/dto/customer.enums';
+import { CustomerUpdateInput } from '../../algoan/dto/customer.inputs';
 import { assertsTypeValidation } from '../../shared/utils/common.utils';
 import { TinkAccountObject } from '../../tink/dto/account.objects';
 import { TinkAccountService } from '../../tink/services/tink-account.service';
@@ -29,7 +29,7 @@ import { AlgoanHttpService } from '../../algoan/services/algoan-http.service';
 import { AggregatorLinkRequiredDTO } from '../dto/aggregator-link-required-payload.dto';
 import { BankDetailsRequiredDTO } from '../dto/bank-details-required-payload.dto';
 import { mapTinkDataToAlgoanAnalysis } from '../mappers/analysis.mapper';
-import { AccountCheckArgs } from '../../tink/dto/account-check.args'
+import { AccountCheckArgs } from '../../tink/dto/account-check.args';
 
 /**
  * Hook service
@@ -109,7 +109,10 @@ export class HooksService {
       });
     }
 
-    const linkData: CustomerUpdateInput["aggregationDetails"] = this.generateLinkDataFromAggregationMode(customer.aggregationDetails.mode, { clientConfig, callbackUrl, authorizationCode})
+    const linkData: CustomerUpdateInput['aggregationDetails'] = this.generateLinkDataFromAggregationMode(
+      customer.aggregationDetails.mode,
+      { clientConfig, callbackUrl, authorizationCode },
+    );
 
     // Update user with redirect link information and userId if provided
     await this.algoanCustomerService.updateCustomer(payload.customerId, {
@@ -128,8 +131,11 @@ export class HooksService {
    * @param data the input data used for to generate the link data
    * @returns
    */
-  private generateLinkDataFromAggregationMode(mode: AggregationDetailsMode | undefined, data: { clientConfig: ClientConfig, callbackUrl: string, authorizationCode?: string}): CustomerUpdateInput["aggregationDetails"] {
-    const { clientConfig, callbackUrl, authorizationCode} = data
+  private generateLinkDataFromAggregationMode(
+    mode: AggregationDetailsMode | undefined,
+    data: { clientConfig: ClientConfig; callbackUrl: string; authorizationCode?: string },
+  ): CustomerUpdateInput['aggregationDetails'] {
+    const { clientConfig, callbackUrl, authorizationCode } = data;
     const sharedLinkParameters: AccountCheckArgs = {
       client_id: clientConfig.clientId,
       redirect_uri: callbackUrl,
@@ -142,18 +148,20 @@ export class HooksService {
         'credentials:read', // To list providers: https://docs.tink.com/api#provider-list-providers-required-scopes-
       ].join(','),
       authorization_code: authorizationCode,
-    }
-
+    };
 
     switch (mode) {
       case AggregationDetailsMode.redirect:
         const redirectUrl: string | undefined = this.tinkLinkService.getAuthorizeLink(sharedLinkParameters);
 
-        return { redirectUrl }
+        return { redirectUrl };
       case AggregationDetailsMode.iframe:
-        const iframeUrl: string | undefined = this.tinkLinkService.getAuthorizeLink({...sharedLinkParameters, iframe: true});
+        const iframeUrl: string | undefined = this.tinkLinkService.getAuthorizeLink({
+          ...sharedLinkParameters,
+          iframe: true,
+        });
 
-        return { iframeUrl }
+        return { iframeUrl };
 
       default:
         throw new Error(`Invalid bank connection mode ${mode}`);
