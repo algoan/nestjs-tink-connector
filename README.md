@@ -136,8 +136,9 @@ Run Test
 
 ![index_page](public/index-page.png)
 
-- Click on the first button "Redirect to Tink Link". It will call a `GET /redirect` API which simulates a webhook call to your connector and tries to fetch a redirect URL.
-- At the end of the Tink Link process, a `GET /callback?code=...` will be called. It will simulated the `bank_reader_details` webhook event to the connector.
+- With the two provided buttons, you are able to test the two available Tink processes:
+  - Redirect: Click on the button "Redirect to Tink Link". It will call a `GET /redirect` API which simulates a webhook call to your connector and tries to fetch a redirect URL. At the end of the Tink Link process, a `GET /callback?code=...` will be called. It will simulated the `bank_reader_details` webhook event to the connector.
+  - Embedded: Click on the button "Open embedded Tink Link". It will call a `GET /iframe` API which simulates a webhook call to your connector, tries to fetch an iframe URL and display an iframe with this URL. At the end of the Tink Link process, a `GET /callback?code=...` will be called. It will simulated the `bank_reader_details` webhook event to the connector. Moreover, the iframe is remove from the interface.
 
 ## Test
 
