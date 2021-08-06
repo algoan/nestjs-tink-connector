@@ -41,6 +41,10 @@ server.get('/redirect', async (req, res) => {
   // Reset Data
   // Set a new customer id at each test to avoid duplicate user error on tink
   db.customers[0].id = `random-${Date.now()}`;
+  db.customers[0].aggregationDetails = {
+    mode: "REDIRECT",
+    callbackUrl: "http://localhost:4000/callback"
+  }
   db.analyses[0].accounts = undefined;
 
   // Prepare payload
@@ -94,6 +98,72 @@ server.get('/redirect', async (req, res) => {
   }
 
   res.redirect(redirectUrl);
+});
+
+/**
+ * Provide the Tink Link for the iframe mode
+ */
+server.get('/iframe', async (req, res) => {
+  // Reset Data
+  // Set a new customer id at each test to avoid duplicate user error on tink
+  db.customers[0].id = `random-${Date.now()}`;
+  db.customers[0].aggregationDetails = {
+    mode: "IFRAME",
+    callbackUrl: "http://localhost:4000/callback"
+  }
+  db.analyses[0].accounts = undefined;
+
+  // Prepare payload
+  const customerId = db.customers[0].id;
+  const payload = {
+    customerId,
+  };
+  const subscription = db.subscriptions[0];
+
+  /**
+   * Fake a webhook request from Algoan
+   */
+  await axios.post(
+    `http://localhost:${config.port}/hooks`,
+    {
+      subscription: {
+        eventName: subscription.eventName,
+        id: subscription.id,
+        status: subscription.status,
+        target: subscription.target,
+      },
+      payload,
+      time: Date.now(),
+      id: 'random_id',
+      index: Math.floor(Math.random() * 100),
+    },
+    {
+      headers: {
+        'x-hub-signature': `sha256=${crypto.createHmac('sha256', subscription.secret).update(JSON.stringify(payload)).digest('hex')}`,
+      },
+    },
+  );
+
+  /**
+   * Try to get the iframeUrl property
+   */
+  const retryCount = 10;
+  let count = 0;
+  let iframeUrl;
+
+  do {
+    await delay(defaultDelay);
+    iframeUrl = db.customers[0].aggregationDetails.iframeUrl;
+    count++;
+  } while (iframeUrl === undefined && count < retryCount);
+
+  if (iframeUrl === undefined) {
+    res.status(404).send({
+      message: 'Iframe url not found',
+    });
+  }
+
+  res.send(iframeUrl);
 });
 
 /**
