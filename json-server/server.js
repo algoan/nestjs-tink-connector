@@ -34,6 +34,27 @@ server.post('/v1/oauth/token', (req, res) => {
   });
 });
 
+const sendFakeWebhookRequest = (subscription, payload) => axios.post(
+    `http://localhost:${config.port}/hooks`,
+    {
+      subscription: {
+        eventName: subscription.eventName,
+        id: subscription.id,
+        status: subscription.status,
+        target: subscription.target,
+      },
+      payload,
+      time: Date.now(),
+      id: 'random_id',
+      index: Math.floor(Math.random() * 100),
+    },
+    {
+      headers: {
+        'x-hub-signature': `sha256=${crypto.createHmac('sha256', subscription.secret).update(JSON.stringify(payload)).digest('hex')}`,
+      },
+    },
+  );
+
 /**
  * Redirect the user to Tink Link
  */
@@ -54,29 +75,7 @@ server.get('/redirect', async (req, res) => {
   };
   const subscription = db.subscriptions[0];
 
-  /**
-   * Fake a webhook request from Algoan
-   */
-  await axios.post(
-    `http://localhost:${config.port}/hooks`,
-    {
-      subscription: {
-        eventName: subscription.eventName,
-        id: subscription.id,
-        status: subscription.status,
-        target: subscription.target,
-      },
-      payload,
-      time: Date.now(),
-      id: 'random_id',
-      index: Math.floor(Math.random() * 100),
-    },
-    {
-      headers: {
-        'x-hub-signature': `sha256=${crypto.createHmac('sha256', subscription.secret).update(JSON.stringify(payload)).digest('hex')}`,
-      },
-    },
-  );
+  await sendFakeWebhookRequest(subscription, payload);
 
   /**
    * Try to get the redirectUrl property
@@ -120,29 +119,7 @@ server.get('/iframe', async (req, res) => {
   };
   const subscription = db.subscriptions[0];
 
-  /**
-   * Fake a webhook request from Algoan
-   */
-  await axios.post(
-    `http://localhost:${config.port}/hooks`,
-    {
-      subscription: {
-        eventName: subscription.eventName,
-        id: subscription.id,
-        status: subscription.status,
-        target: subscription.target,
-      },
-      payload,
-      time: Date.now(),
-      id: 'random_id',
-      index: Math.floor(Math.random() * 100),
-    },
-    {
-      headers: {
-        'x-hub-signature': `sha256=${crypto.createHmac('sha256', subscription.secret).update(JSON.stringify(payload)).digest('hex')}`,
-      },
-    },
-  );
+  await sendFakeWebhookRequest(subscription, payload);
 
   /**
    * Try to get the iframeUrl property
