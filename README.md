@@ -127,7 +127,7 @@ $ npm install
 To test locally the Tink Link process, a simple `index.html` file is rendered. To use it:
 
 Before testing
-- The client config: `locale`, `market`, `pricing` should be updated in `service-accounts.config` in  `./json-server/default.json'.
+- The client config: `locale`, `market`, `pricing` should be updated in `service-accounts.config` in  `./json-server/db.json'.
 - You can enable http log `config/default.json` with `enableHttpRequestLog`, `enableHttpResponseLog`, `enableHttpErrorLog`
 
 Run Test
