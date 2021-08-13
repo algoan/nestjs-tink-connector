@@ -49,12 +49,16 @@ export class HooksController {
       switch (event.subscription.eventName) {
         case EventName.AGGREGATOR_LINK_REQUIRED:
           assertsTypeValidation(AggregatorLinkRequiredDTO, event.payload);
-          void this.hooksService.handleAggregatorLinkRequiredEvent(event.payload);
+          void this.hooksService.handleAggregatorLinkRequiredEvent(event.payload).catch((err) => {
+            throw err;
+          });
           break;
 
         case EventName.BANK_DETAILS_REQUIRED:
           assertsTypeValidation(BankDetailsRequiredDTO, event.payload);
-          void this.hooksService.handleBankDetailsRequiredEvent(event.payload);
+          void this.hooksService.handleBankDetailsRequiredEvent(event.payload).catch((err) => {
+            throw err;
+          });
           break;
 
         // The default case should never be reached, as the eventName is already checked in the DTO
