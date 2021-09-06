@@ -49,10 +49,14 @@
         </div>
       </div>
       <div class="row">
-        <a href="/redirect" role="button" class="btn btn-primary redirect-button" id="bi-redirection">
+        <a href="/redirect" role="button" class="btn btn-primary redirect-button" id="tink-redirection">
           Redirect to Tink Link
         </a>
+        <button role="button" class="btn btn-primary redirect-button" id="tink-iframe-button">
+          Open embedded Tink Link
+        </button>
       </div>
+      <div class="row justify-content-center" id="iframe-container"></div>
       <div class="row row-cols-2">
         <div clas="col">
           <h4>Customer</h4>
@@ -90,6 +94,48 @@
       req.send();
     }
 
+    function addHandlerToIframeButton() {
+      document.getElementById('tink-iframe-button').onclick = function addIframe() {
+        var req = new XMLHttpRequest();
+        req.onload = () => {
+          var iframeUrl = req.responseText;
+          var iframe = document.createElement('iframe');
+
+          iframe.src = iframeUrl;
+          iframe.style.width = '408px';
+          iframe.style.height = '600px';
+          iframe.style.marginBottom = "30px";
+          document.getElementById('iframe-container').appendChild(iframe);
+        };
+        req.open("GET", "/iframe");
+        req.send();
+      }
+    }
+
+    window.addEventListener('message', receiveMessage, false);
+
+    function receiveMessage(event) {
+      if (event.origin !== 'https://link.tink.com' || typeof event.data !== "string") {
+        return;
+      }
+
+      // Read more about the message format here: https://docs.tink.com/api/#tink-link-response-iframe-mode
+      const { type, data, error } = JSON.parse(event.data);
+
+      if (type === 'code') {
+        const code = data;
+        var req = new XMLHttpRequest();
+        req.onload = () => {
+          document.getElementById('iframe-container').innerHTML = "";
+        }
+        req.open("GET", `/callback?code=${code}`);
+        req.send();
+      }
+    }
+
+
+    addHandlerToIframeButton()
+
     // First update
     updateCustomer();
     updateAnalysis();
@@ -100,4 +146,3 @@
 
     </script>
 </html>
-
