@@ -1,4 +1,4 @@
-import { IsEnum, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsString } from 'class-validator';
 import { ClientPricing } from './service-account.enums';
 
 /**
@@ -19,4 +19,7 @@ export class ClientConfig {
 
   @IsString()
   public locale: string;
+
+  @IsBoolean()
+  public realDataTest: boolean;
 }

@@ -60,6 +60,7 @@ export class HooksService {
 
     // Get user information and client config
     const customer: Customer = await this.algoanCustomerService.getCustomerById(payload.customerId);
+
     // Ignore query params since Tink does not accept variables
     const callbackUrl: string | undefined = customer.aggregationDetails.callbackUrl?.split(/[?#]/)[0];
     const clientConfig: ClientConfig | undefined = this.serviceAccount.config as ClientConfig | undefined;
@@ -143,7 +144,7 @@ export class HooksService {
       redirect_uri: callbackUrl,
       market: clientConfig.market,
       locale: clientConfig.locale,
-      test: this.config.tink.test ?? false,
+      test: clientConfig.realDataTest ?? false,
       scope: [
         'accounts:read', // To list account: https://docs.tink.com/api#account-list-accounts-required-scopes-
         'transactions:read', // To list transactions: https://docs.tink.com/api#search-query-transactions-required-scopes-

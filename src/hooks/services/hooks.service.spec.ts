@@ -42,8 +42,8 @@ import { TINK_LINK_ACTOR_CLIENT_ID } from '../../tink/contstants/tink.constants'
 import { bankDetailsRequiredMock } from '../dto/bank-details-required-payload.dto.mock';
 import { mapTinkDataToAlgoanAnalysis } from '../mappers/analysis.mapper';
 import { AggregationDetailsMode } from '../../algoan/dto/customer.enums';
-import { HooksService } from './hooks.service';
 import { AnalysisStatus, ErrorCodes } from '../../algoan/dto/analysis.enum';
+import { HooksService } from './hooks.service';
 
 describe('HookService', () => {
   let hookService: HooksService;
@@ -297,7 +297,7 @@ describe('HookService', () => {
         market: serviceAccountConfigMock.market,
         locale: serviceAccountConfigMock.locale,
         scope: 'accounts:read,transactions:read,credentials:read',
-        test: config.tink.test,
+        test: serviceAccountConfigMock.realDataTest,
         authorization_code: createAuthorizationObjectMock.code,
         iframe: true,
       });

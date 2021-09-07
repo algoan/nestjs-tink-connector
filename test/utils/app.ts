@@ -49,6 +49,7 @@ export const buildFakeApp = async (): Promise<INestApplication> => {
           pricing: 'STANDARD',
           market: 'BE',
           locale: 'en_US',
+          realDataTest: true,
         },
       },
     ],

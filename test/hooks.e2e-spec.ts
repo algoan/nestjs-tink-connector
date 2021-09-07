@@ -2,6 +2,7 @@
 /* eslint-disable arrow-body-style */
 import { INestApplication, HttpStatus } from '@nestjs/common';
 import * as nock from 'nock';
+import { AggregationDetailsMode } from '../src/algoan/dto/customer.enums';
 import * as request from 'supertest';
 import { buildFakeApp, fakeAlgoanBaseUrl } from './utils/app';
 import { fakeAPI } from './utils/fake-server';
@@ -78,6 +79,7 @@ describe('HooksController (e2e)', () => {
           customIdentifier: 'client_unique_identifier',
           aggregationDetails: {
             callbackUrl: `${fakeAlgoanBaseUrl}/callback`,
+            mode: AggregationDetailsMode.redirect,
           },
         },
         path: '/v2/customers/customerId',
