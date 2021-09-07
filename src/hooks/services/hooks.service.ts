@@ -144,7 +144,7 @@ export class HooksService {
       redirect_uri: callbackUrl,
       market: clientConfig.market,
       locale: clientConfig.locale,
-      test: clientConfig.realDataTest ?? false,
+      test: clientConfig.realDataTest ?? this.config.tink.test ?? false,
       scope: [
         'accounts:read', // To list account: https://docs.tink.com/api#account-list-accounts-required-scopes-
         'transactions:read', // To list transactions: https://docs.tink.com/api#search-query-transactions-required-scopes-
