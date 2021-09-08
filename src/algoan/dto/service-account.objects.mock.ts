@@ -10,4 +10,5 @@ export const serviceAccountConfigMock: ClientConfig = {
   pricing: ClientPricing.STANDARD,
   market: 'FR',
   locale: 'fr_FR',
+  realDataTest: true,
 };
