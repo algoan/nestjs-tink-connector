@@ -29,6 +29,8 @@ export interface Account {
   details?: AccountDetails;
   aggregator?: AccountAggregator;
   transactions?: AccountTransaction[];
+  // eslint-disable-next-line
+  number?: string;
 }
 
 /**

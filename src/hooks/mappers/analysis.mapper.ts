@@ -80,6 +80,8 @@ export function mapToAlgoanAccount(
     },
     transactions: tinkTransactions.map(mapToAlgoanTransaction),
     ...mapToIbanAndBic(tinkAccount.identifiers),
+    // eslint-disable-next-line
+    number: tinkAccount.accountNumber,
   };
 }
 
