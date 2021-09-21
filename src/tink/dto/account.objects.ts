@@ -27,6 +27,7 @@ export interface TinkAccountObject<NullOrUndefined = undefined> {
   name: string;
   type: TinkAccountType;
   iban?: string; // Don't know yet if it is returned each time, not in the documentation.
+  accountNumber?: string;
 }
 
 /**

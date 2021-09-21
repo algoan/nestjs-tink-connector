@@ -28,6 +28,7 @@ export const tinkAccountObjectMock: TinkAccountObject = {
   holderName: 'Thomas Alan Waits',
   name: 'My account',
   type: TinkAccountType.CHECKING,
+  accountNumber: '1234-123456789',
 };
 
 /**

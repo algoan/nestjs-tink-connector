@@ -214,6 +214,8 @@ describe('AnalysisMapper', () => {
         },
         transactions: tinkTransactionsMock.map(mapToAlgoanTransaction),
         ...mapToIbanAndBic(tinkAccountObjectMock.identifiers),
+        // eslint-disable-next-line
+        number: '1234-123456789',
       });
 
       // Same number of transaction
@@ -256,6 +258,8 @@ describe('AnalysisMapper', () => {
         },
         transactions: tinkTransactionsMock.map(mapToAlgoanTransaction),
         ...mapToIbanAndBic(tinkAccountObjectMock.identifiers),
+        // eslint-disable-next-line
+        number: '1234-123456789',
       });
     });
 
@@ -384,6 +388,8 @@ describe('AnalysisMapper', () => {
             ],
             type: 'CHECKING',
             usage: 'PERSONAL',
+            // eslint-disable-next-line
+            number: '1234-123456789',
           },
           {
             aggregator: {
@@ -426,6 +432,8 @@ describe('AnalysisMapper', () => {
             ],
             type: 'CHECKING',
             usage: 'PERSONAL',
+            // eslint-disable-next-line
+            number: '1234-123456789',
           },
         ],
       });
