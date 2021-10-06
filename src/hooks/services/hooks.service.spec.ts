@@ -359,7 +359,7 @@ describe('HookService', () => {
     });
 
     it('should do these steps in "snapshot" mode', async () => {
-      await hookService.handleBankDetailsRequiredEvent(bankDetailsRequiredMock);
+      await hookService.handleBankDetailsRequiredEvent(bankDetailsRequiredMock, new Date());
 
       // Authenticate as user
       expect(tinkAuthenticateAsUserWithCodesSpy).toHaveBeenCalledWith(
@@ -398,7 +398,10 @@ describe('HookService', () => {
     });
 
     it('should do these steps in "refresh" mode', async () => {
-      await hookService.handleBankDetailsRequiredEvent({ ...bankDetailsRequiredMock, temporaryCode: undefined });
+      await hookService.handleBankDetailsRequiredEvent(
+        { ...bankDetailsRequiredMock, temporaryCode: undefined },
+        new Date(),
+      );
 
       // Authenticate with the refresh token
       expect(getCustomerSpy).toHaveBeenCalledWith(bankDetailsRequiredMock.customerId);
@@ -433,9 +436,9 @@ describe('HookService', () => {
 
     it('should throw error if client config missing', async () => {
       serviceAccount.config = undefined;
-      await expect(hookService.handleBankDetailsRequiredEvent(bankDetailsRequiredMock)).rejects.toThrowError(
-        `Missing information: clientConfig: undefined`,
-      );
+      await expect(
+        hookService.handleBankDetailsRequiredEvent(bankDetailsRequiredMock, new Date()),
+      ).rejects.toThrowError(`Missing information: clientConfig: undefined`);
 
       expect(updateAnalysisSpy).toHaveBeenCalledWith(
         bankDetailsRequiredMock.customerId,
