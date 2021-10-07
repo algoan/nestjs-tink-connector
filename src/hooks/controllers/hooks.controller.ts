@@ -27,6 +27,8 @@ export class HooksController {
   @Post('/hooks')
   @HttpCode(HttpStatus.NO_CONTENT)
   public async controlHook(@Body() event: EventDTO, @Headers() headers: IHeaders): Promise<void> {
+    const aggregationStartDate: Date = new Date();
+
     // Get subscription
     const subscription: Subscription | undefined = this.serviceAccount.subscriptions.find(
       (sub: Subscription) => sub.id === event.subscription.id,
@@ -56,7 +58,7 @@ export class HooksController {
 
         case EventName.BANK_DETAILS_REQUIRED:
           assertsTypeValidation(BankDetailsRequiredDTO, event.payload);
-          void this.hooksService.handleBankDetailsRequiredEvent(event.payload).catch((err) => {
+          void this.hooksService.handleBankDetailsRequiredEvent(event.payload, aggregationStartDate).catch((err) => {
             throw err;
           });
           break;

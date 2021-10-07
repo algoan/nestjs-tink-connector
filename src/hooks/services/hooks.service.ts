@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention, camelcase */
 import { ServiceAccount } from '@algoan/rest';
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, Logger } from '@nestjs/common';
 import { Config } from 'node-config-ts';
 
 import { AggregationDetailsMode } from '../../algoan/dto/customer.enums';
@@ -37,6 +37,11 @@ import { AnalysisStatus, ErrorCodes } from '../../algoan/dto/analysis.enum';
  */
 @Injectable()
 export class HooksService {
+  /**
+   * Class logger
+   */
+  private readonly logger: Logger = new Logger(HooksService.name);
+
   constructor(
     @Inject(CONFIG) private readonly config: Config,
     private readonly algoanHttpService: AlgoanHttpService,
@@ -174,7 +179,10 @@ export class HooksService {
   /**
    * Handle Aggregator Link event
    */
-  public async handleBankDetailsRequiredEvent(payload: BankDetailsRequiredDTO): Promise<void> {
+  public async handleBankDetailsRequiredEvent(
+    payload: BankDetailsRequiredDTO,
+    aggregationStartDate: Date,
+  ): Promise<void> {
     try {
       // Get client config
       const clientConfig: ClientConfig | undefined = this.serviceAccount.config as ClientConfig | undefined;
@@ -224,6 +232,14 @@ export class HooksService {
 
       // Generate an Algoan analysis from data information
       const analysis: AnalysisUpdateInput = mapTinkDataToAlgoanAnalysis(accounts, transactions, providers);
+
+      const aggregationDuration: number = new Date().getTime() - aggregationStartDate.getTime();
+
+      this.logger.log({
+        message: `Account aggregation completed in ${aggregationDuration} milliseconds for Customer ${payload.customerId} and Analysis ${payload.analysisId}.`,
+        aggregator: 'TINK',
+        duration: aggregationDuration,
+      });
 
       // Update the user analysis
       await this.algoanAnalysisService.updateAnalysis(payload.customerId, payload.analysisId, analysis);
