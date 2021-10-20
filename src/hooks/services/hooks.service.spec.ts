@@ -190,6 +190,7 @@ describe('HookService', () => {
       expect(updateCustomerSpy).toHaveBeenCalledWith(aggregatorLinkRequiredMock.customerId, {
         aggregationDetails: {
           redirectUrl: 'MY_LINK_URL',
+          aggregatorName: 'TINK',
         },
       });
     });
@@ -233,6 +234,7 @@ describe('HookService', () => {
         aggregationDetails: {
           redirectUrl: 'MY_LINK_URL',
           userId: createUserObject.user_id,
+          aggregatorName: 'TINK',
         },
       });
     });
@@ -278,6 +280,7 @@ describe('HookService', () => {
         aggregationDetails: {
           redirectUrl: 'MY_LINK_URL',
           userId: createUserObject.user_id,
+          aggregatorName: 'TINK',
         },
       });
     });
@@ -307,6 +310,7 @@ describe('HookService', () => {
         aggregationDetails: {
           iframeUrl: 'MY_LINK_URL',
           userId: createUserObject.user_id,
+          aggregatorName: 'TINK',
         },
       });
     });

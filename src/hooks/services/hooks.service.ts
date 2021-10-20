@@ -127,6 +127,7 @@ export class HooksService {
       aggregationDetails: {
         ...linkData,
         userId: tinkUserId,
+        aggregatorName: 'TINK',
       },
     });
 

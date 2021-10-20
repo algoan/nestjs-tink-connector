@@ -16,4 +16,5 @@ export interface AggregationDetailsUpdateInput {
   iframeUrl?: string;
   userId?: string;
   clientId?: string;
+  aggregatorName?: string;
 }
