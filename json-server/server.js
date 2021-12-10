@@ -94,6 +94,8 @@ server.get('/redirect', async (req, res) => {
     res.status(404).send({
       message: 'Redirect url not found',
     });
+
+    return;
   }
 
   res.redirect(redirectUrl);
