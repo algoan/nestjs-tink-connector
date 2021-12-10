@@ -49,7 +49,7 @@ describe('TinkLinkService', () => {
         authorization_code: authorizationCode,
       };
 
-      const link: string = `${config.tink.linkBaseUrl}/1.0/authorize/?${qs.stringify(args)}`;
+      const link: string = `${config.tink.linkBaseUrl}/1.0/transactions/connect-account?${qs.stringify(args)}`;
 
       expect(tinkLinkService.getAuthorizeLink(args)).toEqual(link);
     });
@@ -69,7 +69,7 @@ describe('TinkLinkService', () => {
         test: true,
       };
 
-      const link: string = `${config.tink.linkBaseUrl}/1.0/authorize/?${qs.stringify(args)}`;
+      const link: string = `${config.tink.linkBaseUrl}/1.0/transactions/connect-account?${qs.stringify(args)}`;
 
       expect(tinkLinkService.getAuthorizeLink(args)).toEqual(link);
     });

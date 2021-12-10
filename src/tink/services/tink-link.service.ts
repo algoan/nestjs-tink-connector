@@ -19,6 +19,6 @@ export class TinkLinkService {
    */
   // eslint-disable-next-line class-methods-use-this
   public getAuthorizeLink(args: AccountCheckArgs): string {
-    return `${this.config.tink.linkBaseUrl}/1.0/authorize/?${qs.stringify(args)}`;
+    return `${this.config.tink.linkBaseUrl}/1.0/transactions/connect-account?${qs.stringify(args)}`;
   }
 }
