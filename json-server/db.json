@@ -22,9 +22,10 @@
       "config": {
         "clientId": "clientId",
         "clientSecret": "clientSecret",
-        "pricing": "PREMIUM",
-        "market": "BE",
-        "locale": "en_US"
+        "market": "FR",
+        "locale": "fr_FR",
+        "realDataTest": true,
+        "pricing": "STANDARD"
       }
     }
   ],
