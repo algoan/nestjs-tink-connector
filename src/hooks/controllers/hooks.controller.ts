@@ -1,5 +1,5 @@
 import { EventName, EventStatus, ServiceAccount, Subscription, SubscriptionEvent } from '@algoan/rest';
-import { Body, Controller, Headers, HttpCode, HttpStatus, Post, UnauthorizedException } from '@nestjs/common';
+import { Body, Controller, Headers, HttpCode, HttpStatus, Logger, Post, UnauthorizedException } from '@nestjs/common';
 
 import { assertsTypeValidation } from '../../shared/utils/common.utils';
 import { AggregatorLinkRequiredDTO } from '../dto/aggregator-link-required-payload.dto';
@@ -19,6 +19,11 @@ interface IHeaders {
  */
 @Controller()
 export class HooksController {
+  /**
+   * Class logger
+   */
+  private readonly logger: Logger = new Logger(HooksController.name);
+
   constructor(private readonly hooksService: HooksService, private readonly serviceAccount: ServiceAccount) {}
 
   /**
@@ -51,16 +56,18 @@ export class HooksController {
       switch (event.subscription.eventName) {
         case EventName.AGGREGATOR_LINK_REQUIRED:
           assertsTypeValidation(AggregatorLinkRequiredDTO, event.payload);
-          void this.hooksService.handleAggregatorLinkRequiredEvent(event.payload).catch((err) => {
-            throw err;
+          void this.hooksService.handleAggregatorLinkRequiredEvent(event.payload).catch((err: Error) => {
+            this.logger.error('An error occurred when "handleAggregatorLinkRequiredEvent"', err.stack, err.message);
           });
           break;
 
         case EventName.BANK_DETAILS_REQUIRED:
           assertsTypeValidation(BankDetailsRequiredDTO, event.payload);
-          void this.hooksService.handleBankDetailsRequiredEvent(event.payload, aggregationStartDate).catch((err) => {
-            throw err;
-          });
+          void this.hooksService
+            .handleBankDetailsRequiredEvent(event.payload, aggregationStartDate)
+            .catch((err: Error) => {
+              this.logger.error('An error occurred when "handleBankDetailsRequiredEvent"', err.stack, err.message);
+            });
           break;
 
         // The default case should never be reached, as the eventName is already checked in the DTO
