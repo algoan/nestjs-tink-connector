@@ -1,3 +1,4 @@
+import { TinkV2AccountObject } from '../../tink/dto/account-v2.object';
 import { AccountType, AccountUsage, AccountSavingType, AccountLoanType, AnalysisStatus } from './analysis.enum';
 import { AnalysisError } from './analysis.objects';
 
@@ -5,7 +6,8 @@ import { AnalysisError } from './analysis.objects';
  * Analysis Update Input
  */
 export interface AnalysisUpdateInput {
-  accounts?: Account[];
+  accounts?: Account[] | TinkV2AccountObject[];
+  format?: string;
   status?: AnalysisStatus;
   error?: AnalysisError;
 }

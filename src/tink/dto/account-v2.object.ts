@@ -1,4 +1,5 @@
 import { TinkV2AccountType, TinkV2CustomerSegment } from './account-v2.enum';
+import { TinkV2TransactionObject } from './transaction-v2.object';
 
 /**
  * Query parameters used in the Tink request GET /data/v2/accounts
@@ -31,6 +32,7 @@ export interface TinkV2AccountObject<NullOrUndefined = undefined> {
   identifiers?: TinkV2AccountIdentifiersObject;
   name: string;
   type: TinkV2AccountType;
+  transactions?: TinkV2TransactionObject[];
 }
 
 /**

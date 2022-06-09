@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention, camelcase */
 import { ServiceAccount } from '@algoan/rest';
 import { Injectable, Inject, Logger } from '@nestjs/common';
-import { Config } from 'node-config-ts';
+import { config as globalConfig, Config } from 'node-config-ts';
 
 import { AggregationDetailsMode } from '../../algoan/dto/customer.enums';
 import { CustomerUpdateInput } from '../../algoan/dto/customer.inputs';
@@ -11,7 +11,7 @@ import { TinkAccountService } from '../../tink/services/tink-account.service';
 import { TinkProviderService } from '../../tink/services/tink-provider.service';
 import { TinkTransactionService } from '../../tink/services/tink-transaction.service';
 import { TinkProviderObject } from '../../tink/dto/provider.objects';
-import { ExtendedTinkTransactionResponseObject, TinkTransactionResponseObject } from '../../tink/dto/search.objects';
+import { ExtendedTinkTransactionResponseObject } from '../../tink/dto/search.objects';
 import { AnalysisUpdateInput } from '../../algoan/dto/analysis.inputs';
 import { TINK_LINK_ACTOR_CLIENT_ID } from '../../tink/contstants/tink.constants';
 import { AggregationDetails, Customer } from '../../algoan/dto/customer.objects';
@@ -31,6 +31,7 @@ import { BankDetailsRequiredDTO } from '../dto/bank-details-required-payload.dto
 import { mapTinkDataToAlgoanAnalysis } from '../mappers/analysis.mapper';
 import { AccountCheckArgs } from '../../tink/dto/account-check.args';
 import { AnalysisStatus, ErrorCodes } from '../../algoan/dto/analysis.enum';
+import { TinkV2AccountObject } from '../../tink/dto/account-v2.object';
 
 /**
  * Hook service
@@ -224,15 +225,33 @@ export class HooksService {
         await this.algoanCustomerService.updateCustomer(payload.customerId, { aggregationDetails });
       }
 
-      // Get bank information
-      const accounts: TinkAccountObject[] = await this.tinkAccountService.getAccounts();
-      const transactions: ExtendedTinkTransactionResponseObject[] = await this.tinkTransactionService.getTransactions({
-        accounts: accounts.map((a: TinkAccountObject) => a.id),
-      });
-      const providers: TinkProviderObject[] = await this.tinkProviderService.getProviders();
+      let analysis: AnalysisUpdateInput;
 
-      // Generate an Algoan analysis from data information
-      const analysis: AnalysisUpdateInput = mapTinkDataToAlgoanAnalysis(accounts, transactions, providers);
+      if (clientConfig.useTinkV2 === true) {
+        // Get bank information using Tink V2 APIs
+        const accounts: TinkV2AccountObject[] = await this.tinkAccountService.getAccountsV2();
+
+        for (const account of accounts) {
+          account.transactions = await this.tinkTransactionService.getTransactionsV2(account.id);
+        }
+
+        analysis = {
+          accounts,
+          format: globalConfig.openBankingDataFormat,
+        };
+      } else {
+        // Get bank information using Tink V1 APIs
+        const accounts: TinkAccountObject[] = await this.tinkAccountService.getAccounts();
+        const transactions: ExtendedTinkTransactionResponseObject[] = await this.tinkTransactionService.getTransactions(
+          {
+            accounts: accounts.map((a: TinkAccountObject) => a.id),
+          },
+        );
+        const providers: TinkProviderObject[] = await this.tinkProviderService.getProviders();
+
+        // Generate an Algoan analysis from data information
+        analysis = mapTinkDataToAlgoanAnalysis(accounts, transactions, providers);
+      }
 
       const aggregationDuration: number = new Date().getTime() - aggregationStartDate.getTime();
 
