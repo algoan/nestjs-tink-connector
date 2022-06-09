@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/naming-convention,camelcase */
+/* eslint-disable @typescript-eslint/naming-convention,camelcase,no-magic-numbers */
 import { HttpModule } from '@nestjs/common';
 import { ContextIdFactory } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -10,6 +10,9 @@ import { TinkSearchResponseObject, TinkSearchResultObject, TinkTransactionRespon
 import { tinkSearchResponseObjectMock } from '../dto/search.objects.mock';
 import { TinkSearchQueryInput } from '../dto/search.input';
 import { tinkCategoryListMock } from '../dto/category.object.mock';
+import { TinkV2TransactionObject } from '../dto/transaction-v2.object';
+import { tinkV2TransactionObjectMock } from '../dto/transaction-v2.object.mock';
+import { tinkV2AccountObjectMock } from '../dto/account-v2.object.mock';
 import { TinkTransactionService } from './tink-transaction.service';
 import { TinkHttpService } from './tink-http.service';
 import { TinkCategoryService } from './tink-category.service';
@@ -51,7 +54,7 @@ describe('TinkSearchService', () => {
   });
 
   describe('getTransactions', () => {
-    it('should return a transactons list', async () => {
+    it('should return a transactions list', async () => {
       const itemPerPage: number = 1000;
       const spy = jest.spyOn(tinkHttpService, 'post').mockReturnValue(Promise.resolve(tinkSearchResponseObjectMock));
 
@@ -72,7 +75,7 @@ describe('TinkSearchService', () => {
       );
     });
 
-    it('should return a transactons list of all pages', async () => {
+    it('should return a transactions list of all pages', async () => {
       const totalTransactionsCount: number = 2050;
       const itemPerPage: number = 1000;
       const allTransactionResultsMock: TinkSearchResultObject[] = Array(totalTransactionsCount).fill(
@@ -98,6 +101,77 @@ describe('TinkSearchService', () => {
 
       expect(spy).toHaveBeenCalledTimes(Math.ceil(totalTransactionsCount / itemPerPage));
       expect(transactions.length).toEqual(totalTransactionsCount);
+    });
+  });
+
+  describe('getTransactionsV2', () => {
+    it('should return a transactions list', async () => {
+      const expectedTransactions: TinkV2TransactionObject[] = [tinkV2TransactionObjectMock];
+
+      const spy = jest.spyOn(tinkHttpService, 'get').mockReturnValueOnce(
+        Promise.resolve({
+          transactions: expectedTransactions,
+          nextPageToken: '',
+        }),
+      );
+
+      const transactions: TinkV2TransactionObject[] = await tinkTransactionService.getTransactionsV2(
+        tinkV2AccountObjectMock.id,
+      );
+
+      expect(spy.mock.calls.length).toEqual(1);
+      expect(spy.mock.calls[0][0]).toEqual(`/data/v2/transactions`);
+      expect(spy.mock.calls[0][1]).toEqual({ accountIdIn: tinkV2AccountObjectMock.id, pageSize: 1000 });
+      expect(transactions).toEqual(expectedTransactions);
+    });
+
+    it('should return a transactions list of all pages', async () => {
+      const totalTransactionsCount: number = 2500;
+      const expectedTransactions: TinkSearchResultObject[] = Array(totalTransactionsCount).fill(
+        tinkV2TransactionObjectMock,
+      );
+
+      const spy = jest
+        .spyOn(tinkHttpService, 'get')
+        .mockReturnValueOnce(
+          Promise.resolve({
+            transactions: expectedTransactions.slice(0, 1000),
+            nextPageToken: 'second-page-token',
+          }),
+        )
+        .mockReturnValueOnce(
+          Promise.resolve({
+            transactions: expectedTransactions.slice(1000, 2000),
+            nextPageToken: 'third-page-token',
+          }),
+        )
+        .mockReturnValueOnce(
+          Promise.resolve({
+            transactions: expectedTransactions.slice(2000),
+            nextPageToken: '',
+          }),
+        );
+
+      const transactions: TinkV2TransactionObject[] = await tinkTransactionService.getTransactionsV2(
+        tinkV2AccountObjectMock.id,
+      );
+
+      expect(spy.mock.calls.length).toEqual(3);
+      expect(spy.mock.calls[0][0]).toEqual(`/data/v2/transactions`);
+      expect(spy.mock.calls[0][1]).toEqual({ accountIdIn: tinkV2AccountObjectMock.id, pageSize: 1000 });
+      expect(spy.mock.calls[1][0]).toEqual(`/data/v2/transactions`);
+      expect(spy.mock.calls[1][1]).toEqual({
+        accountIdIn: tinkV2AccountObjectMock.id,
+        pageSize: 1000,
+        pageToken: 'second-page-token',
+      });
+      expect(spy.mock.calls[2][0]).toEqual(`/data/v2/transactions`);
+      expect(spy.mock.calls[2][1]).toEqual({
+        accountIdIn: tinkV2AccountObjectMock.id,
+        pageSize: 1000,
+        pageToken: 'third-page-token',
+      });
+      expect(transactions).toEqual(expectedTransactions);
     });
   });
 });
