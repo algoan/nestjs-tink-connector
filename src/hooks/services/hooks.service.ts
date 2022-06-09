@@ -162,14 +162,20 @@ export class HooksService {
 
     switch (mode) {
       case AggregationDetailsMode.redirect:
-        const redirectUrl: string | undefined = this.tinkLinkService.getAuthorizeLink(sharedLinkParameters);
+        const redirectUrl: string | undefined = this.tinkLinkService.getAuthorizeLink(
+          sharedLinkParameters,
+          clientConfig.useTinkV2,
+        );
 
         return { redirectUrl };
       case AggregationDetailsMode.iframe:
-        const iframeUrl: string | undefined = this.tinkLinkService.getAuthorizeLink({
-          ...sharedLinkParameters,
-          iframe: true,
-        });
+        const iframeUrl: string | undefined = this.tinkLinkService.getAuthorizeLink(
+          {
+            ...sharedLinkParameters,
+            iframe: true,
+          },
+          clientConfig.useTinkV2,
+        );
 
         return { iframeUrl };
 

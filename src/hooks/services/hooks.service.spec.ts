@@ -21,7 +21,10 @@ import { tinkSearchResponseObjectMock } from '../../tink/dto/search.objects.mock
 import { tinkAccountObjectMock } from '../../tink/dto/account.objects.mock';
 import { tinkProviderObjectMock } from '../../tink/dto/provider.objects.mock';
 import { AnalysisUpdateInput } from '../../algoan/dto/analysis.inputs';
-import {serviceAccountConfigMock, tinkV2ServiceAccountConfigMock} from '../../algoan/dto/service-account.objects.mock';
+import {
+  serviceAccountConfigMock,
+  tinkV2ServiceAccountConfigMock,
+} from '../../algoan/dto/service-account.objects.mock';
 import { createAuthorizationObjectMock } from '../../tink/dto/create-authorization.object.mock';
 import { AlgoanModule } from '../../algoan/algoan.module';
 import { TinkModule } from '../../tink/tink.module';
@@ -43,8 +46,8 @@ import { bankDetailsRequiredMock } from '../dto/bank-details-required-payload.dt
 import { mapTinkDataToAlgoanAnalysis } from '../mappers/analysis.mapper';
 import { AggregationDetailsMode } from '../../algoan/dto/customer.enums';
 import { AnalysisStatus, ErrorCodes } from '../../algoan/dto/analysis.enum';
-import {tinkV2AccountObjectMock} from "../../tink/dto/account-v2.object.mock";
-import {tinkV2TransactionObjectMock} from "../../tink/dto/transaction-v2.object.mock";
+import { tinkV2AccountObjectMock } from '../../tink/dto/account-v2.object.mock';
+import { tinkV2TransactionObjectMock } from '../../tink/dto/transaction-v2.object.mock';
 import { HooksService } from './hooks.service';
 
 describe('HookService', () => {
@@ -108,8 +111,8 @@ describe('HookService', () => {
       await algoanService.onModuleInit();
 
       jest
-          .spyOn(SubscriptionEvent.prototype, 'update')
-          .mockResolvedValue(({} as unknown) as ISubscriptionEvent & { id: string });
+        .spyOn(SubscriptionEvent.prototype, 'update')
+        .mockResolvedValue(({} as unknown) as ISubscriptionEvent & { id: string });
       jest.spyOn(algoanService.algoanClient, 'getServiceAccountBySubscriptionId').mockReturnValue(serviceAccount);
 
       serviceAccount.subscriptions = [
@@ -129,15 +132,15 @@ describe('HookService', () => {
       beforeEach(async () => {
         algoanAuthenticateSpy = jest.spyOn(algoanHttpService, 'authenticate').mockReturnValue();
         tinkAuthenticateAsClientWithCredentialsSpy = jest
-            .spyOn(tinkHttpService, 'authenticateAsClientWithCredentials')
-            .mockResolvedValue();
+          .spyOn(tinkHttpService, 'authenticateAsClientWithCredentials')
+          .mockResolvedValue();
         updateCustomerSpy = jest.spyOn(algoanCustomerService, 'updateCustomer').mockResolvedValue(customerMock);
         getLinkSpy = jest.spyOn(tinkLinkService, 'getAuthorizeLink').mockReturnValue('MY_LINK_URL');
         getCustomerByIdSpy = jest.spyOn(algoanCustomerService, 'getCustomerById').mockResolvedValue(customerMock);
         createNewUserSpy = jest.spyOn(tinkUserService, 'createNewUser').mockResolvedValue(createUserObject);
         delegateAuthorizationToUserSpy = jest
-            .spyOn(tinkUserService, 'delegateAuthorizationToUser')
-            .mockResolvedValue(createAuthorizationObjectMock.code);
+          .spyOn(tinkUserService, 'delegateAuthorizationToUser')
+          .mockResolvedValue(createAuthorizationObjectMock.code);
       });
 
       it('should throw error if customer callback url missing', async () => {
@@ -151,14 +154,14 @@ describe('HookService', () => {
         });
 
         await expect(hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock)).rejects.toThrowError(
-            `Missing information: callbackUrl: undefined, clientConfig: ${JSON.stringify(serviceAccountConfigMock)}`,
+          `Missing information: callbackUrl: undefined, clientConfig: ${JSON.stringify(serviceAccountConfigMock)}`,
         );
       });
 
       it('should throw error if client config missing', async () => {
         serviceAccount.config = undefined;
         await expect(hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock)).rejects.toThrowError(
-            `Missing information: callbackUrl: ${customerMock.aggregationDetails.callbackUrl}, clientConfig: undefined`,
+          `Missing information: callbackUrl: ${customerMock.aggregationDetails.callbackUrl}, clientConfig: undefined`,
         );
       });
 
@@ -176,14 +179,17 @@ describe('HookService', () => {
         expect(delegateAuthorizationToUserSpy).not.toHaveBeenCalled();
 
         // standard
-        expect(getLinkSpy).toHaveBeenCalledWith({
-          client_id: serviceAccountConfigMock.clientId,
-          redirect_uri: customerMock.aggregationDetails.callbackUrl,
-          market: serviceAccountConfigMock.market,
-          locale: serviceAccountConfigMock.locale,
-          scope: 'accounts:read,transactions:read,credentials:read',
-          test: config.tink.test,
-        });
+        expect(getLinkSpy).toHaveBeenCalledWith(
+          {
+            client_id: serviceAccountConfigMock.clientId,
+            redirect_uri: customerMock.aggregationDetails.callbackUrl,
+            market: serviceAccountConfigMock.market,
+            locale: serviceAccountConfigMock.locale,
+            scope: 'accounts:read,transactions:read,credentials:read',
+            test: config.tink.test,
+          },
+          serviceAccountConfigMock.useTinkV2,
+        );
 
         // update
         expect(updateCustomerSpy).toHaveBeenCalledWith(aggregatorLinkRequiredMock.customerId, {
@@ -204,8 +210,8 @@ describe('HookService', () => {
 
         // premium
         expect(tinkAuthenticateAsClientWithCredentialsSpy).toHaveBeenCalledWith(
-            serviceAccountConfigMock.clientId,
-            serviceAccountConfigMock.clientSecret,
+          serviceAccountConfigMock.clientId,
+          serviceAccountConfigMock.clientSecret,
         );
         expect(createNewUserSpy).toHaveBeenCalledWith({
           external_user_id: aggregatorLinkRequiredMock.customerId,
@@ -218,15 +224,18 @@ describe('HookService', () => {
           id_hint: customerMock.customIdentifier,
           actor_client_id: TINK_LINK_ACTOR_CLIENT_ID,
         });
-        expect(getLinkSpy).toHaveBeenCalledWith({
-          client_id: serviceAccountConfigMock.clientId,
-          redirect_uri: customerMock.aggregationDetails.callbackUrl,
-          market: serviceAccountConfigMock.market,
-          locale: serviceAccountConfigMock.locale,
-          scope: 'accounts:read,transactions:read,credentials:read',
-          test: config.tink.test,
-          authorization_code: createAuthorizationObjectMock.code,
-        });
+        expect(getLinkSpy).toHaveBeenCalledWith(
+          {
+            client_id: serviceAccountConfigMock.clientId,
+            redirect_uri: customerMock.aggregationDetails.callbackUrl,
+            market: serviceAccountConfigMock.market,
+            locale: serviceAccountConfigMock.locale,
+            scope: 'accounts:read,transactions:read,credentials:read',
+            test: config.tink.test,
+            authorization_code: createAuthorizationObjectMock.code,
+          },
+          serviceAccountConfigMock.useTinkV2,
+        );
 
         // update
         expect(updateCustomerSpy).toHaveBeenCalledWith(aggregatorLinkRequiredMock.customerId, {
@@ -264,15 +273,18 @@ describe('HookService', () => {
           id_hint: customerMock.customIdentifier,
           actor_client_id: TINK_LINK_ACTOR_CLIENT_ID,
         });
-        expect(getLinkSpy).toHaveBeenCalledWith({
-          client_id: serviceAccountConfigMock.clientId,
-          redirect_uri: customerMock.aggregationDetails.callbackUrl,
-          market: serviceAccountConfigMock.market,
-          locale: serviceAccountConfigMock.locale,
-          scope: 'accounts:read,transactions:read,credentials:read',
-          test: config.tink.test,
-          authorization_code: createAuthorizationObjectMock.code,
-        });
+        expect(getLinkSpy).toHaveBeenCalledWith(
+          {
+            client_id: serviceAccountConfigMock.clientId,
+            redirect_uri: customerMock.aggregationDetails.callbackUrl,
+            market: serviceAccountConfigMock.market,
+            locale: serviceAccountConfigMock.locale,
+            scope: 'accounts:read,transactions:read,credentials:read',
+            test: config.tink.test,
+            authorization_code: createAuthorizationObjectMock.code,
+          },
+          serviceAccountConfigMock.useTinkV2,
+        );
 
         // update
         expect(updateCustomerSpy).toHaveBeenCalledWith(aggregatorLinkRequiredMock.customerId, {
@@ -293,16 +305,19 @@ describe('HookService', () => {
           },
         });
         await hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock);
-        expect(getLinkSpy).toHaveBeenCalledWith({
-          client_id: serviceAccountConfigMock.clientId,
-          redirect_uri: customerMock.aggregationDetails.callbackUrl,
-          market: serviceAccountConfigMock.market,
-          locale: serviceAccountConfigMock.locale,
-          scope: 'accounts:read,transactions:read,credentials:read',
-          test: serviceAccountConfigMock.realDataTest,
-          authorization_code: createAuthorizationObjectMock.code,
-          iframe: true,
-        });
+        expect(getLinkSpy).toHaveBeenCalledWith(
+          {
+            client_id: serviceAccountConfigMock.clientId,
+            redirect_uri: customerMock.aggregationDetails.callbackUrl,
+            market: serviceAccountConfigMock.market,
+            locale: serviceAccountConfigMock.locale,
+            scope: 'accounts:read,transactions:read,credentials:read',
+            test: serviceAccountConfigMock.realDataTest,
+            authorization_code: createAuthorizationObjectMock.code,
+            iframe: true,
+          },
+          serviceAccountConfigMock.useTinkV2,
+        );
 
         // update
         expect(updateCustomerSpy).toHaveBeenCalledWith(aggregatorLinkRequiredMock.customerId, {
@@ -348,16 +363,16 @@ describe('HookService', () => {
         updateCustomerSpy = jest.spyOn(algoanCustomerService, 'updateCustomer').mockResolvedValue(customerMock);
         updateAnalysisSpy = jest.spyOn(algoanAnalysisService, 'updateAnalysis').mockResolvedValue(analysisMock);
         tinkAuthenticateAsUserWithCodesSpy = jest
-            .spyOn(tinkHttpService, 'authenticateAsUserWithCode')
-            .mockResolvedValue();
+          .spyOn(tinkHttpService, 'authenticateAsUserWithCode')
+          .mockResolvedValue();
         tinkAuthenticateWithRefreshTokenSpy = jest
-            .spyOn(tinkHttpService, 'authenticateAsClientWithRefreshToken')
-            .mockResolvedValue();
+          .spyOn(tinkHttpService, 'authenticateAsClientWithRefreshToken')
+          .mockResolvedValue();
         tinkRefreshTokenSpy = jest.spyOn(tinkHttpService, 'getRefreshToken').mockReturnValue('mockRefreshToken');
         getAccountsSpy = jest.spyOn(tinkAccountService, 'getAccounts').mockResolvedValue([tinkAccountObjectMock]);
         getTransactionsSpy = jest
-            .spyOn(tinkTransactionService, 'getTransactions')
-            .mockResolvedValue([tinkSearchResponseObjectMock.results[0].transaction]);
+          .spyOn(tinkTransactionService, 'getTransactions')
+          .mockResolvedValue([tinkSearchResponseObjectMock.results[0].transaction]);
         getAccountsV2Spy = jest.spyOn(tinkAccountService, 'getAccountsV2');
         getTransactionsV2Spy = jest.spyOn(tinkTransactionService, 'getTransactionsV2');
         getProvidersSpy = jest.spyOn(tinkProviderService, 'getProviders').mockResolvedValue([tinkProviderObjectMock]);
@@ -372,9 +387,9 @@ describe('HookService', () => {
 
         // Authenticate as user
         expect(tinkAuthenticateAsUserWithCodesSpy).toHaveBeenCalledWith(
-            serviceAccountConfigMock.clientId,
-            serviceAccountConfigMock.clientSecret,
-            bankDetailsRequiredMock.temporaryCode,
+          serviceAccountConfigMock.clientId,
+          serviceAccountConfigMock.clientSecret,
+          bankDetailsRequiredMock.temporaryCode,
         );
         expect(tinkAuthenticateWithRefreshTokenSpy).not.toHaveBeenCalled();
 
@@ -392,9 +407,9 @@ describe('HookService', () => {
         expect(getTransactionsV2Spy).not.toHaveBeenCalled();
 
         const analysisInputMock: AnalysisUpdateInput = mapTinkDataToAlgoanAnalysis(
-            [tinkAccountObjectMock],
-            [tinkSearchResponseObjectMock.results[0].transaction],
-            [tinkProviderObjectMock],
+          [tinkAccountObjectMock],
+          [tinkSearchResponseObjectMock.results[0].transaction],
+          [tinkProviderObjectMock],
         );
 
         // Authenticate to Algoan
@@ -402,24 +417,24 @@ describe('HookService', () => {
 
         // Update analysis
         expect(updateAnalysisSpy).toHaveBeenCalledWith(
-            bankDetailsRequiredMock.customerId,
-            bankDetailsRequiredMock.analysisId,
-            analysisInputMock,
+          bankDetailsRequiredMock.customerId,
+          bankDetailsRequiredMock.analysisId,
+          analysisInputMock,
         );
       });
 
       it('should do these steps in "refresh" mode', async () => {
         await hookService.handleBankDetailsRequiredEvent(
-            { ...bankDetailsRequiredMock, temporaryCode: undefined },
-            new Date(),
+          { ...bankDetailsRequiredMock, temporaryCode: undefined },
+          new Date(),
         );
 
         // Authenticate with the refresh token
         expect(getCustomerSpy).toHaveBeenCalledWith(bankDetailsRequiredMock.customerId);
         expect(tinkAuthenticateWithRefreshTokenSpy).toHaveBeenCalledWith(
-            serviceAccountConfigMock.clientId,
-            serviceAccountConfigMock.clientSecret,
-            'mockRefreshToken',
+          serviceAccountConfigMock.clientId,
+          serviceAccountConfigMock.clientSecret,
+          'mockRefreshToken',
         );
         expect(tinkAuthenticateAsUserWithCodesSpy).not.toHaveBeenCalled();
 
@@ -431,9 +446,9 @@ describe('HookService', () => {
         expect(getTransactionsV2Spy).not.toHaveBeenCalled();
 
         const analysisInputMock: AnalysisUpdateInput = mapTinkDataToAlgoanAnalysis(
-            [tinkAccountObjectMock],
-            [tinkSearchResponseObjectMock.results[0].transaction],
-            [tinkProviderObjectMock],
+          [tinkAccountObjectMock],
+          [tinkSearchResponseObjectMock.results[0].transaction],
+          [tinkProviderObjectMock],
         );
 
         // Authenticate to Algoan
@@ -441,28 +456,28 @@ describe('HookService', () => {
 
         // Update analysis
         expect(updateAnalysisSpy).toHaveBeenCalledWith(
-            bankDetailsRequiredMock.customerId,
-            bankDetailsRequiredMock.analysisId,
-            analysisInputMock,
+          bankDetailsRequiredMock.customerId,
+          bankDetailsRequiredMock.analysisId,
+          analysisInputMock,
         );
       });
 
       it('should throw error if client config missing', async () => {
         serviceAccount.config = undefined;
         await expect(
-            hookService.handleBankDetailsRequiredEvent(bankDetailsRequiredMock, new Date()),
+          hookService.handleBankDetailsRequiredEvent(bankDetailsRequiredMock, new Date()),
         ).rejects.toThrowError(`Missing information: clientConfig: undefined`);
 
         expect(updateAnalysisSpy).toHaveBeenCalledWith(
-            bankDetailsRequiredMock.customerId,
-            bankDetailsRequiredMock.analysisId,
-            {
-              status: AnalysisStatus.ERROR,
-              error: {
-                code: ErrorCodes.INTERNAL_ERROR,
-                message: `An error occured when fetching data from the aggregator`,
-              },
+          bankDetailsRequiredMock.customerId,
+          bankDetailsRequiredMock.analysisId,
+          {
+            status: AnalysisStatus.ERROR,
+            error: {
+              code: ErrorCodes.INTERNAL_ERROR,
+              message: `An error occured when fetching data from the aggregator`,
             },
+          },
         );
       });
 
@@ -519,8 +534,8 @@ describe('HookService', () => {
       await algoanService.onModuleInit();
 
       jest
-          .spyOn(SubscriptionEvent.prototype, 'update')
-          .mockResolvedValue(({} as unknown) as ISubscriptionEvent & { id: string });
+        .spyOn(SubscriptionEvent.prototype, 'update')
+        .mockResolvedValue(({} as unknown) as ISubscriptionEvent & { id: string });
       jest.spyOn(algoanService.algoanClient, 'getServiceAccountBySubscriptionId').mockReturnValue(serviceAccount);
 
       serviceAccount.subscriptions = [
@@ -540,15 +555,15 @@ describe('HookService', () => {
       beforeEach(async () => {
         algoanAuthenticateSpy = jest.spyOn(algoanHttpService, 'authenticate').mockReturnValue();
         tinkAuthenticateAsClientWithCredentialsSpy = jest
-            .spyOn(tinkHttpService, 'authenticateAsClientWithCredentials')
-            .mockResolvedValue();
+          .spyOn(tinkHttpService, 'authenticateAsClientWithCredentials')
+          .mockResolvedValue();
         updateCustomerSpy = jest.spyOn(algoanCustomerService, 'updateCustomer').mockResolvedValue(customerMock);
         getLinkSpy = jest.spyOn(tinkLinkService, 'getAuthorizeLink').mockReturnValue('MY_LINK_URL');
         getCustomerByIdSpy = jest.spyOn(algoanCustomerService, 'getCustomerById').mockResolvedValue(customerMock);
         createNewUserSpy = jest.spyOn(tinkUserService, 'createNewUser').mockResolvedValue(createUserObject);
         delegateAuthorizationToUserSpy = jest
-            .spyOn(tinkUserService, 'delegateAuthorizationToUser')
-            .mockResolvedValue(createAuthorizationObjectMock.code);
+          .spyOn(tinkUserService, 'delegateAuthorizationToUser')
+          .mockResolvedValue(createAuthorizationObjectMock.code);
       });
 
       it('should throw error if customer callback url missing', async () => {
@@ -562,14 +577,16 @@ describe('HookService', () => {
         });
 
         await expect(hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock)).rejects.toThrowError(
-            `Missing information: callbackUrl: undefined, clientConfig: ${JSON.stringify(tinkV2ServiceAccountConfigMock)}`,
+          `Missing information: callbackUrl: undefined, clientConfig: ${JSON.stringify(
+            tinkV2ServiceAccountConfigMock,
+          )}`,
         );
       });
 
       it('should throw error if client config missing', async () => {
         serviceAccount.config = undefined;
         await expect(hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock)).rejects.toThrowError(
-            `Missing information: callbackUrl: ${customerMock.aggregationDetails.callbackUrl}, clientConfig: undefined`,
+          `Missing information: callbackUrl: ${customerMock.aggregationDetails.callbackUrl}, clientConfig: undefined`,
         );
       });
 
@@ -587,14 +604,17 @@ describe('HookService', () => {
         expect(delegateAuthorizationToUserSpy).not.toHaveBeenCalled();
 
         // standard
-        expect(getLinkSpy).toHaveBeenCalledWith({
-          client_id: tinkV2ServiceAccountConfigMock.clientId,
-          redirect_uri: customerMock.aggregationDetails.callbackUrl,
-          market: tinkV2ServiceAccountConfigMock.market,
-          locale: tinkV2ServiceAccountConfigMock.locale,
-          scope: 'accounts:read,transactions:read,credentials:read',
-          test: config.tink.test,
-        });
+        expect(getLinkSpy).toHaveBeenCalledWith(
+          {
+            client_id: tinkV2ServiceAccountConfigMock.clientId,
+            redirect_uri: customerMock.aggregationDetails.callbackUrl,
+            market: tinkV2ServiceAccountConfigMock.market,
+            locale: tinkV2ServiceAccountConfigMock.locale,
+            scope: 'accounts:read,transactions:read,credentials:read',
+            test: config.tink.test,
+          },
+          tinkV2ServiceAccountConfigMock.useTinkV2,
+        );
 
         // update
         expect(updateCustomerSpy).toHaveBeenCalledWith(aggregatorLinkRequiredMock.customerId, {
@@ -615,8 +635,8 @@ describe('HookService', () => {
 
         // premium
         expect(tinkAuthenticateAsClientWithCredentialsSpy).toHaveBeenCalledWith(
-            tinkV2ServiceAccountConfigMock.clientId,
-            tinkV2ServiceAccountConfigMock.clientSecret,
+          tinkV2ServiceAccountConfigMock.clientId,
+          tinkV2ServiceAccountConfigMock.clientSecret,
         );
         expect(createNewUserSpy).toHaveBeenCalledWith({
           external_user_id: aggregatorLinkRequiredMock.customerId,
@@ -629,15 +649,18 @@ describe('HookService', () => {
           id_hint: customerMock.customIdentifier,
           actor_client_id: TINK_LINK_ACTOR_CLIENT_ID,
         });
-        expect(getLinkSpy).toHaveBeenCalledWith({
-          client_id: tinkV2ServiceAccountConfigMock.clientId,
-          redirect_uri: customerMock.aggregationDetails.callbackUrl,
-          market: tinkV2ServiceAccountConfigMock.market,
-          locale: tinkV2ServiceAccountConfigMock.locale,
-          scope: 'accounts:read,transactions:read,credentials:read',
-          test: config.tink.test,
-          authorization_code: createAuthorizationObjectMock.code,
-        });
+        expect(getLinkSpy).toHaveBeenCalledWith(
+          {
+            client_id: tinkV2ServiceAccountConfigMock.clientId,
+            redirect_uri: customerMock.aggregationDetails.callbackUrl,
+            market: tinkV2ServiceAccountConfigMock.market,
+            locale: tinkV2ServiceAccountConfigMock.locale,
+            scope: 'accounts:read,transactions:read,credentials:read',
+            test: config.tink.test,
+            authorization_code: createAuthorizationObjectMock.code,
+          },
+          tinkV2ServiceAccountConfigMock.useTinkV2,
+        );
 
         // update
         expect(updateCustomerSpy).toHaveBeenCalledWith(aggregatorLinkRequiredMock.customerId, {
@@ -675,15 +698,18 @@ describe('HookService', () => {
           id_hint: customerMock.customIdentifier,
           actor_client_id: TINK_LINK_ACTOR_CLIENT_ID,
         });
-        expect(getLinkSpy).toHaveBeenCalledWith({
-          client_id: tinkV2ServiceAccountConfigMock.clientId,
-          redirect_uri: customerMock.aggregationDetails.callbackUrl,
-          market: tinkV2ServiceAccountConfigMock.market,
-          locale: tinkV2ServiceAccountConfigMock.locale,
-          scope: 'accounts:read,transactions:read,credentials:read',
-          test: config.tink.test,
-          authorization_code: createAuthorizationObjectMock.code,
-        });
+        expect(getLinkSpy).toHaveBeenCalledWith(
+          {
+            client_id: tinkV2ServiceAccountConfigMock.clientId,
+            redirect_uri: customerMock.aggregationDetails.callbackUrl,
+            market: tinkV2ServiceAccountConfigMock.market,
+            locale: tinkV2ServiceAccountConfigMock.locale,
+            scope: 'accounts:read,transactions:read,credentials:read',
+            test: config.tink.test,
+            authorization_code: createAuthorizationObjectMock.code,
+          },
+          tinkV2ServiceAccountConfigMock.useTinkV2,
+        );
 
         // update
         expect(updateCustomerSpy).toHaveBeenCalledWith(aggregatorLinkRequiredMock.customerId, {
@@ -704,16 +730,19 @@ describe('HookService', () => {
           },
         });
         await hookService.handleAggregatorLinkRequiredEvent(aggregatorLinkRequiredMock);
-        expect(getLinkSpy).toHaveBeenCalledWith({
-          client_id: tinkV2ServiceAccountConfigMock.clientId,
-          redirect_uri: customerMock.aggregationDetails.callbackUrl,
-          market: tinkV2ServiceAccountConfigMock.market,
-          locale: tinkV2ServiceAccountConfigMock.locale,
-          scope: 'accounts:read,transactions:read,credentials:read',
-          test: tinkV2ServiceAccountConfigMock.realDataTest,
-          authorization_code: createAuthorizationObjectMock.code,
-          iframe: true,
-        });
+        expect(getLinkSpy).toHaveBeenCalledWith(
+          {
+            client_id: tinkV2ServiceAccountConfigMock.clientId,
+            redirect_uri: customerMock.aggregationDetails.callbackUrl,
+            market: tinkV2ServiceAccountConfigMock.market,
+            locale: tinkV2ServiceAccountConfigMock.locale,
+            scope: 'accounts:read,transactions:read,credentials:read',
+            test: tinkV2ServiceAccountConfigMock.realDataTest,
+            authorization_code: createAuthorizationObjectMock.code,
+            iframe: true,
+          },
+          tinkV2ServiceAccountConfigMock.useTinkV2,
+        );
 
         // update
         expect(updateCustomerSpy).toHaveBeenCalledWith(aggregatorLinkRequiredMock.customerId, {
@@ -759,18 +788,18 @@ describe('HookService', () => {
         updateCustomerSpy = jest.spyOn(algoanCustomerService, 'updateCustomer').mockResolvedValue(customerMock);
         updateAnalysisSpy = jest.spyOn(algoanAnalysisService, 'updateAnalysis').mockResolvedValue(analysisMock);
         tinkAuthenticateAsUserWithCodesSpy = jest
-            .spyOn(tinkHttpService, 'authenticateAsUserWithCode')
-            .mockResolvedValue();
+          .spyOn(tinkHttpService, 'authenticateAsUserWithCode')
+          .mockResolvedValue();
         tinkAuthenticateWithRefreshTokenSpy = jest
-            .spyOn(tinkHttpService, 'authenticateAsClientWithRefreshToken')
-            .mockResolvedValue();
+          .spyOn(tinkHttpService, 'authenticateAsClientWithRefreshToken')
+          .mockResolvedValue();
         tinkRefreshTokenSpy = jest.spyOn(tinkHttpService, 'getRefreshToken').mockReturnValue('mockRefreshToken');
         getAccountsSpy = jest.spyOn(tinkAccountService, 'getAccounts');
         getTransactionsSpy = jest.spyOn(tinkTransactionService, 'getTransactions');
         getAccountsV2Spy = jest.spyOn(tinkAccountService, 'getAccountsV2').mockResolvedValue([tinkV2AccountObjectMock]);
         getTransactionsV2Spy = jest
-            .spyOn(tinkTransactionService, 'getTransactionsV2')
-            .mockResolvedValue([tinkV2TransactionObjectMock]);
+          .spyOn(tinkTransactionService, 'getTransactionsV2')
+          .mockResolvedValue([tinkV2TransactionObjectMock]);
         getProvidersSpy = jest.spyOn(tinkProviderService, 'getProviders').mockResolvedValue([tinkProviderObjectMock]);
       });
 
@@ -783,9 +812,9 @@ describe('HookService', () => {
 
         // Authenticate as user
         expect(tinkAuthenticateAsUserWithCodesSpy).toHaveBeenCalledWith(
-            tinkV2ServiceAccountConfigMock.clientId,
-            tinkV2ServiceAccountConfigMock.clientSecret,
-            bankDetailsRequiredMock.temporaryCode,
+          tinkV2ServiceAccountConfigMock.clientId,
+          tinkV2ServiceAccountConfigMock.clientSecret,
+          bankDetailsRequiredMock.temporaryCode,
         );
         expect(tinkAuthenticateWithRefreshTokenSpy).not.toHaveBeenCalled();
 
@@ -812,24 +841,24 @@ describe('HookService', () => {
 
         // Update analysis
         expect(updateAnalysisSpy).toHaveBeenCalledWith(
-            bankDetailsRequiredMock.customerId,
-            bankDetailsRequiredMock.analysisId,
-            analysisInputMock,
+          bankDetailsRequiredMock.customerId,
+          bankDetailsRequiredMock.analysisId,
+          analysisInputMock,
         );
       });
 
       it('should do these steps in "refresh" mode', async () => {
         await hookService.handleBankDetailsRequiredEvent(
-            { ...bankDetailsRequiredMock, temporaryCode: undefined },
-            new Date(),
+          { ...bankDetailsRequiredMock, temporaryCode: undefined },
+          new Date(),
         );
 
         // Authenticate with the refresh token
         expect(getCustomerSpy).toHaveBeenCalledWith(bankDetailsRequiredMock.customerId);
         expect(tinkAuthenticateWithRefreshTokenSpy).toHaveBeenCalledWith(
-            tinkV2ServiceAccountConfigMock.clientId,
-            tinkV2ServiceAccountConfigMock.clientSecret,
-            'mockRefreshToken',
+          tinkV2ServiceAccountConfigMock.clientId,
+          tinkV2ServiceAccountConfigMock.clientSecret,
+          'mockRefreshToken',
         );
         expect(tinkAuthenticateAsUserWithCodesSpy).not.toHaveBeenCalled();
 
@@ -848,9 +877,9 @@ describe('HookService', () => {
 
         // Update analysis
         expect(updateAnalysisSpy).toHaveBeenCalledWith(
-            bankDetailsRequiredMock.customerId,
-            bankDetailsRequiredMock.analysisId,
-            analysisInputMock,
+          bankDetailsRequiredMock.customerId,
+          bankDetailsRequiredMock.analysisId,
+          analysisInputMock,
         );
       });
 
@@ -858,6 +887,5 @@ describe('HookService', () => {
         Date.prototype.toISOString = toISOStringFn;
       });
     });
-
   });
 });
