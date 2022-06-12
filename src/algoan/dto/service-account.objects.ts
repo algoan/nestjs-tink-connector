@@ -1,4 +1,4 @@
-import { IsBoolean, IsEnum, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
 import { ClientPricing } from './service-account.enums';
 
 /**
@@ -22,4 +22,8 @@ export class ClientConfig {
 
   @IsBoolean()
   public realDataTest: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  public useTinkV2?: boolean;
 }

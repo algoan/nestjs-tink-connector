@@ -8,6 +8,11 @@ import {
   TinkSearchResponseObject,
   TinkSearchResultObject,
 } from '../dto/search.objects';
+import {
+  TinkV2GetTransactionsQueryParameters,
+  TinkV2GetTransactionsResponseObject,
+  TinkV2TransactionObject,
+} from '../dto/transaction-v2.object';
 import { TinkCategoryService } from './tink-category.service';
 
 import { TinkHttpService } from './tink-http.service';
@@ -52,6 +57,29 @@ export class TinkTransactionService {
 
       offset += nbElementByPage;
     } while (response.count === nbElementByPage);
+
+    return convertNullToUndefined(transactions);
+  }
+
+  /**
+   * Get all transactions of an account of the connected user using Tink V2 APIs
+   */
+  public async getTransactionsV2(accountId: string): Promise<TinkV2TransactionObject[]> {
+    let response: TinkV2GetTransactionsResponseObject<null>;
+    const transactions: TinkV2TransactionObject<null>[] = [];
+    const queryParameters: TinkV2GetTransactionsQueryParameters = {
+      accountIdIn: accountId,
+      pageSize: 1000,
+    };
+
+    do {
+      response = await this.tinkHttpService.get<TinkV2GetTransactionsResponseObject<null>>('/data/v2/transactions', {
+        ...queryParameters,
+      });
+
+      transactions.push(...response.transactions);
+      queryParameters.pageToken = response.nextPageToken;
+    } while (queryParameters.pageToken !== '');
 
     return convertNullToUndefined(transactions);
   }

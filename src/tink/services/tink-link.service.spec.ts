@@ -32,7 +32,7 @@ describe('TinkLinkService', () => {
       expect(tinkLinkService).toBeDefined();
     });
 
-    it('should return a link WITH the authorizationCode', async () => {
+    it('should return a Tink Link V1 WITH the authorizationCode', async () => {
       const redirectUri: string = `http://callBackUrl/redirect-${process.pid}`;
       const market: string = `FR-${process.pid}`;
       const locale: string = `fr_FR-${process.pid}`;
@@ -49,12 +49,30 @@ describe('TinkLinkService', () => {
         authorization_code: authorizationCode,
       };
 
-      const link: string = `${config.tink.linkBaseUrl}/1.0/transactions/connect-account?${qs.stringify(args)}`;
+      const link: string = `${config.tink.linkBaseUrl}/1.0/authorize?${qs.stringify(args)}`;
 
-      expect(tinkLinkService.getAuthorizeLink(args)).toEqual(link);
+      expect(tinkLinkService.getAuthorizeLink(args, false)).toEqual(link);
     });
 
-    it('should return a link WITHOUT authorizationCode', async () => {
+    it('should return a Tink Link V2 WITH the authorizationCode', async () => {
+      const redirectUri: string = `http://callBackUrl/redirect-${process.pid}`;
+      const market: string = `FR-${process.pid}`;
+      const locale: string = `fr_FR-${process.pid}`;
+
+      const args: AccountCheckArgs = {
+        client_id: serviceAccountConfigMock.clientId,
+        redirect_uri: redirectUri,
+        market,
+        locale,
+        test: true,
+      };
+
+      const link: string = `${config.tink.linkBaseUrl}/1.0/transactions/connect-account?${qs.stringify(args)}`;
+
+      expect(tinkLinkService.getAuthorizeLink(args, true)).toEqual(link);
+    });
+
+    it('should return a Tink Link V1 WITHOUT authorizationCode', async () => {
       const redirectUri: string = `http://callBackUrl/redirect-${process.pid}`;
       const market: string = `FR-${process.pid}`;
       const locale: string = `fr_FR-${process.pid}`;
@@ -69,9 +87,27 @@ describe('TinkLinkService', () => {
         test: true,
       };
 
+      const link: string = `${config.tink.linkBaseUrl}/1.0/authorize?${qs.stringify(args)}`;
+
+      expect(tinkLinkService.getAuthorizeLink(args, false)).toEqual(link);
+    });
+
+    it('should return a Tink Link V2 WITHOUT authorizationCode', async () => {
+      const redirectUri: string = `http://callBackUrl/redirect-${process.pid}`;
+      const market: string = `FR-${process.pid}`;
+      const locale: string = `fr_FR-${process.pid}`;
+
+      const args: AccountCheckArgs = {
+        client_id: serviceAccountConfigMock.clientId,
+        redirect_uri: redirectUri,
+        market,
+        locale,
+        test: true,
+      };
+
       const link: string = `${config.tink.linkBaseUrl}/1.0/transactions/connect-account?${qs.stringify(args)}`;
 
-      expect(tinkLinkService.getAuthorizeLink(args)).toEqual(link);
+      expect(tinkLinkService.getAuthorizeLink(args, true)).toEqual(link);
     });
   });
 });
