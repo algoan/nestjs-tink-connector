@@ -5,10 +5,8 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint/eslint-plugin', 'nestjs'],
-  extends: [
-    '@algoan/eslint-config',
-    'plugin:nestjs/recommended'
-  ],
+  extends: ['@algoan/eslint-config', 'plugin:nestjs/recommended'],
+  ignorePatterns: ['*.spec.ts'],
   root: true,
   env: {
     node: true,
@@ -16,16 +14,24 @@ module.exports = {
   },
   rules: {
     'import/no-extraneous-dependencies': [
-      'error', {
+      'error',
+      {
         devDependencies: true,
-      }
+      },
     ],
     '@typescript-eslint/no-extraneous-class': [
       'error',
       {
         allowEmpty: true,
-      }
+      },
     ],
-    'nestjs/use-validation-pipe': 'off'
-  }
+    '@typescript-eslint/naming-convention': [
+      'error',
+      {
+        selector: 'parameterProperty',
+        format: null,
+      },
+    ],
+    camelcase: ['off'],
+  },
 };
