@@ -46,11 +46,10 @@ export interface TinkTransactionResponseObject<NullOrUndefined = undefined> {
 /**
  * Extends Tink transaction with the category code
  */
-export type ExtendedTinkTransactionResponseObject<
-  NullOrUndefined = undefined
-> = TinkTransactionResponseObject<NullOrUndefined> & {
-  categoryCode?: string;
-};
+export type ExtendedTinkTransactionResponseObject<NullOrUndefined = undefined> =
+  TinkTransactionResponseObject<NullOrUndefined> & {
+    categoryCode?: string;
+  };
 
 /**
  * Currency Denominated Amount Object

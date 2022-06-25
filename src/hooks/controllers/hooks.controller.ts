@@ -45,7 +45,7 @@ export class HooksController {
 
     // Check message signature
     const signature: string = headers['x-hub-signature'];
-    if (!subscription.validateSignature(signature, (event.payload as unknown) as { [key: string]: string })) {
+    if (!subscription.validateSignature(signature, event.payload as unknown as { [key: string]: string })) {
       throw new UnauthorizedException('Invalid X-Hub-Signature: you cannot call this API');
     }
 

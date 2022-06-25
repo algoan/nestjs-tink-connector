@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention,camelcase */
-import { HttpModule } from '@nestjs/common';
+import { HttpModule } from '@nestjs/axios';
 import { ContextIdFactory } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { config } from 'node-config-ts';

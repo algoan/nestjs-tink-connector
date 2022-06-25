@@ -1,6 +1,7 @@
 /* eslint-disable prefer-arrow/prefer-arrow-functions */
 
 import { ClassType, transformAndValidateSync } from 'class-transformer-validator';
+import { lastValueFrom, Observable } from 'rxjs';
 
 /**
  * Convert null values in the given value to undefined
@@ -40,4 +41,13 @@ export function assertsTypeValidation<ValueType extends object>(
   value: object,
 ): asserts value is ValueType {
   transformAndValidateSync(classValidation, value);
+}
+
+/**
+ * Convert an Observable to a promise
+ * @param response Axios observable response
+ * @returns Promisify observable
+ */
+export async function toPromise<T>(response: Observable<T>): Promise<T> {
+  return lastValueFrom(response);
 }
