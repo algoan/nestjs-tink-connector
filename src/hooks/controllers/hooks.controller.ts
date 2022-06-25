@@ -11,6 +11,7 @@ import { HooksService } from '../services/hooks.service';
  * Headers interface
  */
 interface IHeaders {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   'x-hub-signature': string;
 }
 
