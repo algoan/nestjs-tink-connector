@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention,camelcase,no-magic-numbers */
-import { HttpModule } from '@nestjs/common';
+import { HttpModule } from '@nestjs/axios';
 import { ContextIdFactory } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { config } from 'node-config-ts';
@@ -127,9 +127,8 @@ describe('TinkSearchService', () => {
 
     it('should return a transactions list of all pages', async () => {
       const totalTransactionsCount: number = 2500;
-      const expectedTransactions: TinkSearchResultObject[] = Array(totalTransactionsCount).fill(
-        tinkV2TransactionObjectMock,
-      );
+      const expectedTransactions: TinkSearchResultObject[] =
+        Array(totalTransactionsCount).fill(tinkV2TransactionObjectMock);
 
       const spy = jest
         .spyOn(tinkHttpService, 'get')

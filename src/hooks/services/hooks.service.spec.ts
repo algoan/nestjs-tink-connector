@@ -112,7 +112,7 @@ describe('HookService', () => {
 
       jest
         .spyOn(SubscriptionEvent.prototype, 'update')
-        .mockResolvedValue(({} as unknown) as ISubscriptionEvent & { id: string });
+        .mockResolvedValue({} as unknown as ISubscriptionEvent & { id: string });
       jest.spyOn(algoanService.algoanClient, 'getServiceAccountBySubscriptionId').mockReturnValue(serviceAccount);
 
       serviceAccount.subscriptions = [
@@ -535,7 +535,7 @@ describe('HookService', () => {
 
       jest
         .spyOn(SubscriptionEvent.prototype, 'update')
-        .mockResolvedValue(({} as unknown) as ISubscriptionEvent & { id: string });
+        .mockResolvedValue({} as unknown as ISubscriptionEvent & { id: string });
       jest.spyOn(algoanService.algoanClient, 'getServiceAccountBySubscriptionId').mockReturnValue(serviceAccount);
 
       serviceAccount.subscriptions = [

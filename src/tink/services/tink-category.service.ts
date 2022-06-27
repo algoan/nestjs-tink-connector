@@ -1,9 +1,11 @@
-import { HttpService, Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { Config } from 'node-config-ts';
 
 import { CONFIG } from '../../config/config.module';
 import { TinkCategory } from '../dto/category.object';
+import { toPromise } from '../../shared/utils/common.utils';
 
 /**
  * Service to manage transaction
@@ -22,9 +24,9 @@ export class TinkCategoryService implements OnModuleInit {
    * Looks for Tink categories and store them
    */
   public async onModuleInit(): Promise<void> {
-    const response: AxiosResponse<TinkCategory[]> = await this.httpService
-      .get(`${this.config.tink.apiBaseUrl}/api/v1/categories`)
-      .toPromise();
+    const response: AxiosResponse<TinkCategory[]> = await toPromise(
+      this.httpService.get(`${this.config.tink.apiBaseUrl}/api/v1/categories`),
+    );
 
     this.categories = response.data;
   }

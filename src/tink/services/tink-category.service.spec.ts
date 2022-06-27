@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention,camelcase */
-import { HttpModule, HttpService } from '@nestjs/common';
+import { HttpModule, HttpService } from '@nestjs/axios';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AxiosResponse } from 'axios';
 import { config } from 'node-config-ts';

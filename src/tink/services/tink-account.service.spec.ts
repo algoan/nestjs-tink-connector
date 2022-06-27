@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention,camelcase,no-magic-numbers */
-import { HttpModule } from '@nestjs/common';
+import { HttpModule } from '@nestjs/axios';
 import { ContextIdFactory } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { config } from 'node-config-ts';
@@ -8,11 +8,7 @@ import { CONFIG } from '../../config/config.module';
 import { TinkAccountObject } from '../dto/account.objects';
 import { tinkAccountListResponseObjectMock } from '../dto/account.objects.mock';
 
-import {
-  TinkV2AccountObject,
-  TinkV2GetAccountsQueryParameters,
-  TinkV2GetAccountsResponseObject,
-} from '../dto/account-v2.object';
+import { TinkV2AccountObject } from '../dto/account-v2.object';
 import { tinkV2AccountObjectMock } from '../dto/account-v2.object.mock';
 import { TinkAccountService } from './tink-account.service';
 import { TinkHttpService } from './tink-http.service';

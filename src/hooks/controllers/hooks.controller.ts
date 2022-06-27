@@ -11,6 +11,7 @@ import { HooksService } from '../services/hooks.service';
  * Headers interface
  */
 interface IHeaders {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   'x-hub-signature': string;
 }
 
@@ -45,7 +46,7 @@ export class HooksController {
 
     // Check message signature
     const signature: string = headers['x-hub-signature'];
-    if (!subscription.validateSignature(signature, (event.payload as unknown) as { [key: string]: string })) {
+    if (!subscription.validateSignature(signature, event.payload as unknown as { [key: string]: string })) {
       throw new UnauthorizedException('Invalid X-Hub-Signature: you cannot call this API');
     }
 
