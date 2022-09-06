@@ -97,7 +97,7 @@ describe('TinkHttpService', () => {
         client_id: serviceAccountConfigMock.clientId,
         client_secret: serviceAccountConfigMock.clientSecret,
         grant_type: GrantType.CLIENT_CREDENTIALS,
-        scope: 'authorization:grant,user:read,user:create',
+        scope: 'authorization:grant,user:create',
       };
       const headers: Record<string, string> = {
         'Content-Type': 'application/x-www-form-urlencoded',

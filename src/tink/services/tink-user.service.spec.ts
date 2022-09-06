@@ -5,6 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { config } from 'node-config-ts';
 
 import { CONFIG } from '../../config/config.module';
+import { CreateAuthorizationCode } from '../dto/authorization-grant.obect';
 import { createAuthorizationObjectMock } from '../dto/create-authorization.object.mock';
 
 import { CreateDelegatedAuthorizationInput } from '../dto/create-delegated-authorization.input';
@@ -72,6 +73,21 @@ describe('TinkUserService', () => {
       const code: string = await tinkUserService.delegateAuthorizationToUser(input);
 
       expect(spy).toHaveBeenCalledWith(`/api/v1/oauth/authorization-grant/delegate`, input, true);
+      expect(code).toBe(createAuthorizationObjectMock.code);
+    });
+  });
+
+  describe('getAuthorizationCode', () => {
+    it('should create an authorization code', async () => {
+      const spy = jest.spyOn(tinkHttpService, 'post').mockReturnValue(Promise.resolve(createAuthorizationObjectMock));
+
+      const input: CreateAuthorizationCode = {
+        user_id: 'user_id',
+        scope: 'scope',
+      };
+      const code: string = await tinkUserService.postAuthorizationGrant(input);
+
+      expect(spy).toHaveBeenCalledWith(`/api/v1/oauth/authorization-grant`, input, true);
       expect(code).toBe(createAuthorizationObjectMock.code);
     });
   });

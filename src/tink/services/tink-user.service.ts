@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CreateAuthorizationCode } from '../dto/authorization-grant.obect';
 import { CreateAuthorizationObject } from '../dto/create-authorization.object';
 import { CreateDelegatedAuthorizationInput } from '../dto/create-delegated-authorization.input';
 
@@ -29,6 +30,18 @@ export class TinkUserService {
       CreateAuthorizationObject,
       CreateDelegatedAuthorizationInput
     >('/api/v1/oauth/authorization-grant/delegate', input, true);
+
+    return authorization.code;
+  }
+
+  /**
+   * Create an authorization code for a user
+   */
+  public async postAuthorizationGrant(input: CreateAuthorizationCode): Promise<string> {
+    const authorization: CreateAuthorizationObject = await this.tinkHttpService.post<
+      CreateAuthorizationObject,
+      CreateAuthorizationCode
+    >('/api/v1/oauth/authorization-grant', input, true);
 
     return authorization.code;
   }

@@ -83,7 +83,7 @@ export class HooksService {
     let authorizationCode: string | undefined;
 
     // if premium pricing
-    if (clientConfig.pricing === ClientPricing.PREMIUM) {
+    if (clientConfig.pricing === ClientPricing.PREMIUM || clientConfig.useTinkV2 === true) {
       // Get the saved tink user id from algoan customer
       tinkUserId = customer.aggregationDetails.userId;
 
@@ -107,10 +107,11 @@ export class HooksService {
         user_id: tinkUserId,
         scope: [
           'user:read', // Read the user
-          'authorization:read', // Auth
+          'authorization:read',
           'authorization:grant', // Auth
           'credentials:read', // Auth
           'credentials:write', // Auth
+          'credentials:refresh',
           'providers:read', // List providers in tink link
         ].join(','),
         id_hint: customer.customIdentifier,
@@ -215,8 +216,29 @@ export class HooksService {
             customer.aggregationDetails.token,
           );
         } else {
-          throw new Error(
-            `Missing information: customer.aggregationDetails.token: undefined for ${payload.customerId}`,
+          /**
+           * Authenticate our application
+           */
+          await this.tinkHttpService.authenticateAsClientWithCredentials(
+            clientConfig.clientId,
+            clientConfig.clientSecret,
+          );
+
+          /**
+           * Generate authorization code
+           */
+          const authorizationCode = await this.tinkUserService.postAuthorizationGrant({
+            user_id: customer.aggregationDetails.userId,
+            scope: ['accounts:read', 'balances:read', 'transactions:read', 'provider-consents:read'].join(','),
+          });
+
+          /**
+           * Get a user access token
+           */
+          await this.tinkHttpService.authenticateAsUserWithCode(
+            clientConfig.clientId,
+            clientConfig.clientSecret,
+            authorizationCode,
           );
         }
       } else {
