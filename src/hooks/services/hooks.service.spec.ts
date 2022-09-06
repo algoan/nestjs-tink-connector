@@ -220,7 +220,8 @@ describe('HookService', () => {
         });
         expect(delegateAuthorizationToUserSpy).toHaveBeenCalledWith({
           user_id: createUserObject.user_id,
-          scope: 'user:read,authorization:read,authorization:grant,credentials:read,credentials:write,providers:read',
+          scope:
+            'user:read,authorization:read,authorization:grant,credentials:read,credentials:write,credentials:refresh,providers:read',
           id_hint: customerMock.customIdentifier,
           actor_client_id: TINK_LINK_ACTOR_CLIENT_ID,
         });
@@ -269,7 +270,8 @@ describe('HookService', () => {
         expect(createNewUserSpy).not.toHaveBeenCalled();
         expect(delegateAuthorizationToUserSpy).toHaveBeenCalledWith({
           user_id: createUserObject.user_id,
-          scope: 'user:read,authorization:read,authorization:grant,credentials:read,credentials:write,providers:read',
+          scope:
+            'user:read,authorization:read,authorization:grant,credentials:read,credentials:write,credentials:refresh,providers:read',
           id_hint: customerMock.customIdentifier,
           actor_client_id: TINK_LINK_ACTOR_CLIENT_ID,
         });
@@ -599,9 +601,9 @@ describe('HookService', () => {
         expect(getCustomerByIdSpy).toHaveBeenCalledWith(aggregatorLinkRequiredMock.customerId);
 
         // premium
-        expect(tinkAuthenticateAsClientWithCredentialsSpy).not.toHaveBeenCalled();
-        expect(createNewUserSpy).not.toHaveBeenCalled();
-        expect(delegateAuthorizationToUserSpy).not.toHaveBeenCalled();
+        expect(tinkAuthenticateAsClientWithCredentialsSpy).toHaveBeenCalled();
+        expect(createNewUserSpy).toHaveBeenCalled();
+        expect(delegateAuthorizationToUserSpy).toHaveBeenCalled();
 
         // standard
         expect(getLinkSpy).toHaveBeenCalledWith(
@@ -612,6 +614,7 @@ describe('HookService', () => {
             locale: tinkV2ServiceAccountConfigMock.locale,
             scope: 'accounts:read,transactions:read,credentials:read',
             test: config.tink.test,
+            authorization_code: createAuthorizationObjectMock.code,
           },
           tinkV2ServiceAccountConfigMock.useTinkV2,
         );
@@ -621,6 +624,7 @@ describe('HookService', () => {
           aggregationDetails: {
             redirectUrl: 'MY_LINK_URL',
             aggregatorName: 'TINK',
+            userId: createUserObject.user_id,
           },
         });
       });
@@ -645,7 +649,8 @@ describe('HookService', () => {
         });
         expect(delegateAuthorizationToUserSpy).toHaveBeenCalledWith({
           user_id: createUserObject.user_id,
-          scope: 'user:read,authorization:read,authorization:grant,credentials:read,credentials:write,providers:read',
+          scope:
+            'user:read,authorization:read,authorization:grant,credentials:read,credentials:write,credentials:refresh,providers:read',
           id_hint: customerMock.customIdentifier,
           actor_client_id: TINK_LINK_ACTOR_CLIENT_ID,
         });
@@ -694,7 +699,8 @@ describe('HookService', () => {
         expect(createNewUserSpy).not.toHaveBeenCalled();
         expect(delegateAuthorizationToUserSpy).toHaveBeenCalledWith({
           user_id: createUserObject.user_id,
-          scope: 'user:read,authorization:read,authorization:grant,credentials:read,credentials:write,providers:read',
+          scope:
+            'user:read,authorization:read,authorization:grant,credentials:read,credentials:write,credentials:refresh,providers:read',
           id_hint: customerMock.customIdentifier,
           actor_client_id: TINK_LINK_ACTOR_CLIENT_ID,
         });

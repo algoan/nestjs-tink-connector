@@ -29,7 +29,7 @@ export class TinkHttpService {
       client_id: clientId,
       client_secret: clientSecret,
       grant_type: GrantType.CLIENT_CREDENTIALS,
-      scope: 'authorization:grant,user:read,user:create',
+      scope: 'authorization:grant,user:create',
     };
 
     return this.authenticate(input);

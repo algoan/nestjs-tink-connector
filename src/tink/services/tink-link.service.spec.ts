@@ -67,7 +67,7 @@ describe('TinkLinkService', () => {
         test: true,
       };
 
-      const link: string = `${config.tink.linkBaseUrl}/1.0/transactions/connect-account?${qs.stringify(args)}`;
+      const link: string = `${config.tink.linkBaseUrl}/1.0/transactions/connect-accounts?${qs.stringify(args)}`;
 
       expect(tinkLinkService.getAuthorizeLink(args, true)).toEqual(link);
     });
@@ -105,7 +105,7 @@ describe('TinkLinkService', () => {
         test: true,
       };
 
-      const link: string = `${config.tink.linkBaseUrl}/1.0/transactions/connect-account?${qs.stringify(args)}`;
+      const link: string = `${config.tink.linkBaseUrl}/1.0/transactions/connect-accounts?${qs.stringify(args)}`;
 
       expect(tinkLinkService.getAuthorizeLink(args, true)).toEqual(link);
     });
