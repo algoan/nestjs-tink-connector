@@ -6,7 +6,7 @@
         "npmPublish": false
       }],
       ["@codedependant/semantic-release-docker", {
-        "dockerImage": "nestjs-tink-connector",
+        "dockerImage": "tink-connector",
         "dockerLogin": true,
         "dockerPublish": true
       }],
