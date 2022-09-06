@@ -19,7 +19,7 @@ RUN npm run build
 # ---------------
 # Multistage docker. This will be the final image
 # ---------------
-FROM node:lts-alpine
+FROM node:fermium-alpine
 
 WORKDIR /usr/src/app
 
