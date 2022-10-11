@@ -20,12 +20,13 @@
       "createdAt": "2020-09-09T09:36:36.630+0000",
       "scope": "*",
       "config": {
-        "clientId": "clientId",
-        "clientSecret": "clientSecret",
+        "clientId": "3eb608f48aa9446db65a814c44cb3df2",
+        "clientSecret": "b1edb0a091664aa594cab965e5647285",
         "market": "FR",
         "locale": "fr_FR",
-        "realDataTest": true,
-        "pricing": "STANDARD"
+        "realDataTest": false,
+        "pricing": "STANDARD",
+        "useTinkV2": true
       }
     }
   ],
