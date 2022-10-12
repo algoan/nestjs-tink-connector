@@ -16,8 +16,8 @@
   ],
   "restHooksSecret": "password",
   "enableHttpRequestLog": true,
-  "enableHttpResponseLog": false,
+  "enableHttpResponseLog": true,
   "enableHttpErrorLog": true,
-  "port": 3000,
+  "port": 8080,
   "openBankingDataFormat": "TINK_V2"
 }
