@@ -1,6 +1,6 @@
 {
   "name": "@algoan/nestjs-tink-connector",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "description": "Tink connector for Algoan",
   "author": "algoan",
   "license": "UNLICENSED",
